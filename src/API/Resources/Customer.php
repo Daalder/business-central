@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class Customer
@@ -13,14 +14,15 @@ use Illuminate\Http\Resources\Json\Resource;
  *
  * @mixin \Pionect\Backoffice\Models\Customer\Customer
  */
-class Customer extends Resource
+class Customer extends JsonResource
 {
     const default_country = 'NL';
 
     /**
+     * @param Request $request
      * @return array
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray($request): array
     {
         return [
             'number' => (string) $this->id,
@@ -42,39 +44,3 @@ class Customer extends Resource
     }
 }
 
-//{
-//  "number": "10000",
-//  "displayName": "Coho Winery",
-//  "type": "Company",
-//  "address": {
-//    "street": "192 Market Square",
-//    "city": "Atlanta",
-//    "state": "GA",
-//    "countryLetterCode": "US",
-//    "postalCode": "31772"
-//  },
-//  "phoneNumber": "",
-//  "email": "jim.glynn@cronuscorp.net",
-//  "website": "",
-//  "taxLiable": true,
-//  "taxAreaId": "taxAreaId-value",
-//  "taxAreaDisplayName": "tax area",
-//  "taxRegistrationNumber": "28012001T",
-//  "currencyId": "currencyId-value",
-//  "currencyCode": "USD",
-//  "paymentTermsId": "paymentTermsId-value",
-//  "paymentTerms": {
-//    "code": "1M(8D)",
-//    "description": "1 Month/2% 8 days"
-//  },
-//  "shipmentMethodId": "shipmentMethodId-value",
-//  "shipmentMethod": null,
-//  "paymentMethodId": "paymentMethodId-value",
-//  "paymentMethod": {
-//    "code": "BANK",
-//    "description": "Bank Transfer"
-//  },
-//  "blocked": " ",
-//  "overdueAmount": 0,
-//  "totalSalesExcludingTax": 0,
-//}

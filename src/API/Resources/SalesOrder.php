@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\API\Resources;
 
 use Daalder\BusinessCentral\API\Repositories\ShippingMethodsRepository;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class SalesOrder
@@ -14,12 +15,13 @@ use Illuminate\Http\Resources\Json\Resource;
  *
  * @mixin \Pionect\Backoffice\Models\Order\Order
  */
-class SalesOrder extends Resource
+class SalesOrder extends JsonResource
 {
     /**
+     * @param Request $request
      * @return array
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray($request): array
     {
         $shippingMethodsRespository = resolve(ShippingMethodsRepository::class);
         $bcShippingMethod = $shippingMethodsRespository->getByShippingSku($this->getShippingSku());

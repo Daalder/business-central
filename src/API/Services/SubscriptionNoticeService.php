@@ -40,14 +40,14 @@ class SubscriptionNoticeService
     public function process(SubscriptionNotice $notice): bool
     {
         if ($notice->isProcessed) {
-            return;
+            return false;
         }
 
         if ($this->shouldBeProcessed($notice) === false) {
             $notice->isProcessed = true;
             $notice->save();
 
-            return;
+            return false;
         }
 
         DB::beginTransaction();

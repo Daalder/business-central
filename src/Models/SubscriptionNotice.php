@@ -21,17 +21,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class SubscriptionNotice extends ReferenceModel
 {
-    public string $table = 'subscription_notice_business_central';
+    public $table = 'subscription_notice_business_central';
 
     /**
      * @var array
      */
-    public array $fillable = ['subscription_id', 'expirationDateTime', 'resource', 'changeType', 'lastModifiedDateTime', 'isProcessed'];
+    public $fillable = ['subscription_id', 'expirationDateTime', 'resource', 'changeType', 'lastModifiedDateTime', 'isProcessed'];
 
     /**
      * @var array
      */
-    public array $dates = [
+    public $dates = [
         'expirationDateTime',
         'lastModifiedDateTime',
     ];
@@ -39,7 +39,7 @@ class SubscriptionNotice extends ReferenceModel
     /**
      * @var array
      */
-    public array $casts = [
+    public $casts = [
         'isProcessed' => 'boolean',
     ];
 

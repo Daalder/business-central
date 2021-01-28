@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class Subscription
  *
  * @package BusinessCentral\API\Resources
  *
- * @mixin \BusinessCentral\Models\Subscription
+ * @mixin Daalder\BusinessCentral\Models\Subscription
  */
-class Subscription extends Resource
+class Subscription extends JsonResource
 {
-    private \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
+    private ReferenceRepository $referenceRepository;
 
     public function __construct($resource)
     {
@@ -23,11 +25,10 @@ class Subscription extends Resource
     }
 
     /**
-     * Transform the resource into an array.
-     *
+     * @param Request $request
      * @return array
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray($request): array
     {
         return [
             'subscriptionId' => $this->subscriptionId,

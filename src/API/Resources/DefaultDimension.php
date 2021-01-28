@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class Product
@@ -13,14 +14,13 @@ use Illuminate\Http\Resources\Json\Resource;
  *
  * @mixin \Pionect\Backoffice\Models\Product\Group
  */
-class DefaultDimension extends Resource
+class DefaultDimension extends JsonResource
 {
     /**
-     * Transform the resource into an array.
-     *
+     * @param Request $request
      * @return array
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray($request): array
     {
         return [
             'parentId' => (string) str_limit($this->id, 20),

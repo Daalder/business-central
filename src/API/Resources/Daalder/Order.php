@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources\Daalder;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Pionect\Backoffice\Models\Order\State;
 
 /**
@@ -12,7 +12,7 @@ use Pionect\Backoffice\Models\Order\State;
  *
  * @package BusinessCentral\API\Resources\Daalder
  */
-class Order extends Resource
+class Order extends JsonResource
 {
     /**
      * @return array

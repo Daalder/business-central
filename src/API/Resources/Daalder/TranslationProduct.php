@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources\Daalder;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Pionect\Backoffice\Models\Product\Type;
 use Pionect\Backoffice\Models\ProductAttribute\Set;
 
@@ -13,7 +13,7 @@ use Pionect\Backoffice\Models\ProductAttribute\Set;
  *
  * @package BusinessCentral\API\Resources
  */
-class TranslationProduct extends Resource
+class TranslationProduct extends JsonResource
 {
     /**
      * @var

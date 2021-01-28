@@ -24,7 +24,7 @@ class SubscriptionService extends WebhookService
     /**
      * Check whether request query has a validationToken,
      */
-    public function hasValidationToken(Request $request): bool
+    public function hasValidationToken(Request $request): array|null|string
     {
         return $request->query('validationToken', false);
     }

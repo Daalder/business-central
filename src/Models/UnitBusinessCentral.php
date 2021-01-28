@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Pionect\Backoffice\Models\Unit\Unit;
 
 /**
  * Class UnitBusinessCentral
- *
- * @package BusinessCentral\Models
+ * @package Daalder\BusinessCentral\Models
  */
 class UnitBusinessCentral extends ReferenceModel
 {
@@ -19,7 +19,7 @@ class UnitBusinessCentral extends ReferenceModel
     protected $fillable = ['unit_id', 'business_central_id'];
     protected $dates = ['created_at', 'updated_at'];
 
-    public function unit(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function unit(): HasOne
     {
         return $this->hasOne(Unit::class);
     }

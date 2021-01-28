@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources\Daalder;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class Order
  *
  * @package BusinessCentral\API\Resources\Daalder
  */
-class Customer extends Resource
+class Customer extends JsonResource
 {
     /**
      * @var array

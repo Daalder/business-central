@@ -9,7 +9,7 @@ use Pionect\Backoffice\Models\BaseModel;
 /**
  * Class ProductBusinessCentral
  *
- * @package BusinessCentral\Models
+ * @package Daalder\BusinessCentral\Models
  *
  * @property string id
  * @property string no

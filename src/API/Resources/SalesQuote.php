@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Pionect\Backoffice\Models\Order\Order;
 
 /**
  * Class SalesQuote
  *
  * @package BusinessCentral\API\Resources
- *
- * @mixin \Pionect\Backoffice\Models\Order\Order
+ * @mixin Order
  */
-class SalesQuote extends Resource
+class SalesQuote extends JsonResource
 {
     /**
+     * @param Request $request
      * @return array
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray($request): array
     {
         return [
             'externalDocumentNumber' => (string) $this->orderid,

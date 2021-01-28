@@ -7,18 +7,19 @@ namespace Daalder\BusinessCentral\API\Resources;
 use Daalder\BusinessCentral\Models\SetBusinessCentral;
 use Daalder\BusinessCentral\Models\UnitBusinessCentral;
 use Daalder\BusinessCentral\Repositories\ReferenceRepository;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class Product
  *
- * @package BusinessCentral\API\Resources
+ * @package Daalder\BusinessCentral\API\Resources
  *
  * @mixin \Pionect\Backoffice\Models\Product\Product
  */
-class Item extends Resource
+class Item extends JsonResource
 {
-    private \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
+    private ReferenceRepository $referenceRepository;
 
     public function __construct($resource)
     {
@@ -26,12 +27,12 @@ class Item extends Resource
 
         $this->referenceRepository = app(ReferenceRepository::class);
     }
+
     /**
-     * Transform the resource into an array.
-     *
+     * @param Request $request
      * @return array
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray($request): array
     {
         return [
             'baseUnitOfMeasureId' => $this->when($this->setUnit(), $this->setUnit()),
@@ -46,6 +47,9 @@ class Item extends Resource
         ];
     }
 
+    /**
+     * @return string|null
+     */
     private function setItemCategory(): ?string
     {
         $reference = $this->referenceRepository->getReference(
@@ -55,6 +59,9 @@ class Item extends Resource
         return $reference ? $reference->business_central_id : null;
     }
 
+    /**
+     * @return string|null
+     */
     private function setUnit(): ?string
     {
         if (! isset($this->saleUnit) || $this->saleUnit === null) {

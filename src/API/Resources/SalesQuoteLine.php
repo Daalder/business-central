@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class salesOrderLine
  *
- * @package BusinessCentral\API\Resources
+ * @package Daalder\BusinessCentral\API\Resources
  *
  * @mixin \Pionect\Backoffice\Models\Order\Orderrow
  */
-class SalesQuoteLine extends Resource
+class SalesQuoteLine extends JsonResource
 {
     /**
+     * @param Request $request
      * @return array
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray($request): array
     {
         return [
             'lineType' => 'Item',
