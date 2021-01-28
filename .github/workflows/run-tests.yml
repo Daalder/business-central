@@ -1,7 +1,8 @@
 name: run-tests
 
 on: [push, pull_request]
-
+env:
+    COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
     tests:
         runs-on: ${{ matrix.os }}
