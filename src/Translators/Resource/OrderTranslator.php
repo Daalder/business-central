@@ -1,18 +1,20 @@
 <?php
 
-namespace BusinessCentral\Translators\Resource;
+declare(strict_types=1);
 
-use BusinessCentral\Repositories\OrderRepository;
-use BusinessCentral\Translators\Translator;
+namespace Daalder\BusinessCentral\Translators\Resource;
+
+use Daalder\BusinessCentral\Repositories\OrderRepository;
+use Daalder\BusinessCentral\Translators\Translator;
 use Pionect\Backoffice\Models\Order\Repositories\OrderRepository as BackOfficeOrderRepository;
 
 class OrderTranslator extends Translator
 {
-
     /**
      * Make reference repository.
      *
      * @param null $model
+     *
      * @return mixed
      */
     public function makeReferenceRepository($model)
@@ -24,6 +26,7 @@ class OrderTranslator extends Translator
      * Update destination entity.
      *
      * @param array $data
+     *
      * @return mixed
      */
     public function update(array $data = [])
@@ -35,6 +38,7 @@ class OrderTranslator extends Translator
      * Create destination entity.
      *
      * @param array $data
+     *
      * @return mixed
      */
     public function create(array $data = [])
@@ -46,6 +50,7 @@ class OrderTranslator extends Translator
      * Create destination entity without storing it in the database.
      *
      * @param array $data
+     *
      * @return mixed
      */
     public function prepare(array $data = [])
@@ -55,8 +60,6 @@ class OrderTranslator extends Translator
 
     /**
      * Delete destination entity.
-     *
-     * @return bool
      */
     public function delete(): bool
     {
@@ -65,8 +68,6 @@ class OrderTranslator extends Translator
 
     /**
      * Get Business Central repository class name.
-     *
-     * @return string
      */
     public function businessCentralRepositoryName(): string
     {
@@ -75,8 +76,6 @@ class OrderTranslator extends Translator
 
     /**
      * Get BackOffice repository class name.
-     *
-     * @return string
      */
     public function backOfficeRepositoryName(): string
     {

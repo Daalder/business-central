@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\Models;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Models;
 
 use Pionect\Backoffice\Models\BaseModel;
 
@@ -8,6 +10,7 @@ use Pionect\Backoffice\Models\BaseModel;
  * Class ProductBusinessCentral
  *
  * @package BusinessCentral\Models
+ *
  * @property string warehouseShipmentNo
  * @property int lineNo
  * @property string warehouseShipmentId
@@ -28,6 +31,6 @@ class WarehouseShipmentLine extends BaseModel
         'sourceDocumentNo',
         'sourceDocumentId',
         'itemNo',
-        'qty'];
-
+        'qty',
+    ];
 }

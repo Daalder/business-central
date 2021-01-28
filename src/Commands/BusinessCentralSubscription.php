@@ -1,11 +1,13 @@
 <?php
 
-namespace BusinessCentral\Commands;
+declare(strict_types=1);
 
-use BusinessCentral\API\Jobs\SubscriptionKeep;
-use BusinessCentral\API\Repositories\SubscriptionRepository;
-use BusinessCentral\API\Services\NamespaceTranslations;
-use BusinessCentral\Models\Subscription;
+namespace Daalder\BusinessCentral\Commands;
+
+use Daalder\BusinessCentral\API\Jobs\SubscriptionKeep;
+use Daalder\BusinessCentral\API\Repositories\SubscriptionRepository;
+use Daalder\BusinessCentral\API\Services\NamespaceTranslations;
+use Daalder\BusinessCentral\Models\Subscription;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -15,32 +17,19 @@ class BusinessCentralSubscription extends Command
 {
     /**
      * The name and signature of the console command.
-     *
-     * @var string
      */
-    protected $signature = 'bc:subscription {action : Action create, delete, renew} {resource? : Resource name or comma-separated list}';
+    protected string $signature = 'bc:subscription {action : Action create, delete, renew} {resource? : Resource name or comma-separated list}';
 
     /**
      * The console command description.
-     *
-     * @var string
      */
-    protected $description = 'Manage Business Central Subscriptions';
+    protected string $description = 'Manage Business Central Subscriptions';
 
-    /**
-     * @var SubscriptionRepository
-     */
-    protected $repository;
+    protected SubscriptionRepository $repository;
 
-    /**
-     * @var string
-     */
-    protected $notificationUrl;
+    protected string $notificationUrl;
 
-    /**
-     * @var string
-     */
-    protected $resourceUrl;
+    protected string $resourceUrl;
 
     /**
      * Create a new command instance.
@@ -58,16 +47,16 @@ class BusinessCentralSubscription extends Command
     /**
      * Handle command.
      */
-    public function handle()
+    public function handle(): void
     {
         $resources = $this->argument('resource') ? explode(',', $this->argument('resource'))
             : array_keys(NamespaceTranslations::$NAMESPACES);
 
         $functionName = 'handle' . ucfirst($this->argument('action'));
 
-        foreach($resources as $resource) {
+        foreach ($resources as $resource) {
             $plural = Str::plural($resource);
-            if(!in_array($plural, array_keys(NamespaceTranslations::$NAMESPACES))) {
+            if (! in_array($plural, array_keys(NamespaceTranslations::$NAMESPACES))) {
                 continue;
             }
             $this->{$functionName}($resource);
@@ -75,24 +64,22 @@ class BusinessCentralSubscription extends Command
     }
 
     /**
-     * @param string $resource
      * @throws Exception
      */
-    protected function handleCreate(string $resource)
+    protected function handleCreate(string $resource): void
     {
         $subscription = $this->repository->firstOrCreate([
             'subscriptionId' => $resource,
             'notificationUrl' => $this->notificationUrl.'/'.$resource,
-            'resourceUrl' => $this->resourceUrl.$resource
+            'resourceUrl' => $this->resourceUrl.$resource,
         ]);
         $this->repository->create($subscription);
     }
 
     /**
-     * @param string $resource
      * @throws Exception
      */
-    protected function handleDelete(string $resource)
+    protected function handleDelete(string $resource): void
     {
         $this->repository->delete(Subscription::where([
             'subscriptionId' => $resource,
@@ -100,18 +87,17 @@ class BusinessCentralSubscription extends Command
     }
 
     /**
-     * @param string $resource
      * @throws Exception
      */
-    protected function handleRenew(string $resource)
+    protected function handleRenew(string $resource): void
     {
         $subscription = $this->repository->firstOrCreate([
             'subscriptionId' => $resource,
             'notificationUrl' => $this->notificationUrl.'/'.$resource,
-            'resourceUrl' => $this->resourceUrl.$resource
+            'resourceUrl' => $this->resourceUrl.$resource,
         ]);
 
-        if(!$subscription->wasRecentlyCreated) {
+        if (! $subscription->wasRecentlyCreated) {
             SubscriptionKeep::dispatch($subscription);
         } else {
             $this->repository->create($subscription);
@@ -123,12 +109,13 @@ class BusinessCentralSubscription extends Command
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['action', InputArgument::REQUIRED, 'The desired action: create, delete or renew.'],
             ['resource', InputArgument::OPTIONAL,
-                'The resource or comma-separated list of ' . implode(',', array_keys(NamespaceTranslations::$NAMESPACES))]
+                'The resource or comma-separated list of ' . implode(',', array_keys(NamespaceTranslations::$NAMESPACES)),
+            ],
         ];
     }
 }

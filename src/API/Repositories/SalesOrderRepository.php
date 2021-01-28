@@ -1,13 +1,15 @@
 <?php
 
-namespace BusinessCentral\API\Repositories;
+declare(strict_types=1);
 
-use BusinessCentral\Models\OrderBusinessCentral;
-use BusinessCentral\Models\ProductBusinessCentral;
-use Pionect\Backoffice\Models\Product\ProductOption;
+namespace Daalder\BusinessCentral\API\Repositories;
+
+use Daalder\BusinessCentral\Models\OrderBusinessCentral;
+use Daalder\BusinessCentral\Models\ProductBusinessCentral;
 use Pionect\Backoffice\Models\Order\Order;
 use Pionect\Backoffice\Models\Order\Orderrow;
 use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Backoffice\Models\Product\ProductOption;
 
 /**
  * Class Product
@@ -19,12 +21,10 @@ class SalesOrderRepository extends RepositoryAbstract
     public $objectName = 'salesOrders';
 
     /**
-     * @param  \Pionect\Backoffice\Models\Order\Order  $order
-     * @return null|\stdClass
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function create(Order $order)
+    public function create(Order $order): ?\stdClass
     {
         // First create customer
         $this->client->customer()->create($order->customer);
@@ -52,7 +52,6 @@ class SalesOrderRepository extends RepositoryAbstract
             'business_central_id' => $response->id,
         ]));
 
-
         $optionProduct = Product::query()->where('sku', '0001')->first();
 
         $productOptions = [];
@@ -74,7 +73,7 @@ class SalesOrderRepository extends RepositoryAbstract
 
                     // Check if productvalue is found
                     $productValue = ProductOption::where('id', $productOption->option_value)->first();
-                    if($productValue && !empty($productValue->reference)) {
+                    if ($productValue && ! empty($productValue->reference)) {
                         // Replace name of order row with one that includes the productvalue reference
                         $lastOrderRow = array_last($productOptions);
                         $lastOrderRow->name = $row->sku.'-'.$productValue->reference.' - '.$productOption->label.': '.$productOption->print_value;
@@ -88,7 +87,7 @@ class SalesOrderRepository extends RepositoryAbstract
             $this->client->salesOrderLine()->create($row, $response->id);
         }
 
-        foreach($productOptions as $row) {
+        foreach ($productOptions as $row) {
             $this->client->salesOrderLine()->create($row, $response->id, $row->name);
         }
 
@@ -102,20 +101,16 @@ class SalesOrderRepository extends RepositoryAbstract
 
     public function findByNumber(string $orderNumber)
     {
-        $response = $this->client->get(
+        return $this->client->get(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/salesOrders?$filter=number eq \''.$orderNumber.'\''
         );
-
-        return $response;
     }
 
     /**
-     * @param  \Pionect\Backoffice\Models\Order\Order  $order
-     * @return null|\stdClass
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function update(Order $order)
+    public function update(Order $order): ?\stdClass
     {
         /** @var ProductBusinessCentral $reference */
         $reference = $this->referenceRepository->getReference(new OrderBusinessCentral(['order_id' => $order->id]));
@@ -133,8 +128,8 @@ class SalesOrderRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \Pionect\Backoffice\Models\Order\Order  $order
      * @return null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
@@ -147,5 +142,4 @@ class SalesOrderRepository extends RepositoryAbstract
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/salesOrders('.$reference->business_central_id.')'
         );
     }
-
 }

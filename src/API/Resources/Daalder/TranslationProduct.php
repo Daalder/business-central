@@ -1,11 +1,12 @@
 <?php
 
-namespace BusinessCentral\API\Resources\Daalder;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\API\Resources\Daalder;
 
 use Illuminate\Http\Resources\Json\Resource;
 use Pionect\Backoffice\Models\Product\Type;
 use Pionect\Backoffice\Models\ProductAttribute\Set;
-
 
 /**
  * Class Product
@@ -22,12 +23,11 @@ class TranslationProduct extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray(\Illuminate\Http\Request $request): array
     {
-        if(!isset($this->data) || null === $this->data || !is_array($this->data)) {
+        if (! isset($this->data) || $this->data === null || ! is_array($this->data)) {
             $this->data = $this->resource;
         }
 
@@ -37,14 +37,14 @@ class TranslationProduct extends Resource
         $this->setInventory();
 
         return array_merge($this->data, [
-            'sku'             => array_get($this->resource, 'number'),
+            'sku' => array_get($this->resource, 'number'),
             // because of char cap we cannot pull displayName. Will be fixed in BC April release by MS.
             // uncommented because name sanitation will be performed elsewhere
             'name' => array_get($this->resource, 'displayName'),
-            'ean'             => array_get($this->resource, 'gtin'),
-            'cost_price'      => array_get($this->resource, 'unitCost'),
+            'ean' => array_get($this->resource, 'gtin'),
+            'cost_price' => array_get($this->resource, 'unitCost'),
             'productattributeset_id' => $this->setProductAttributeSet(),
-            'product_type_id' => Type::SIMPLE
+            'product_type_id' => Type::SIMPLE,
         ]);
     }
 
@@ -74,10 +74,7 @@ class TranslationProduct extends Resource
         return null;
     }
 
-    /**
-     *
-     */
-    private function setInventory()
+    private function setInventory(): void
     {
         $inventory = array_get($this->resource, 'inventory');
 

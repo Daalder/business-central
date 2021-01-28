@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\API;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\API;
 
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\LazyOpenStream;
@@ -21,7 +23,6 @@ class Http
     /**
      * Use the send method to call every endpoint except for oauth/tokens
      *
-     * @param  HttpClient  $client
      * @param  string  $endPoint  E.g. "/tickets.json"
      * @param  array  $options
      *                             Available options are listed below:
@@ -31,31 +32,30 @@ class Http
      *                             string $contentType Default is "application/json"
      *
      * @return \stdClass | null The response body, parsed from JSON into an object. Also returns null if something went wrong
+     *
      * @throws ApiResponseException
      * @throws AuthException
      */
     public static function send(
         HttpClient $client,
-        $endPoint,
-        $options = []
-    ) {
+        string $endPoint,
+        array $options = []
+    ): ?\stdClass {
         $options = array_merge(
             [
-                'method'      => 'GET',
+                'method' => 'GET',
                 'contentType' => 'application/json',
-                'postFields'  => null,
-                'queryParams' => null
+                'postFields' => null,
+                'queryParams' => null,
             ],
             $options
         );
 
-
         $headers = array_merge([
-            'Accept'       => 'application/json',
+            'Accept' => 'application/json',
             'Content-Type' => $options['contentType'],
-            'User-Agent'   => $client->getUserAgent()
+            'User-Agent' => $client->getUserAgent(),
         ], $client->getHeaders());
-
 
         $request = new Request(
             $options['method'],
@@ -63,29 +63,27 @@ class Http
             $headers
         );
 
-
         $requestOptions = [];
 
-        if (!empty($options['multipart'])) {
-            $request                     = $request->withoutHeader('Content-Type');
+        if (! empty($options['multipart'])) {
+            $request = $request->withoutHeader('Content-Type');
             $requestOptions['multipart'] = $options['multipart'];
-        } elseif (!empty($options['postFields'])) {
-
+        } elseif (! empty($options['postFields'])) {
             $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
-            //dd($request->getBody()->getContents());
-        } elseif (!empty($options['file'])) {
+        //dd($request->getBody()->getContents());
+        } elseif (! empty($options['file'])) {
             if ($options['file'] instanceof StreamInterface) {
                 $request = $request->withBody($options['file']);
             } elseif (is_file($options['file'])) {
                 $fileStream = new LazyOpenStream($options['file'], 'r');
-                $request    = $request->withBody($fileStream);
+                $request = $request->withBody($fileStream);
             }
         }
 
-        if (!empty($options['queryParams'])) {
+        if (! empty($options['queryParams'])) {
             foreach ($options['queryParams'] as $queryKey => $queryValue) {
-                $uri     = $request->getUri();
-                $uri     = $uri->withQueryValue($uri, $queryKey, $queryValue);
+                $uri = $request->getUri();
+                $uri = $uri->withQueryValue($uri, $queryKey, $queryValue);
                 $request = $request->withUri($uri, true);
             }
         }
@@ -93,11 +91,10 @@ class Http
         try {
             // enable anonymous access
             if ($client->getAuth()) {
-                list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
+                [$request, $requestOptions] = $client->getAuth()->prepareRequest($request, $requestOptions);
             }
             //dd($request);
             $response = $client->guzzle->send($request, $requestOptions);
-
         } catch (RequestException $e) {
             $requestException = RequestException::create($e->getRequest(), $e->getResponse(), $e);
             throw new ApiResponseException($requestException);
@@ -107,7 +104,7 @@ class Http
                 $request->getBody(),
                 isset($response) ? $response->getStatusCode() : null,
                 isset($response) ? $response->getHeaders() : null,
-                isset($e) ? $e : null
+                $e ?? null
             );
 
             $request->getBody()->rewind();

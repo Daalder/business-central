@@ -1,14 +1,16 @@
 <?php
 
-namespace BusinessCentral\Controllers;
+declare(strict_types=1);
 
-use BusinessCentral\API\Repositories\CustomerRepository as CustomerBusinessCentralRepository;
-use BusinessCentral\API\Resources\Daalder\Customer;
-use BusinessCentral\API\Resources\Daalder\TranslationProduct;
-use BusinessCentral\Models\CustomerBusinessCentral;
-use BusinessCentral\Models\ProductBusinessCentral;
-use BusinessCentral\Repositories\ReferenceRepository;
-use BusinessCentral\Validators\ProductBusinessCentralValidator;
+namespace Daalder\BusinessCentral\Controllers;
+
+use Daalder\BusinessCentral\API\Repositories\CustomerRepository as CustomerBusinessCentralRepository;
+use Daalder\BusinessCentral\API\Resources\Daalder\Customer;
+use Daalder\BusinessCentral\API\Resources\Daalder\TranslationProduct;
+use Daalder\BusinessCentral\Models\CustomerBusinessCentral;
+use Daalder\BusinessCentral\Models\ProductBusinessCentral;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
+use Daalder\BusinessCentral\Validators\ProductBusinessCentralValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Pionect\Backoffice\Http\Api\Requests\Customer\RegisterCustomerRequest;
@@ -25,12 +27,11 @@ use Pionect\Backoffice\Models\Product\Repositories\ProductRepository;
  */
 class NotifyController extends BaseController
 {
-
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Pionect\Backoffice\Models\Product\Repositories\ProductRepository  $repository
      * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
+     *
      * @return \Illuminate\Http\JsonResponse|\Pionect\Backoffice\Models\Product\Product
+     *
      * @throws \Exception
      */
     public function createItem(Request $request, ProductRepository $repository, ReferenceRepository $referenceRepository)
@@ -65,16 +66,16 @@ class NotifyController extends BaseController
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Pionect\Backoffice\Models\Product\Repositories\ProductRepository  $repository
      * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
+     *
      * @return \Illuminate\Http\JsonResponse|\Pionect\Backoffice\Models\Product\Product
+     *
      * @throws \Exception
      */
     public function updateItem(Request $request, ProductRepository $repository, ReferenceRepository $referenceRepository)
     {
-        $resource             = new TranslationProduct($request->all());
-        $product              = $resource->resolve();
+        $resource = new TranslationProduct($request->all());
+        $product = $resource->resolve();
 
         /**
          * @var ProductBusinessCentral $reference
@@ -88,7 +89,7 @@ class NotifyController extends BaseController
             // If a product name changes in the BusinessCentral, a new name will be passed
             $productName = trim($product['name']);
             $referenceName = trim($reference->product->name);
-            if(0 === strpos($productName, $referenceName) && strlen($productName) <= strlen($referenceName)) {
+            if (strpos($productName, $referenceName) === 0 && strlen($productName) <= strlen($referenceName)) {
                 unset($product['name']);
             }
 
@@ -100,16 +101,16 @@ class NotifyController extends BaseController
             }
 
             return response()->json($repository->edit($reference->product, $product)->toJson());
-        } else {
-            // No reference then try to create
-            return $this->createItem($request, $repository, $referenceRepository);
         }
+            // No reference then try to create
+        return $this->createItem($request, $repository, $referenceRepository);
+
+    
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Pionect\Backoffice\Models\Product\Repositories\ProductRepository  $repository
      * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
+     *
      * @return \Illuminate\Http\JsonResponse|\Pionect\Backoffice\Models\Product\Product
      */
     public function deleteItem(Request $request, ProductRepository $repository, ReferenceRepository $referenceRepository)
@@ -127,17 +128,17 @@ class NotifyController extends BaseController
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Pionect\Backoffice\Models\Customer\Repositories\CustomerRepository  $repository
      * @param  \BusinessCentral\API\Repositories\CustomerRepository  $customerBusinessCentralRepository
+     *
      * @return \Illuminate\Http\JsonResponse|\Pionect\Backoffice\Models\Customer\Customer
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function createCustomer(Request $request, CustomerRepository $repository, CustomerBusinessCentralRepository $customerBusinessCentralRepository)
     {
         // Get customer by id
-        $payload              = $customerBusinessCentralRepository->get($request->get('id'));
+        $payload = $customerBusinessCentralRepository->get($request->get('id'));
         $storeCustomerRequest = new RegisterCustomerRequest();
 
         $resource = new Customer($payload);
@@ -156,22 +157,20 @@ class NotifyController extends BaseController
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Pionect\Backoffice\Models\Customer\Repositories\CustomerRepository  $repository
      * @param  \BusinessCentral\API\Repositories\CustomerRepository  $customerBusinessCentralRepository
      * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
-     * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function updateCustomer(Request $request, CustomerRepository $repository, CustomerBusinessCentralRepository $customerBusinessCentralRepository, ReferenceRepository $referenceRepository)
+    public function updateCustomer(Request $request, CustomerRepository $repository, CustomerBusinessCentralRepository $customerBusinessCentralRepository, ReferenceRepository $referenceRepository): \Illuminate\Http\JsonResponse
     {
         // Get customer by id
         $payload = $customerBusinessCentralRepository->get($request->get('id'));
 
         $updateCustomerRequest = new UpdateCustomer();
-        $resource              = new Customer($payload);
-        $customer              = $resource->resolve();
+        $resource = new Customer($payload);
+        $customer = $resource->resolve();
 
         /**
          * @var CustomerBusinessCentral $reference
@@ -187,17 +186,14 @@ class NotifyController extends BaseController
             }
 
             return response()->json($repository->edit($reference->customer, $customer)->toJson());
-        } else {
-            // No reference then try to create
-            return $this->createCustomer($request, $repository, $customerBusinessCentralRepository);
         }
+            // No reference then try to create
+        return $this->createCustomer($request, $repository, $customerBusinessCentralRepository);
+
+    
     }
 
-    /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function createSalesOrder(Request $request)
+    public function createSalesOrder(Request $request): \Illuminate\Http\JsonResponse
     {
         return response()->json('', 501);
     }

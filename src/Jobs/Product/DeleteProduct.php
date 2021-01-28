@@ -1,9 +1,11 @@
 <?php
 
-namespace BusinessCentral\Jobs\Product;
+declare(strict_types=1);
 
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\Models\ProductBusinessCentral;
+namespace Daalder\BusinessCentral\Jobs\Product;
+
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\Models\ProductBusinessCentral;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,15 +25,12 @@ class DeleteProduct implements ShouldQueue
 
     protected $product;
 
-    /**
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
-     */
     public function __construct(Product $product)
     {
         $this->product = $product;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $client = App::make(HttpClient::class);
 
@@ -45,7 +44,7 @@ class DeleteProduct implements ShouldQueue
     /**
      * @return array
      */
-    public function tags()
+    public function tags(): array
     {
         return ['business-central', 'delete-product', 'product', 'product-'.$this->product->id];
     }

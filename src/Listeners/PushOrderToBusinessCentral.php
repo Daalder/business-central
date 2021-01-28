@@ -1,25 +1,21 @@
 <?php
 
-namespace BusinessCentral\Listeners;
+declare(strict_types=1);
 
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\Jobs\Order\CreateOrder;
-use BusinessCentral\Repositories\ReferenceRepository;
+namespace Daalder\BusinessCentral\Listeners;
+
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\Jobs\Order\CreateOrder;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Pionect\Backoffice\Events\Order\OrderCreated;
 use Pionect\Backoffice\Events\Payment\PaymentUpdated;
 use Pionect\Backoffice\Models\Payment\Payment;
 
 class PushOrderToBusinessCentral
 {
-    /**
-     * @var string
-     */
-    public $queue = 'high';
+    public string $queue = 'high';
 
-    /**
-     * @var \BusinessCentral\API\HttpClient
-     */
-    private $client;
+    private \BusinessCentral\API\HttpClient $client;
 
     /**
      * Create the event listener.
@@ -32,18 +28,17 @@ class PushOrderToBusinessCentral
     }
 
     /**
-     * @param \Pionect\Backoffice\Events\Order\OrderCreated $event
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function push($event)
+    public function push(\Pionect\Backoffice\Events\Order\OrderCreated $event): void
     {
-        if (optional($event->order->payment)->status == Payment::OK) {
+        if (optional($event->order->payment)->status === Payment::OK) {
             dispatch(new CreateOrder($event->order, app(ReferenceRepository::class)));
         }
     }
 
-    public function subscribe($events)
+    public function subscribe($events): void
     {
         $events->listen(
             OrderCreated::class,
@@ -55,7 +50,6 @@ class PushOrderToBusinessCentral
             'BusinessCentral\Listeners\PushOrderToBusinessCentral@push'
         );
     }
-
 
     public function tags()
     {

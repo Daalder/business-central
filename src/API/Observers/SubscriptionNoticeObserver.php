@@ -1,16 +1,16 @@
 <?php
 
-namespace BusinessCentral\API\Observers;
+declare(strict_types=1);
 
-use BusinessCentral\API\Events\SubscriptionNotice\SubscriptionNoticeCreated;
-use BusinessCentral\Models\Subscription;
+namespace Daalder\BusinessCentral\API\Observers;
+
+use Daalder\BusinessCentral\API\Events\SubscriptionNotice\SubscriptionNoticeCreated;
+use Daalder\BusinessCentral\Models\Subscription;
 
 class SubscriptionNoticeObserver
 {
-    /**
-     * @param Subscription $subscription
-     */
-    public function created(Subscription $subscription) {
+    public function created(Subscription $subscription): void
+    {
         event(SubscriptionNoticeCreated::class);
     }
 }

@@ -1,11 +1,14 @@
 <?php
 
-namespace BusinessCentral\Models;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class SubscriptionNotice
+ *
  * @package BusinessCentral\Models
  *
  * @property   string subscription_id
@@ -16,40 +19,32 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property   bool   isProcessed
  * @property   Subscription $subscription
  */
-class SubscriptionNotice extends ReferenceModel {
-
-    /**
-     * @var string
-     */
-    public $table = 'subscription_notice_business_central';
+class SubscriptionNotice extends ReferenceModel
+{
+    public string $table = 'subscription_notice_business_central';
 
     /**
      * @var array
      */
-    public $fillable = ['subscription_id', "expirationDateTime", 'resource', 'changeType', 'lastModifiedDateTime', 'isProcessed'];
+    public array $fillable = ['subscription_id', 'expirationDateTime', 'resource', 'changeType', 'lastModifiedDateTime', 'isProcessed'];
 
     /**
      * @var array
      */
-    public $dates = [
+    public array $dates = [
         'expirationDateTime',
-        'lastModifiedDateTime'
+        'lastModifiedDateTime',
     ];
 
     /**
-     * @var array 
+     * @var array
      */
-    public $casts = [
-        'isProcessed' => 'boolean'
+    public array $casts = [
+        'isProcessed' => 'boolean',
     ];
 
-    /**
-     * @return BelongsTo
-     */
-    public function subscription()
+    public function subscription(): BelongsTo
     {
         return $this->belongsTo(Subscription::class);
     }
-
-
 }

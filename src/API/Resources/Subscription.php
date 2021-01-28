@@ -1,43 +1,38 @@
 <?php
 
-namespace BusinessCentral\API\Resources;
+declare(strict_types=1);
 
-use BusinessCentral\Repositories\ReferenceRepository;
+namespace Daalder\BusinessCentral\API\Resources;
+
 use Illuminate\Http\Resources\Json\Resource;
 
 /**
  * Class Subscription
+ *
  * @package BusinessCentral\API\Resources
+ *
  * @mixin \BusinessCentral\Models\Subscription
  */
 class Subscription extends Resource
 {
+    private \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
 
-    /**
-     * @var \BusinessCentral\Repositories\ReferenceRepository
-     */
-    private $referenceRepository;
-
-    public function __construct($resource){
+    public function __construct($resource)
+    {
         parent::__construct($resource);
-
     }
 
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray(\Illuminate\Http\Request $request): array
     {
-        $data = [
-            'subscriptionId'      => $this->subscriptionId,
-            'notificationUrl'     => $this->notificationUrl,
-            'resource'            => $this->resourceUrl
+        return [
+            'subscriptionId' => $this->subscriptionId,
+            'notificationUrl' => $this->notificationUrl,
+            'resource' => $this->resourceUrl,
         ];
-
-        return $data;
     }
-
 }

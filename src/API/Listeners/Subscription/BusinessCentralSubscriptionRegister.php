@@ -1,9 +1,11 @@
 <?php
 
-namespace BusinessCentral\API\Listeners\Subscription;
+declare(strict_types=1);
 
-use BusinessCentral\API\Events\Subscription\SubscriptionCreated;
-use BusinessCentral\API\HttpClient;
+namespace Daalder\BusinessCentral\API\Listeners\Subscription;
+
+use Daalder\BusinessCentral\API\Events\Subscription\SubscriptionCreated;
+use Daalder\BusinessCentral\API\HttpClient;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,31 +16,21 @@ class BusinessCentralSubscriptionRegister implements ShouldQueue
 {
     use SerializesModels, Dispatchable, InteractsWithQueue, Queueable;
 
-    /**
-     * @var string
-     */
-    public $queue = 'medium';
+    public string $queue = 'medium';
 
-    /**
-     * @var HttpClient
-     */
-    private $client;
+    private HttpClient $client;
 
     /**
      * SubscriptionRegister constructor.
-     * @param HttpClient $client
      */
     public function __construct(HttpClient $client)
     {
         $this->client = $client;
     }
 
-    /**
-     * @param SubscriptionCreated $event
-     */
-    public function handle(SubscriptionCreated $event)
+    public function handle(SubscriptionCreated $event): void
     {
-        if(true !== (bool) $event->subscription->isRegistered) {
+        if ((bool) $event->subscription->isRegistered !== true) {
             $this->client->subscription()->apiRegister($event->subscription);
         }
     }

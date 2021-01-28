@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\API\Repositories;
+declare(strict_types=1);
 
-use BusinessCentral\Models\ProductBusinessCentral;
+namespace Daalder\BusinessCentral\API\Repositories;
+
+use Daalder\BusinessCentral\Models\ProductBusinessCentral;
 use Illuminate\Support\Facades\Storage;
 use Pionect\Backoffice\Models\Product\Product;
 
@@ -16,19 +18,19 @@ class PictureRepository extends RepositoryAbstract
     public $objectName = 'picture';
 
     /**
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
-     * @return null|\stdClass|bool
+     * @return \stdClass|bool|null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function create(Product $product)
     {
         $reference = $this->referenceRepository->getReference(new ProductBusinessCentral(['product_id' => $product->id]));
-        $itemId    = $reference->business_central_id;
+        $itemId = $reference->business_central_id;
 
         $featuredImage = $product->featuredImage()->first();
 
-        if (!$featuredImage) {
+        if (! $featuredImage) {
             return false;
         }
 
@@ -40,7 +42,7 @@ class PictureRepository extends RepositoryAbstract
             null,
             [
                 'contentType' => 'application/octet-stream',
-                'file'        => config('filesystems.disks.local.root').'/'.$filePath
+                'file' => config('filesystems.disks.local.root').'/'.$filePath,
             ]
         );
 
@@ -50,19 +52,19 @@ class PictureRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
-     * @return null|\stdClass|bool
+     * @return \stdClass|bool|null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function update(Product $product)
     {
         $reference = $this->referenceRepository->getReference(new ProductBusinessCentral(['product_id' => $product->id]));
-        $itemId    = $reference->business_central_id;
+        $itemId = $reference->business_central_id;
 
         $featuredImage = $product->featuredImage()->first();
 
-        if (!$featuredImage) {
+        if (! $featuredImage) {
             return false;
         }
 
@@ -74,7 +76,7 @@ class PictureRepository extends RepositoryAbstract
             null,
             [
                 'contentType' => 'application/octet-stream',
-                'file'        => config('filesystems.disks.local.root').'/'.$filePath
+                'file' => config('filesystems.disks.local.root').'/'.$filePath,
             ]
         );
 
@@ -85,7 +87,9 @@ class PictureRepository extends RepositoryAbstract
 
     /**
      * @param $ref
+     *
      * @return null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */

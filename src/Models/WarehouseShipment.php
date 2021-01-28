@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\Models;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Models;
 
 use Pionect\Backoffice\Models\BaseModel;
 
@@ -8,6 +10,7 @@ use Pionect\Backoffice\Models\BaseModel;
  * Class ProductBusinessCentral
  *
  * @package BusinessCentral\Models
+ *
  * @property string id
  * @property string no
  * @property string salesOrderId
@@ -78,7 +81,6 @@ class WarehouseShipment extends BaseModel
         'LastEmailSentTime',
         'SentAsEmail',
         'SentAsEmailComplete',
-        'ExternalDocumentNo'
-        ];
-
+        'ExternalDocumentNo',
+    ];
 }

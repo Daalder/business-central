@@ -1,20 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
-use Pionect\Backoffice\Models\Product\Product;
-use BusinessCentral\Jobs\Product\PullProducts;
 use Illuminate\Database\Schema\Blueprint;
 
 class CreateShippingMethodsBusinessCentralTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('shipping_methods_business_central', function (Blueprint $table) {
+        Schema::create('shipping_methods_business_central', static function (Blueprint $table): void {
             $table->integer('shipping_method_id')->unsigned();
             $table->string('business_central_id');
             $table->timestamps();
@@ -30,10 +28,8 @@ class CreateShippingMethodsBusinessCentralTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('shipping_methods_business_central');
     }

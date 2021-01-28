@@ -1,16 +1,17 @@
 <?php
 
-namespace BusinessCentral\Repositories;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Repositories;
 
 use App\Models\Orders\Order;
-use BusinessCentral\Contracts\BusinessCentralApiResource;
+use Daalder\BusinessCentral\Contracts\BusinessCentralApiResource;
 use Pionect\Backoffice\Models\Order\Repositories\OrderRepository as BackOfficeOrderRepository;
 
 class OrderRepository extends BackOfficeOrderRepository implements BusinessCentralApiResource
 {
     /**
      * OrderRepository constructor.
-     * @param Order $order
      */
     public function __construct(Order $order)
     {
@@ -21,7 +22,6 @@ class OrderRepository extends BackOfficeOrderRepository implements BusinessCentr
      * Update resource from Business Central.
      *
      * @param array $items
-     * @return bool
      */
     public function updateFromBusinessCentralApi(array $items = []): bool
     {
@@ -32,7 +32,6 @@ class OrderRepository extends BackOfficeOrderRepository implements BusinessCentr
      * Delete resource after Business Central.
      *
      * @param array $items
-     * @return bool
      */
     public function deleteAfterBusinessCentralApi(array $items = []): bool
     {
@@ -43,7 +42,6 @@ class OrderRepository extends BackOfficeOrderRepository implements BusinessCentr
      * Create resource from Business Central.
      *
      * @param array $items
-     * @return bool
      */
     public function createFromBusinessCentralApi(array $items = []): bool
     {

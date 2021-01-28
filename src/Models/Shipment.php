@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\Models;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Models;
 
 use App\Models\Shipping\ShippingProvider;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,26 +12,28 @@ use Pionect\Backoffice\Models\Order\Order;
 
 /**
  * Class Shipment
+ *
  * @package App\Models\Orders
+ *
  * @property string reference
  * @property string business_central_id
  * @property string track_and_trace
  * @property string phone
  * @property string email
- * @property integer number_of_colli
+ * @property int number_of_colli
  * @property string trip_number
  * @property string work_description
  * @property string customer_name
  * @property string shipment_method_code
  * @property string load_status
  * @property string salesperson_code
- * @property integer week_number
- * @property boolean shipped
- * @property boolean delivered
+ * @property int week_number
+ * @property bool shipped
+ * @property bool delivered
  * @property string estimated_delivery_date
- * @property integer order_id
- * @property integer shipping_provider_id
- * @property integer shipping_address_id
+ * @property int order_id
+ * @property int shipping_provider_id
+ * @property int shipping_address_id
  * @property Order order
  * @property Address shippingAddress
  * @property ShippingProvider provider
@@ -45,7 +49,6 @@ use Pionect\Backoffice\Models\Order\Order;
  */
 class Shipment extends BaseModel
 {
-
     protected $fillable = [
         'business_central_id',
         'sort_order',
@@ -74,9 +77,8 @@ class Shipment extends BaseModel
         'last_email_sent_time',
         'sent_as_email',
         'sent_as_email_complete',
-        'external_document_no'
+        'external_document_no',
     ];
-
 
     protected $dates = [
         'planned_delivery_date',
@@ -88,26 +90,17 @@ class Shipment extends BaseModel
         'last_email_sent_time',
     ];
 
-    /**
-     * @return BelongsTo
-     */
-    public function shippingAddress() : BelongsTo
+    public function shippingAddress(): BelongsTo
     {
-        return $this->belongsTo(Address::class,'shipping_address_id');
+        return $this->belongsTo(Address::class, 'shipping_address_id');
     }
 
-    /**
-     * @return BelongsTo
-     */
-    public function provider() : BelongsTo
+    public function provider(): BelongsTo
     {
         return $this->belongsTo(ShippingProvider::class, 'shipping_provider_id');
     }
 
-    /**
-     * @return BelongsTo
-     */
-    public function order() : BelongsTo
+    public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class, 'order_id');
     }

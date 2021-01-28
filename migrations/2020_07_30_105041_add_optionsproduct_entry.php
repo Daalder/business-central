@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+use Daalder\BusinessCentral\Jobs\Product\PullProducts;
 use Illuminate\Database\Migrations\Migration;
 use Pionect\Backoffice\Models\Product\Product;
-use BusinessCentral\Jobs\Product\PullProducts;
 
 class AddOptionsproductEntry extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         $optionProduct = Product::query()->where('sku', '001')->first()->replicate();
         $optionProduct->sku = '0001';
@@ -25,13 +25,11 @@ class AddOptionsproductEntry extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         $optionProduct = Product::query()->where('sku', '0001')->first();
-        if($optionProduct) {
+        if ($optionProduct) {
             $optionProduct->forceDelete();
         }
     }

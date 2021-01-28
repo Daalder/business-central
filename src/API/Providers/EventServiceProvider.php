@@ -1,11 +1,13 @@
 <?php
 
-namespace BusinessCentral\API\Providers;
+declare(strict_types=1);
 
-use BusinessCentral\API\Events\Subscription\SubscriptionCreated;
-use BusinessCentral\API\Events\SubscriptionNotice\SubscriptionNoticeCreated;
-use BusinessCentral\API\Listeners\Subscription\BusinessCentralSubscriptionRegister;
-use BusinessCentral\API\Listeners\SubscriptionNotice\SubscriptionNoticeProcess;
+namespace Daalder\BusinessCentral\API\Providers;
+
+use Daalder\BusinessCentral\API\Events\Subscription\SubscriptionCreated;
+use Daalder\BusinessCentral\API\Events\SubscriptionNotice\SubscriptionNoticeCreated;
+use Daalder\BusinessCentral\API\Listeners\Subscription\BusinessCentralSubscriptionRegister;
+use Daalder\BusinessCentral\API\Listeners\SubscriptionNotice\SubscriptionNoticeProcess;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -15,13 +17,13 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
+    protected array $listen = [
         SubscriptionCreated::class => [
-            BusinessCentralSubscriptionRegister::class
+            BusinessCentralSubscriptionRegister::class,
         ],
 
         SubscriptionNoticeCreated::class => [
-            SubscriptionNoticeProcess::class
-        ]
+            SubscriptionNoticeProcess::class,
+        ],
     ];
 }

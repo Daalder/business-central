@@ -1,18 +1,18 @@
 <?php
 
-namespace BusinessCentral\Jobs\Shipment;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Jobs\Shipment;
 
 use App\Models\Shipping\ShippingProvider;
-use BusinessCentral\Models\Shipment;
 use App\Repositories\ShipmentProviderRepository;
-use BusinessCentral\API\Repositories\WarehouseShipmentRepository;
-use BusinessCentral\Models\OrderBusinessCentral;
-use BusinessCentral\Models\WarehouseShipment;
-use BusinessCentral\Repositories\ReferenceRepository;
 use Carbon\Carbon;
+use Daalder\BusinessCentral\API\Repositories\WarehouseShipmentRepository;
+use Daalder\BusinessCentral\Models\OrderBusinessCentral;
+use Daalder\BusinessCentral\Models\Shipment;
+use Daalder\BusinessCentral\Models\WarehouseShipment;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -21,29 +21,15 @@ use Pionect\Backoffice\Models\Address\Repositories\AddressRepository;
 class GetWarehouseShipments
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    /**
-     * @var WarehouseShipmentRepository
-     */
-    private $warehouseShipmentRepository;
-    /**
-     * @var AddressRepository
-     */
-    private $addressRepository;
-    /**
-     * @var ShipmentProviderRepository
-     */
-    private $shipmentProviderRepository;
+    private WarehouseShipmentRepository $warehouseShipmentRepository;
+    private AddressRepository $addressRepository;
+    private ShipmentProviderRepository $shipmentProviderRepository;
 
     /**
      * Create a new job instance.
-     *
-     * @param WarehouseShipmentRepository $warehouseShipmentRepository
-     * @param AddressRepository $addressRepository
-     * @param ShipmentProviderRepository $shipmentProviderRepository
      */
     public function __construct(WarehouseShipmentRepository $warehouseShipmentRepository, AddressRepository $addressRepository, ShipmentProviderRepository $shipmentProviderRepository)
     {
-        //
         $this->warehouseShipmentRepository = $warehouseShipmentRepository;
         $this->addressRepository = $addressRepository;
         $this->shipmentProviderRepository = $shipmentProviderRepository;
@@ -51,10 +37,8 @@ class GetWarehouseShipments
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $referenceRepository = app(ReferenceRepository::class);
 
@@ -63,9 +47,8 @@ class GetWarehouseShipments
         $this->removeShipmentsThatAreNotInBC($shipments);
 
         /** @var WarehouseShipment $bcShipment */
-        foreach ($shipments as $bcShipment){
-
-            $reference = OrderBusinessCentral::where('business_central_id', strtolower(str_replace(['{','}'],'', $bcShipment->salesOrderId)))->first();
+        foreach ($shipments as $bcShipment) {
+            $reference = OrderBusinessCentral::where('business_central_id', strtolower(str_replace(['{','}'], '', $bcShipment->salesOrderId)))->first();
 
             /** @var Shipment $shipment */
             $shipment = Shipment::updateOrCreate(['reference' => $bcShipment->no], [
@@ -81,33 +64,33 @@ class GetWarehouseShipments
                 'shipment_method_code' => $bcShipment->shipmentMethodCode,
                 'salesperson_code' => $bcShipment->salespersonCode,
                 'planned_delivery_date' => $bcShipment->PlannedDeliveryDate,
-                'sent_as_email_cust' => $bcShipment->SentasEmailCust ,
+                'sent_as_email_cust' => $bcShipment->SentasEmailCust,
                 'shipment_date' => $bcShipment->ShipmentDate,
-                'pakbon_printed_at' => Carbon::createFromFormat('Y-m-d\TH:i:s+',$bcShipment->PakbonPrintedAt),
-                'picking_list_printed_at' => Carbon::createFromFormat('Y-m-d\TH:i:s+',$bcShipment->PickingListPrintedAt),
-                'last_email_sent_time_cust' => Carbon::createFromFormat('Y-m-d\TH:i:s+',$bcShipment->LastEmailSentTimeCust),
-                'last_email_sent_time_complete' => Carbon::createFromFormat('Y-m-d\TH:i:s+',$bcShipment->LastEmailSentTimeComplete),
-                'last_email_sent_time'=> Carbon::createFromFormat('Y-m-d\TH:i:s+',$bcShipment->LastEmailSentTime),
+                'pakbon_printed_at' => Carbon::createFromFormat('Y-m-d\TH:i:s+', $bcShipment->PakbonPrintedAt),
+                'picking_list_printed_at' => Carbon::createFromFormat('Y-m-d\TH:i:s+', $bcShipment->PickingListPrintedAt),
+                'last_email_sent_time_cust' => Carbon::createFromFormat('Y-m-d\TH:i:s+', $bcShipment->LastEmailSentTimeCust),
+                'last_email_sent_time_complete' => Carbon::createFromFormat('Y-m-d\TH:i:s+', $bcShipment->LastEmailSentTimeComplete),
+                'last_email_sent_time' => Carbon::createFromFormat('Y-m-d\TH:i:s+', $bcShipment->LastEmailSentTime),
                 'sent_as_email' => $bcShipment->SentAsEmail,
                 'sent_as_email_complete' => $bcShipment->SentAsEmailComplete,
                 'external_document_no' => $bcShipment->ExternalDocumentNo,
-                'sort_order' => $bcShipment->sortOrder
+                'sort_order' => $bcShipment->sortOrder,
             ]);
 
-            if($reference){
+            if ($reference) {
                 $shipment->order_id = optional($reference->order)->id;
             }
 
             // TODO: create should support hash in core and not create duplicate address.
             $address = $this->addressRepository->create([
-                'address_line_1'=>$bcShipment->shippingAddress,
-                'postalcode'=>$bcShipment->shippingAddressPostalCode,
-                'city'=>$bcShipment->shippingAddressPostalCity,
-                'country_code'=>$bcShipment->shippingAddressPostalCountry
+                'address_line_1' => $bcShipment->shippingAddress,
+                'postalcode' => $bcShipment->shippingAddressPostalCode,
+                'city' => $bcShipment->shippingAddressPostalCity,
+                'country_code' => $bcShipment->shippingAddressPostalCountry,
             ]);
 
-            $provider = ShippingProvider::query()->where('code' , $bcShipment->shippingAgentCode)->first();
-            if($provider) {
+            $provider = ShippingProvider::query()->where('code', $bcShipment->shippingAgentCode)->first();
+            if ($provider) {
                 $shipment->provider()->associate($provider);
             }
             $shipment->shippingAddress()->associate($address);
@@ -117,16 +100,13 @@ class GetWarehouseShipments
         }
     }
 
-    /**
-     * @param \Illuminate\Support\Collection $bcShipments
-     */
-    private function removeShipmentsThatAreNotInBC($bcShipments)
+    private function removeShipmentsThatAreNotInBC(\Illuminate\Support\Collection $bcShipments): void
     {
         $localShipments = Shipment::all()->pluck('reference')->toArray();
         $remoteShipments = $bcShipments->pluck('no')->toArray();
 
         $diff = array_intersect($localShipments, $remoteShipments);
 
-        Shipment::query()->whereNotIn('reference',$diff)->delete();
+        Shipment::query()->whereNotIn('reference', $diff)->delete();
     }
 }

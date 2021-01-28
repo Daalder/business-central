@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,12 +10,10 @@ class CreateCustomerBusinessCentralTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('customer_business_central', function (Blueprint $table) {
+        Schema::create('customer_business_central', static function (Blueprint $table): void {
             $table->integer('customer_id')->unsigned();
             $table->string('business_central_id');
             $table->timestamps();
@@ -29,10 +29,8 @@ class CreateCustomerBusinessCentralTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('customer_business_central');
     }

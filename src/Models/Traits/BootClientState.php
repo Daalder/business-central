@@ -1,12 +1,15 @@
 <?php
 
-namespace BusinessCentral\Models\Traits;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Models\Traits;
 
 trait BootClientState
 {
-    public static function bootClientState() {
-        static::creating(function ($model) {
-            if(!isset($model->clientState) || null === $model->clientState) {
+    public static function bootClientState(): void
+    {
+        static::creating(static function ($model): void {
+            if (! isset($model->clientState) || $model->clientState === null) {
                 $model->clientState = self::generate();
             }
         });
@@ -14,11 +17,8 @@ trait BootClientState
 
     /**
      * Generate random clientState for Subsciption.
-     *
-     * @param int $length
-     * @return string
      */
-    public static function generate($length = 2048)
+    public static function generate(int $length = 2048): string
     {
         return Str::random(2048);
     }

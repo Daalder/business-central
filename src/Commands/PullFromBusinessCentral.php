@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\Commands;
+declare(strict_types=1);
 
-use BusinessCentral\API\HttpClient;
+namespace Daalder\BusinessCentral\Commands;
+
+use Daalder\BusinessCentral\API\HttpClient;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Symfony\Component\Console\Input\InputArgument;
@@ -11,25 +13,20 @@ class PullFromBusinessCentral extends Command
 {
     /**
      * The name and signature of the console command.
-     *
-     * @var string
      */
-    protected $signature = 'bc:pull {type} {top=20000} {skip=0}';
-
+    protected string $signature = 'bc:pull {type} {top=20000} {skip=0}';
 
     protected $mapping = [
-        '\Pionect\Backoffice\Models\Product\Product'      => 'item',
-        '\Pionect\Backoffice\Models\Order\Order'          => 'salesOrder',
-        '\Pionect\Backoffice\Models\Customer\Customer'    => 'customer',
-        '\Pionect\Backoffice\Models\ProductAttribute\Set' => 'itemCategory'
+        '\Pionect\Backoffice\Models\Product\Product' => 'item',
+        '\Pionect\Backoffice\Models\Order\Order' => 'salesOrder',
+        '\Pionect\Backoffice\Models\Customer\Customer' => 'customer',
+        '\Pionect\Backoffice\Models\ProductAttribute\Set' => 'itemCategory',
     ];
 
     /**
      * The console command description.
-     *
-     * @var string
      */
-    protected $description = 'Pull from BusinessCentral';
+    protected string $description = 'Pull from BusinessCentral';
 
     /**
      * Create a new command instance.
@@ -56,19 +53,15 @@ class PullFromBusinessCentral extends Command
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['type', InputArgument::REQUIRED, 'The type: Order|Product.'],
-            ['id', InputArgument::REQUIRED, 'The id (of ids) of the type.']
+            ['id', InputArgument::REQUIRED, 'The id (of ids) of the type.'],
         ];
     }
 
-    /**
-     * @param $action
-     * @param $type
-     */
-    private function pullAllItems($type)
+    private function pullAllItems($type): void
     {
         try {
             $this->sendPayload($type, $this->argument('top'), $this->argument('skip'));
@@ -78,18 +71,12 @@ class PullFromBusinessCentral extends Command
         }
     }
 
-    /**
-     * @param $type
-     * @param $top
-     * @param $skip
-     */
-    private function sendPayload($type, $top, $skip)
+    private function sendPayload($type, $top, $skip): void
     {
         try {
             /** @var HttpClient $client */
             $client = App::make(HttpClient::class);
             $client->{$this->mapping[$type]}()->pullReferences($this, $top, $skip);
-
         } catch (\Exception $exception) {
             $this->error('Exception: '.$exception->getMessage().' in '.$exception->getFile().':'.$exception->getLine());
             $this->error($exception->getTraceAsString());

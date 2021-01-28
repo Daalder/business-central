@@ -1,16 +1,16 @@
 <?php
 
-namespace BusinessCentral\Controllers;
+declare(strict_types=1);
 
-use BusinessCentral\Services\Order\SynchronizeOrder;
+namespace Daalder\BusinessCentral\Controllers;
+
+use Daalder\BusinessCentral\Services\Order\SynchronizeOrder;
 use Pionect\Backoffice\Http\Controllers\Order\OrderController as BaseOrderController;
 use Pionect\Backoffice\Models\Order\Order;
 
 class OrderController extends BaseOrderController
 {
     /**
-     * @param  Order  $order
-     * @param  SynchronizeOrder  $synchronizeOrder
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function businessCentral(Order $order, SynchronizeOrder $synchronizeOrder)
@@ -19,5 +19,4 @@ class OrderController extends BaseOrderController
 
         return redirect('order/'.$order->id);
     }
-
 }

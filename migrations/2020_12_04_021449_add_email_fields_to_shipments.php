@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,12 +10,10 @@ class AddEmailFieldsToShipments extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('shipments', function (Blueprint $table) {
+        Schema::table('shipments', static function (Blueprint $table): void {
             $table->date('planned_delivery_date')->nullable()->after('order_id');
             $table->boolean('sent_as_email_cust')->nullable()->after('order_id');
             $table->date('shipment_date')->nullable()->after('order_id');
@@ -31,13 +31,11 @@ class AddEmailFieldsToShipments extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('shipments', function (Blueprint $table) {
-            //
+        Schema::table('shipments', static function (Blueprint $table): void {
+            
         });
     }
 }

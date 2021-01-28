@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\Commands;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -9,23 +11,20 @@ use Pionect\Backoffice\Models\Payment\Payment;
 
 /**
  * Class PushNewOrdersToBusinessCentral
+ *
  * @package App\Console\Commands
  */
 class PushNewOrdersToBusinessCentral extends Command
 {
     /**
      * The name and signature of the console command.
-     *
-     * @var string
      */
-    protected $signature = 'bc:push-new-orders';
+    protected string $signature = 'bc:push-new-orders';
 
     /**
      * The console command description.
-     *
-     * @var string
      */
-    protected $description = 'Push all orders of the past 24 hours that don\'t have existing relation with Business Central';
+    protected string $description = 'Push all orders of the past 24 hours that don\'t have existing relation with Business Central';
 
     /**
      * Create a new command instance.

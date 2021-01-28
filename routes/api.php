@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Item -> product
  */
@@ -19,7 +21,6 @@ Route::patch('customer', 'NotifyController@updateCustomer');
 //Route::post('sales-order', 'NotifyController@createSalesOrder');
 //Route::patch('sales-order', 'NotifyController@updateSalesOrder');
 
-Route::prefix('webhook')->group(function () {
+Route::prefix('webhook')->group(static function (): void {
     Route::post('subscription/{subscription}', 'SubscriptionController@index')->name('webhook.subscription.businesscentral');
 });
-

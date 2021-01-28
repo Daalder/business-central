@@ -1,9 +1,11 @@
 <?php
 
-namespace BusinessCentral\Jobs\ProductAttribute;
+declare(strict_types=1);
 
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\Models\SetBusinessCentral;
+namespace Daalder\BusinessCentral\Jobs\ProductAttribute;
+
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\Models\SetBusinessCentral;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,20 +23,16 @@ class CreateSet implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    /** @var HttpClient $client */
-    protected $client;
+    protected HttpClient $client;
     protected $set;
 
     /**
      * Create a new job instance.
-     *
-     * @param  \Pionect\Backoffice\Models\ProductAttribute\Set  $set
      */
     public function __construct(Set $set)
     {
         $this->set = $set;
     }
-
 
     public function handle()
     {

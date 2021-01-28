@@ -1,10 +1,11 @@
 <?php
 
-namespace BusinessCentral\Jobs\Order;
+declare(strict_types=1);
 
+namespace Daalder\BusinessCentral\Jobs\Order;
 
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\Repositories\ReferenceRepository;
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -22,20 +23,14 @@ class CreateSalesQuote implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    /**
-     * @var \Pionect\Backoffice\Models\Order\Order
-     */
-    protected $order;
+    protected \Pionect\Backoffice\Models\Order\Order $order;
 
-    /**
-     * @var \BusinessCentral\Repositories\ReferenceRepository
-     */
-    protected $referenceRepository;
+    protected \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
 
     public function __construct(Order $order, ReferenceRepository $referenceRepository)
     {
-        $this->queue               = 'high';
-        $this->order               = $order;
+        $this->queue = 'high';
+        $this->order = $order;
         $this->referenceRepository = $referenceRepository;
     }
 
@@ -43,7 +38,7 @@ class CreateSalesQuote implements ShouldQueue
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function handle()
+    public function handle(): void
     {
         /**
          * @var HttpClient $client
@@ -55,7 +50,7 @@ class CreateSalesQuote implements ShouldQueue
     /**
      * @return array
      */
-    public function tags()
+    public function tags(): array
     {
         return ['business-central', 'create-sales-quote', 'order', 'order-'.$this->order->id];
     }

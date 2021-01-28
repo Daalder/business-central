@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\API\Utilities;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\API\Utilities;
 
 use Psr\Http\Message\RequestInterface;
 use Zendesk\API\Exceptions\AuthException;
@@ -20,25 +22,12 @@ class Auth
      */
     const BASIC = 'basic';
 
-    /**
-     * @var string
-     */
-    protected $authStrategy;
+    protected string $authStrategy;
 
     /**
      * @var array
      */
-    protected $authOptions;
-
-    /**
-     * Returns an array containing the valid auth strategies
-     *
-     * @return array
-     */
-    protected static function getValidAuthStrategies()
-    {
-        return [self::BASIC, self::OAUTH];
-    }
+    protected array $authOptions;
 
     /**
      * Auth constructor.
@@ -47,11 +36,10 @@ class Auth
      * @param  array  $options
      *
      * @throws AuthException
-     *
      */
     public function __construct($strategy, array $options)
     {
-        if (!in_array($strategy, self::getValidAuthStrategies())) {
+        if (! in_array($strategy, self::getValidAuthStrategies())) {
             throw new AuthException('Invalid auth strategy set, please use `'
                 .implode('` or `', self::getValidAuthStrategies())
                 .'`');
@@ -59,12 +47,12 @@ class Auth
 
         $this->authStrategy = $strategy;
 
-        if ($strategy == self::BASIC) {
-            if (!array_key_exists('username', $options) || !array_key_exists('token', $options)) {
+        if ($strategy === self::BASIC) {
+            if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `username` and `token` for basic auth.');
             }
-        } elseif ($strategy == self::OAUTH) {
-            if (!array_key_exists('token', $options)) {
+        } elseif ($strategy === self::OAUTH) {
+            if (! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `token` for oauth.');
             }
         }
@@ -73,29 +61,39 @@ class Auth
     }
 
     /**
-     * @param  RequestInterface  $request
      * @param  array  $requestOptions
      *
      * @return array
+     *
      * @throws AuthException
      */
-    public function prepareRequest(RequestInterface $request, array $requestOptions = [])
+    public function prepareRequest(RequestInterface $request, array $requestOptions = []): array
     {
         if ($this->authStrategy === self::BASIC) {
             $requestOptions = array_merge($requestOptions, [
                 'auth' => [
                     $this->authOptions['username'].'/token',
                     $this->authOptions['token'],
-                    'basic'
-                ]
+                    'basic',
+                ],
             ]);
         } elseif ($this->authStrategy === self::OAUTH) {
             $oAuthToken = $this->authOptions['token'];
-            $request    = $request->withAddedHeader('Authorization', ' Bearer '.$oAuthToken);
+            $request = $request->withAddedHeader('Authorization', ' Bearer '.$oAuthToken);
         } else {
             throw new AuthException('Please set authentication to send requests.');
         }
 
         return [$request, $requestOptions];
+    }
+
+    /**
+     * Returns an array containing the valid auth strategies
+     *
+     * @return array
+     */
+    protected static function getValidAuthStrategies(): array
+    {
+        return [self::BASIC, self::OAUTH];
     }
 }

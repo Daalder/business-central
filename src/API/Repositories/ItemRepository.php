@@ -1,40 +1,39 @@
 <?php
 
-namespace BusinessCentral\API\Repositories;
+declare(strict_types=1);
 
-use BusinessCentral\API\Resources\Item;
-use BusinessCentral\Commands\PullFromBusinessCentral;
-use BusinessCentral\Models\DefaultDimension;
-use BusinessCentral\Models\GroupBusinessCentral;
-use BusinessCentral\Models\ProductBusinessCentral;
+namespace Daalder\BusinessCentral\API\Repositories;
+
+use Daalder\BusinessCentral\API\Resources\Item;
+use Daalder\BusinessCentral\Commands\PullFromBusinessCentral;
+use Daalder\BusinessCentral\Models\DefaultDimension;
+use Daalder\BusinessCentral\Models\GroupBusinessCentral;
+use Daalder\BusinessCentral\Models\ProductBusinessCentral;
 use Pionect\Backoffice\Models\Product\Product;
 
 /**
  * Class ItemRepository. Responsible for translating Daalder product into Business Central item (product).
+ *
  * @package BusinessCentral\API\Repositories
  */
 class ItemRepository extends RepositoryAbstract
 {
-    /**
-     * @var string
-     */
-    public $objectName = 'item';
+    public string $objectName = 'item';
 
     /**
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
-     * @return null|\stdClass
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function create(Product $product)
+    public function create(Product $product): ?\stdClass
     {
-        if(!$product->sku)
+        if (! $product->sku) {
             return null;
+        }
 
         $item = new Item($product);
 
         if (strlen($product->sku) > 20) {
-            throw new \Exception("Product sku too long (more then 20 chars)");
+            throw new \Exception('Product sku too long (more then 20 chars)');
         }
         // If we have a reference then try to update.
         if ($this->referenceRepository->getReference(new ProductBusinessCentral(['product_id' => $product->id]))) {
@@ -54,25 +53,24 @@ class ItemRepository extends RepositoryAbstract
             return null;
         }
 
-        if ($response->id != '00000000-0000-0000-0000-000000000000') {
+        if ($response->id !== '00000000-0000-0000-0000-000000000000') {
             $this->storeReference(new ProductBusinessCentral([
-                'product_id'          => $product->id,
-                'business_central_id' => $response->id
+                'product_id' => $product->id,
+                'business_central_id' => $response->id,
             ]));
 
-            if($product->group_id) {
+            if ($product->group_id) {
                 // Let's store group as defaultDimension
                 $dimensionRepository = new DimensionRepository($this->client, $this->referenceRepository);
                 $dimensionRepository->create(new DefaultDimension([
                     'parentId' => $response->id,
                     'dimensionId' => DimensionRepository::GROUP_DIMENSION,
                     'dimensionValueId' => $this->referenceRepository->getReference(new GroupBusinessCentral(['group_id' => $product->group_id]))->business_central_id,
-                    'postingValidation' => $product->group->code
+                    'postingValidation' => $product->group->code,
                 ]));
             }
             //$pictureRepository = new PictureRepository($this->client, $this->referenceRepository);
             //$pictureRepository->create($product);
-            
         } else {
             logger('BC: Failed to create product: '.$product->id);
         }
@@ -81,12 +79,10 @@ class ItemRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
-     * @return null|\stdClass
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function update(Product $product)
+    public function update(Product $product): ?\stdClass
     {
         /** @var ProductBusinessCentral $reference */
         $reference = $this->referenceRepository->getReference(new ProductBusinessCentral(['product_id' => $product->id]));
@@ -94,25 +90,21 @@ class ItemRepository extends RepositoryAbstract
         if ($reference) {
             $item = new Item($product);
             logger('BC product update: '.json_encode($item));
-            $response = $this->client->patch(
+            return $this->client->patch(
                 config('business-central.endpoint').'companies('.config('business-central.companyId').')/items('.$reference->business_central_id.')', $item->resolve()
             );
-
-            //$pictureRepository = new PictureRepository($this->client, $this->referenceRepository);
-            //$pictureRepository->create($product);
-
-            return $response;
-        } else {
-            // No reference then try to create.
-            $this->create($product);
         }
+            // No reference then try to create.
+        $this->create($product);
 
         return null;
     }
 
     /**
      * @param $ref
+     *
      * @return null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
@@ -124,31 +116,24 @@ class ItemRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  int  $skipToken
-     * @return \stdClass|null
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function get($skipToken = null)
+    public function get(?int $skipToken = null): ?\stdClass
     {
-        $response = $this->client->get(
+        return $this->client->get(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/items' . ($skipToken ? '?$skiptoken='.$skipToken : '')
         );
-
-        return $response;
     }
 
     /**
      * @param  \BusinessCentral\Commands\PullFromBusinessCentral  $command
-     * @param  int  $top
-     * @param  int  $skip
-     * @return \stdClass|null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function pullReferences(PullFromBusinessCentral $command, $top = 20000, $skip = 0)
+    public function pullReferences(PullFromBusinessCentral $command, int $top = 20000, int $skip = 0): ?\stdClass
     {
-
         $response = $this->client->get(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/items?$top='.$top.'&$skip='.$skip
         );
@@ -156,10 +141,10 @@ class ItemRepository extends RepositoryAbstract
         foreach ($response->value as $item) {
             $product = Product::where('sku', $item->number)->withTrashed()->orderBy('id', 'desc')->first();
             if ($product) {
-                if (!$this->referenceRepository->getReference(new ProductBusinessCentral(['product_id' => $product->id]))) {
+                if (! $this->referenceRepository->getReference(new ProductBusinessCentral(['product_id' => $product->id]))) {
                     $this->storeReference(new ProductBusinessCentral([
-                        'product_id'          => $product->id,
-                        'business_central_id' => $item->id
+                        'product_id' => $product->id,
+                        'business_central_id' => $item->id,
                     ]));
                 }
             } else {
@@ -171,21 +156,20 @@ class ItemRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function pullReferenceWithSku(Product $product)
+    public function pullReferenceWithSku(Product $product): void
     {
         $response = $this->client->get(config('business-central.endpoint').'companies('.config('business-central.companyId').')/items?$filter=number eq \''.$product->sku.'\'');
 
         foreach ($response->value as $item) {
             $product = Product::where('sku', $item->number)->withTrashed()->orderBy('id', 'desc')->first();
             if ($product) {
-                if (!$this->referenceRepository->getReference(new ProductBusinessCentral(['product_id' => $product->id]))) {
+                if (! $this->referenceRepository->getReference(new ProductBusinessCentral(['product_id' => $product->id]))) {
                     $this->storeReference(new ProductBusinessCentral([
-                        'product_id'          => $product->id,
-                        'business_central_id' => $item->id
+                        'product_id' => $product->id,
+                        'business_central_id' => $item->id,
                     ]));
                 }
             } else {

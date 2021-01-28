@@ -1,37 +1,31 @@
 <?php
 
-namespace BusinessCentral\API\Services;
+declare(strict_types=1);
 
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\Models\SubscriptionNotice;
-use BusinessCentral\Translators\Contracts\TranslatorContract;
-use BusinessCentral\Translators\TranslatorFactory;
+namespace Daalder\BusinessCentral\API\Services;
+
 use Carbon\Carbon;
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\Models\SubscriptionNotice;
+use Daalder\BusinessCentral\Translators\TranslatorFactory;
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Zendesk\API\Exceptions\ApiResponseException;
-use Zendesk\API\Exceptions\AuthException;
 
 class SubscriptionNoticeService
 {
-    /**
-     * @var HttpClient
-     */
-    protected $client;
+    protected HttpClient $client;
 
     /**
      * @var array
      */
-    protected $functionNames = [
+    protected array $functionNames = [
         'created' => 'create',
         'updated' => 'update',
-        'deleted' => 'delete'
+        'deleted' => 'delete',
     ];
 
     /**
      * SubscriptionNoticeService constructor.
-     * @param HttpClient $client
      */
     public function __construct(HttpClient $client)
     {
@@ -41,17 +35,15 @@ class SubscriptionNoticeService
     /**
      * Process SubscriptionNotice.
      *
-     * @param SubscriptionNotice $notice
-     * @return bool
      * @throws Exception
      */
-    public function process(SubscriptionNotice $notice)
+    public function process(SubscriptionNotice $notice): bool
     {
-        if($notice->isProcessed) {
+        if ($notice->isProcessed) {
             return;
         }
 
-        if(false === $this->shouldBeProcessed($notice)) {
+        if ($this->shouldBeProcessed($notice) === false) {
             $notice->isProcessed = true;
             $notice->save();
 
@@ -76,29 +68,25 @@ class SubscriptionNoticeService
 
             DB::commit();
             return true;
-
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
         }
-
     }
 
     /**
      * Check whether SubscriptionNotice should be processed.
-     *
-     * @param SubscriptionNotice $notice
-     * @return bool
      */
-    protected function shouldBeProcessed(SubscriptionNotice $notice)
+    protected function shouldBeProcessed(SubscriptionNotice $notice): bool
     {
-        return (true !== $notice->isProcessed) && ($notice->expirationDateTime > Carbon::now());
+        return ($notice->isProcessed !== true) && ($notice->expirationDateTime > Carbon::now());
     }
 
     /**
      * Convert object to array (for validation purposes).
      *
      * @param mixed $object
+     *
      * @return array
      */
     protected function toArray($object): array

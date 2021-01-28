@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\Translators;
+declare(strict_types=1);
 
-use BusinessCentral\Translators\Contracts\TranslatorContract;
+namespace Daalder\BusinessCentral\Translators;
+
+use Daalder\BusinessCentral\Translators\Contracts\TranslatorContract;
 use Exception;
 
 abstract class Translator implements TranslatorContract
@@ -15,20 +17,15 @@ abstract class Translator implements TranslatorContract
     /**
      * @var array
      */
-    protected $payload;
+    protected array $payload;
 
-    /**
-     * @var bool
-     */
-    protected $isFromBackOffice = false;
+    protected bool $isFromBackOffice = false;
 
-    /**
-     * @var bool
-     */
-    protected $isFromBusinessCentral = false;
+    protected bool $isFromBusinessCentral = false;
 
     /**
      * Translator constructor.
+     *
      * @param mixed $translationBase
      * @param array $payload
      */
@@ -39,10 +36,28 @@ abstract class Translator implements TranslatorContract
     }
 
     /**
+     * @param $name
+     * @param $arguments
+     *
+     * @return mixed|void
+     *
+     * @throws Exception
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        switch ($name) {
+            case 'set':
+                $translator = new static($arguments[0], $arguments[1]);
+                break;
+            default:
+                throw new Exception('Method ' . $name . ' cannot be called statically.');
+        }
+    }
+
+    /**
      * Set translation base. If neccessary, a child class can override method to implement validation, etc.
      *
      * @param $translationBase
-     * @return TranslatorContract
      */
     public function setTranslationBase($translationBase): TranslatorContract
     {
@@ -54,7 +69,6 @@ abstract class Translator implements TranslatorContract
      * Set payload. If neccessary, a child class can override method to implement validation, etc.
      *
      * @param array $payload
-     * @return TranslatorContract
      */
     public function setPayload(array $payload = []): TranslatorContract
     {
@@ -64,28 +78,26 @@ abstract class Translator implements TranslatorContract
 
     /**
      * @param null $translationBase
-     * @return TranslatorContract
      */
     public function fromBackOffice($translationBase = null): TranslatorContract
     {
         $this->isFromBackOffice = true;
         $this->isFromBusinessCentral = false;
 
-        if(null !== $translationBase) {
+        if ($translationBase !== null) {
             return $this->setTranslationBase($translationBase);
         }
     }
 
     /**
      * @param null $translationBase
-     * @return TranslatorContract
      */
     public function fromBusinessCentral($translationBase = null): TranslatorContract
     {
         $this->isFromBackOffice = false;
         $this->isFromBusinessCentral = true;
 
-        if(null !== $translationBase) {
+        if ($translationBase !== null) {
             return $this->setTranslationBase($translationBase);
         }
 
@@ -95,7 +107,6 @@ abstract class Translator implements TranslatorContract
     /**
      * @param $translationBase
      * @param array $payload
-     * @return TranslatorContract
      */
     public function set($translationBase, array $payload = []): TranslatorContract
     {
@@ -108,7 +119,7 @@ abstract class Translator implements TranslatorContract
     /**
      * @param null $translationBase
      * @param array $payload
-     * @return TranslatorContract
+     *
      * @throws Exception
      */
     public static function make($translationBase = null, array $payload = []): TranslatorContract
@@ -117,33 +128,17 @@ abstract class Translator implements TranslatorContract
     }
 
     /**
-     * @param $name
-     * @param $arguments
-     * @return mixed|void
-     * @throws Exception
-     */
-    public static function __callStatic($name, $arguments)
-    {
-        switch($name) {
-            case 'set':
-                $translator = new static($arguments[0], $arguments[1]);
-                break;
-            default:
-                throw new Exception('Method ' . $name . ' cannot be called statically.');
-        }
-    }
-
-    /**
      * Make origin repository, by previously set translation base.
      *
      * @param null $model
+     *
      * @return mixed
      */
     public function makeOriginRepository($model = null)
     {
         if ($this->isFromBusinessCentral) {
             $originRepositoryClassName = $this->businessCentralRepositoryName();
-        } else if ($this->isFromBackOffice) {
+        } elseif ($this->isFromBackOffice) {
             $originRepositoryClassName = $this->backOfficeRepositoryName();
         } else {
             return false;
@@ -156,13 +151,14 @@ abstract class Translator implements TranslatorContract
      * Make destination repository, by previously set translation base.
      *
      * @param null $model
+     *
      * @return mixed
      */
     public function makeDestinationRepository($model = null)
     {
-        if($this->isFromBackOffice) {
+        if ($this->isFromBackOffice) {
             $originRepositoryClassName = $this->businessCentralRepositoryName();
-        } else if($this->isFromBusinessCentral) {
+        } elseif ($this->isFromBusinessCentral) {
             $originRepositoryClassName = $this->backOfficeRepositoryName();
         } else {
             return false;
@@ -172,22 +168,20 @@ abstract class Translator implements TranslatorContract
     }
 
     /**
-     * @param string $validatorClass
      * @param array $payload
-     * @param bool $debug
-     * @return bool
+     *
      * @throws Exception
      */
     protected function validatePayload(string $validatorClass, array $payload, bool $debug = false): bool
     {
-        if(!class_exists($validatorClass)) {
+        if (! class_exists($validatorClass)) {
             throw new Exception('Validator class ' . $validatorClass . ' does not exist');
         }
 
         $validator = $validatorClass::make($payload);
 
-        if($validator->fails()) {
-            if(!$debug) {
+        if ($validator->fails()) {
+            if (! $debug) {
                 return false;
             }
             report(new Exception($validator->errors(), 422));

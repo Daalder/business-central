@@ -1,10 +1,12 @@
 <?php
 
-namespace BusinessCentral\API\Listeners\SubscriptionNotice;
+declare(strict_types=1);
 
-use BusinessCentral\API\Events\SubscriptionNotice\SubscriptionNoticeCreated;
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\API\Services\SubscriptionNoticeService;
+namespace Daalder\BusinessCentral\API\Listeners\SubscriptionNotice;
+
+use Daalder\BusinessCentral\API\Events\SubscriptionNotice\SubscriptionNoticeCreated;
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\API\Services\SubscriptionNoticeService;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,24 +18,14 @@ class SubscriptionNoticeProcess implements ShouldQueue
 {
     use SerializesModels, Dispatchable, Queueable, InteractsWithQueue;
 
-    /**
-     * @var string
-     */
-    public $queue = 'medium';
+    public string $queue = 'medium';
 
-    /**
-     * @var HttpClient
-     */
-    private $client;
+    private HttpClient $client;
 
-    /**
-     * @var SubscriptionNoticeService
-     */
-    private $service;
+    private SubscriptionNoticeService $service;
 
     /**
      * SubscriptionRegister constructor.
-     * @param HttpClient $client
      */
     public function __construct(HttpClient $client, SubscriptionNoticeService $service)
     {
@@ -43,12 +35,11 @@ class SubscriptionNoticeProcess implements ShouldQueue
 
     /**
      * Handle the listener.
-     * @param SubscriptionNoticeCreated $event
+     *
      * @throws Exception
      */
-    public function handle(SubscriptionNoticeCreated $event)
+    public function handle(SubscriptionNoticeCreated $event): void
     {
         $this->service->process($event->notice);
     }
-
 }

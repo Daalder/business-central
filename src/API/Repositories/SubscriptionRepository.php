@@ -1,14 +1,13 @@
 <?php
 
-namespace BusinessCentral\API\Repositories;
+declare(strict_types=1);
 
-use BusinessCentral\API\Events\Subscription\SubscriptionRegistered;
-use BusinessCentral\API\Events\Subscription\SubscriptionRenewed;
-use BusinessCentral\API\Listeners\Subscription\BusinessCentralSubscriptionRegister;
-use BusinessCentral\API\Resources\Subscription as BusinessCentralAPISubscription;
-use BusinessCentral\API\Services\NamespaceTranslations;
-use BusinessCentral\Models\Subscription;
+namespace Daalder\BusinessCentral\API\Repositories;
+
 use Carbon\Carbon;
+use Daalder\BusinessCentral\API\Resources\Subscription as BusinessCentralAPISubscription;
+use Daalder\BusinessCentral\API\Services\NamespaceTranslations;
+use Daalder\BusinessCentral\Models\Subscription;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -17,23 +16,16 @@ use Illuminate\Support\Facades\DB;
  * // TODO (MK) Unify methods as needed.
  *
  * Class SubscriptionRepository
+ *
  * @package BusinessCentral\API\Repositories
  */
 class SubscriptionRepository extends RepositoryAbstract
 {
-    /**
-     * @var string
-     */
-    public $objectName = 'subscription';
+    public string $objectName = 'subscription';
 
-    /**
-     * @param Subscription $subscription
-     * @param bool $resolveFromApi
-     */
-    public function create(Subscription $subscription, $resolveFromApi = true)
+    public function create(Subscription $subscription, bool $resolveFromApi = true): void
     {
-        if($resolveFromApi) {
-
+        if ($resolveFromApi) {
             $subscriptionResource = new BusinessCentralAPISubscription($subscription);
 
             try {
@@ -51,11 +43,8 @@ class SubscriptionRepository extends RepositoryAbstract
 
     /**
      * Update Subscription to set it as registered from webhook.
-     *
-     * @param Subscription $subscription
-     * @return bool
      */
-    public function updateRegisterRenew(Subscription $subscription)
+    public function updateRegisterRenew(Subscription $subscription): bool
     {
         $subscriptionResource = new BusinessCentralAPISubscription($subscription);
 
@@ -66,7 +55,6 @@ class SubscriptionRepository extends RepositoryAbstract
             $subscription->expirationDateTime = $response['expirationDateTime'];
             $subscription->isRegistered = Carbon::parse($response['expirationDateTime'])->greaterThan(Carbon::now());
             $subscription->save();
-
         } catch (Exception $exception) {
             print_r($subscriptionResource->resolve());
             dd($exception->getMessage());
@@ -77,10 +65,79 @@ class SubscriptionRepository extends RepositoryAbstract
     }
 
     /**
-     * @param Subscription $subscription
-     * @param bool $register
+     * Register Subscription with BusinessCentral 365 API.
      */
-    protected function apiRegisterRenew(Subscription $subscription, bool $register = true)
+    public function apiRegister(Subscription $subscription): void
+    {
+        $this->apiRegisterRenew($subscription, true);
+    }
+
+    /**
+     * Renew Subscription with BusinessCentral 365 API.
+     */
+    public function apiRenew(Subscription $subscription): void
+    {
+        $this->apiRegisterRenew($subscription, false);
+    }
+
+    /**
+     * @param array $types
+     */
+    public function getSubscriptionsToRenew(array $types = []): Collection
+    {
+        if ($types === []) {
+            $types = array_keys(NamespaceTranslations::$NAMESPACES);
+        }
+
+        return Subscription::where('isRegistered', true)
+            ->where('expirationDateTime', '>', Carbon::now())
+            ->whereIn('subscriptionId', $types)
+            ->get();
+    }
+
+    /**
+     * @param array $data
+     *
+     * @throws Exception
+     */
+    public function firstOrCreate(array $data = []): Subscription
+    {
+        if (! isset($data['subscriptionId'])) {
+            throw new Exception('No subscription ID provided');
+        }
+
+        $subscription = Subscription::where('subscriptionId', $data['subscriptionId'])->first();
+
+        if ($subscription === null) {
+            return new Subscription($data);
+        }
+        return $subscription;
+
+    
+    }
+
+    public function delete(Subscription $subscription, bool $updateBusinessCentral = true): bool
+    {
+        DB::beginTransaction();
+
+        try {
+            $subscription->delete();
+
+            if ($updateBusinessCentral) {
+                $this->client->delete(
+                    config('business-central.endpoint') . 'subscriptions'
+                );
+            }
+
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
+
+    protected function apiRegisterRenew(Subscription $subscription, bool $register = true): void
     {
         $method = $register ? 'post' : 'patch';
 
@@ -95,85 +152,4 @@ class SubscriptionRepository extends RepositoryAbstract
             dd($exception->getMessage());
         }
     }
-
-    /**
-     * Register Subscription with BusinessCentral 365 API.
-     * @param Subscription $subscription
-     */
-    public function apiRegister(Subscription $subscription)
-    {
-        $this->apiRegisterRenew($subscription, true);
-    }
-
-    /**
-     * Renew Subscription with BusinessCentral 365 API.
-     * @param Subscription $subscription
-     */
-    public function apiRenew(Subscription $subscription)
-    {
-        $this->apiRegisterRenew($subscription, false);
-    }
-
-    /**
-     * @param array $types
-     * @return Collection
-     */
-    public function getSubscriptionsToRenew(array $types = [])
-    {
-        if($types === []) {
-            $types = array_keys(NamespaceTranslations::$NAMESPACES);
-        }
-
-        return Subscription::where('isRegistered', true)
-            ->where('expirationDateTime', '>', Carbon::now())
-            ->whereIn('subscriptionId', $types)
-            ->get();
-    }
-
-    /**
-     * @param array $data
-     * @return Subscription
-     * @throws Exception
-     */
-    public function firstOrCreate(array $data = [])
-    {
-        if(!isset($data['subscriptionId'])) {
-            throw new Exception('No subscription ID provided');
-        }
-
-        $subscription = Subscription::where('subscriptionId', $data['subscriptionId'])->first();
-
-        if(null === $subscription) {
-            return new Subscription($data);
-        } else {
-            return $subscription;
-        }
-    }
-
-    /**
-     * @param Subscription $subscription
-     * @param bool $updateBusinessCentral
-     * @return bool
-     */
-    public function delete(Subscription $subscription, bool $updateBusinessCentral = true)
-    {
-        DB::beginTransaction();
-
-        try {
-            $subscription->delete();
-
-            if($updateBusinessCentral) {
-                $this->client->delete(
-                    config('business-central.endpoint') . 'subscriptions'
-                );
-            }
-
-            DB::commit();
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-            return false;
-        }
-    }
-
 }

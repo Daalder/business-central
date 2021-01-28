@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\Jobs\Product;
+declare(strict_types=1);
 
-use BusinessCentral\API\HttpClient;
+namespace Daalder\BusinessCentral\Jobs\Product;
+
+use Daalder\BusinessCentral\API\HttpClient;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,28 +21,20 @@ class CreateProduct implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    /**
-     * @var \Pionect\Backoffice\Models\Product\Product
-     */
-    protected $product;
+    protected \Pionect\Backoffice\Models\Product\Product $product;
 
-    /**
-     * @var \BusinessCentral\Repositories\ReferenceRepository
-     */
-    protected $referenceRepository;
+    protected \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
 
     /**
      * Create a new job instance.
-     *
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
      */
     public function __construct(Product $product)
     {
-        $this->queue   = 'medium';
+        $this->queue = 'medium';
         $this->product = $product;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $client = app(HttpClient::class);
         $client->item()->create($this->product);
@@ -49,7 +43,7 @@ class CreateProduct implements ShouldQueue
     /**
      * @return array
      */
-    public function tags()
+    public function tags(): array
     {
         return ['business-central', 'create-product', 'product', 'product-'.$this->product->id];
     }

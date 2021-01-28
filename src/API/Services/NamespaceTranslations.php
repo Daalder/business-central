@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\API\Services;
+declare(strict_types=1);
 
-use BusinessCentral\Repositories\ProductRepository;
+namespace Daalder\BusinessCentral\API\Services;
+
+use Daalder\BusinessCentral\Repositories\ProductRepository;
 use Pionect\Backoffice\Models\Order\Repositories\OrderRepository;
 
 class NamespaceTranslations
@@ -10,8 +12,8 @@ class NamespaceTranslations
     /**
      * @var array
      */
-    public static $NAMESPACES = [
+    public static array $NAMESPACES = [
         'items' => ProductRepository::class,
-        'orders' => OrderRepository::class
+        'orders' => OrderRepository::class,
     ];
 }

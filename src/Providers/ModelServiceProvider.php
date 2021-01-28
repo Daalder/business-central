@@ -1,9 +1,10 @@
 <?php
 
-namespace BusinessCentral\Providers;
+declare(strict_types=1);
 
-use BusinessCentral\Observers\ProductObserver;
-use BusinessCentral\Observers\SubscriptionNoticeObserver;
+namespace Daalder\BusinessCentral\Providers;
+
+use Daalder\BusinessCentral\Observers\ProductObserver;
 use Illuminate\Support\ServiceProvider;
 use Pionect\Backoffice\Models\Product\Product;
 
@@ -14,7 +15,7 @@ use Pionect\Backoffice\Models\Product\Product;
  */
 class ModelServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         Product::observe(ProductObserver::class);
     }

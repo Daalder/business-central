@@ -1,20 +1,22 @@
 <?php
 
-namespace BusinessCentral;
+declare(strict_types=1);
 
-use BusinessCentral\API\ApiBusinessCentralServiceProvider;
-use BusinessCentral\API\HttpClient as BusinessCentralAPI;
-use BusinessCentral\Commands\BusinessCentralSubscription;
-use BusinessCentral\Commands\PullFromBusinessCentral;
-use BusinessCentral\Commands\PullInventory;
-use BusinessCentral\Commands\PullWarehouseShipment;
-use BusinessCentral\Commands\PushNewOrdersToBusinessCentral;
-use BusinessCentral\Commands\PushToBusinessCentral;
-use BusinessCentral\Observers\SetObserver;
-use BusinessCentral\Providers\EventServiceProvider;
-use BusinessCentral\Providers\ModelServiceProvider;
-use BusinessCentral\Providers\RouteServiceProvider;
-use BusinessCentral\Providers\SchedulerServiceProvider;
+namespace Daalder\BusinessCentral;
+
+use Daalder\BusinessCentral\API\ApiBusinessCentralServiceProvider;
+use Daalder\BusinessCentral\API\HttpClient as BusinessCentralAPI;
+use Daalder\BusinessCentral\Commands\BusinessCentralSubscription;
+use Daalder\BusinessCentral\Commands\PullFromBusinessCentral;
+use Daalder\BusinessCentral\Commands\PullInventory;
+use Daalder\BusinessCentral\Commands\PullWarehouseShipment;
+use Daalder\BusinessCentral\Commands\PushNewOrdersToBusinessCentral;
+use Daalder\BusinessCentral\Commands\PushToBusinessCentral;
+use Daalder\BusinessCentral\Observers\SetObserver;
+use Daalder\BusinessCentral\Providers\EventServiceProvider;
+use Daalder\BusinessCentral\Providers\ModelServiceProvider;
+use Daalder\BusinessCentral\Providers\RouteServiceProvider;
+use Daalder\BusinessCentral\Providers\SchedulerServiceProvider;
 use Exception;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Collection;
@@ -36,14 +38,13 @@ class BusinessCentralServiceProvider extends ServiceProvider
     /**
      * Boot BusinessCentralServiceProvider
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 
-        if (!env('BC_COMPANY')) {
+        if (! env('BC_COMPANY')) {
             return;
         }
-
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'business-central');
 
@@ -56,29 +57,27 @@ class BusinessCentralServiceProvider extends ServiceProvider
                 PullInventory::class,
                 PullWarehouseShipment::class,
                 PushToBusinessCentral::class,
-                PushNewOrdersToBusinessCentral::class
+                PushNewOrdersToBusinessCentral::class,
             ]);
         }
 
         Set::observe(SetObserver::class);
 
-        Hook::listen('main_menu.menu_item.create', function (Collection $items) {
+        Hook::listen('main_menu.menu_item.create', static function (Collection $items) {
             return $items->push(new Item('/business-central', 'Business Central', [], 'business'));
         });
 
-        Hook::listen('main_menu.business-central.submenu_item.create', function (Collection $items) {
+        Hook::listen('main_menu.business-central.submenu_item.create', static function (Collection $items) {
             return $items->push(new Item('/business-central/not-in', 'Niet gekoppelde producten', [], 'settings'));
         });
     }
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        if (!env('BC_COMPANY')) {
+        if (! env('BC_COMPANY')) {
             return;
         }
 
@@ -98,34 +97,29 @@ class BusinessCentralServiceProvider extends ServiceProvider
     /**
      * Register BusinessCentralApi providers
      */
-    protected function registerBusinessCentralApi()
+    protected function registerBusinessCentralApi(): void
     {
         $this->app->register(ApiBusinessCentralServiceProvider::class);
     }
 
-    protected function bindBusinessCentralAPI()
+    protected function bindBusinessCentralAPI(): void
     {
         $this->app->bind(BusinessCentralAPI::class, function () {
-
             $provider = new GenericProvider([
                 'clientId' => config('business-central.clientId'),    // The client ID assigned to you by the provider
                 'clientSecret' => config('business-central.clientSecret'),    // The client password assigned to you by the provider
                 'redirectUri' => 'https://backoffice.nubuiten.nl',
                 'urlAuthorize' => 'https://login.windows.net/962abadf-3251-42b9-bf80-f5867aedac7a/oauth2/authorize?resource=https://api.businesscentral.dynamics.com',
                 'urlAccessToken' => 'https://login.windows.net/962abadf-3251-42b9-bf80-f5867aedac7a/oauth2/token?resource=https://api.businesscentral.dynamics.com',
-                'urlResourceOwnerDetails' => 'http://service.example.com/resource'
+                'urlResourceOwnerDetails' => 'http://service.example.com/resource',
             ]);
 
             $existingAccessToken = $this->getBusinessCentralAccessTokenFromValueStore();
 
-
             if ($existingAccessToken->hasExpired()) {
-
                 $newAccessToken = $provider->getAccessToken('refresh_token', [
-                    'refresh_token' => $existingAccessToken->getRefreshToken()
+                    'refresh_token' => $existingAccessToken->getRefreshToken(),
                 ]);
-
-
 
                 $this->setBusinessCentralAccessTokenToValueStore($newAccessToken);
                 // Purge old access token and store new access token to your data store.
@@ -137,48 +131,38 @@ class BusinessCentralServiceProvider extends ServiceProvider
 
                 $businessCentral = new BusinessCentralAPI(config('business-central.endpoint').'companies('.config('business-central.companyId').')/');
                 $businessCentral->setAuth('oauth', [
-                    'token' => $existingAccessToken->getToken()
+                    'token' => $existingAccessToken->getToken(),
                 ]);
 
                 return $businessCentral;
-
-
             } catch (IdentityProviderException $e) {
 
                 // Failed to get the access token
                 exit($e->getMessage());
-
             }
-
         });
     }
 
     /**
-     * @return AccessToken
      * @throws Exception
      */
-    protected function getBusinessCentralAccessTokenFromValueStore()
+    protected function getBusinessCentralAccessTokenFromValueStore(): AccessToken
     {
-        if (!file_exists(storage_path('app/BusinessCentral.json'))) {
+        if (! file_exists(storage_path('app/BusinessCentral.json'))) {
             throw new Exception('app/BusinessCentral.json is missing.');
         }
 
         $valuestore = Valuestore::make(storage_path('app/BusinessCentral.json'));
-        $accessToken = new AccessToken($valuestore->all());
-
-        return $accessToken;
+        return new AccessToken($valuestore->all());
     }
 
-    /**
-     * @param AccessToken $accessToken
-     */
-    protected function setBusinessCentralAccessTokenToValueStore(AccessToken $accessToken)
+    protected function setBusinessCentralAccessTokenToValueStore(AccessToken $accessToken): void
     {
         $valuestore = Valuestore::make(storage_path('app/BusinessCentral.json'));
         $valuestore->flush()->put([
             'access_token' => $accessToken->getToken(),
             'expires' => $accessToken->getExpires(),
-            'refresh_token' => $accessToken->getRefreshToken()
+            'refresh_token' => $accessToken->getRefreshToken(),
         ]);
     }
 }

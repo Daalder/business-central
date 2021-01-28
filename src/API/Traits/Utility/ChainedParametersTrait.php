@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\API\Traits\Utility;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\API\Traits\Utility;
 
 /**
  * The chained parameters trait which has helper methods for getting the parameters passed through chaining.
@@ -18,7 +20,7 @@ trait ChainedParametersTrait
     /**
      * @var array
      */
-    protected $chainedParameters = [];
+    protected array $chainedParameters = [];
 
     /**
      * Returns the named chained parameter
@@ -43,7 +45,7 @@ trait ChainedParametersTrait
      *
      * @return array
      */
-    public function getChainedParameters()
+    public function getChainedParameters(): array
     {
         return $this->chainedParameters;
     }
@@ -72,7 +74,7 @@ trait ChainedParametersTrait
      *
      * @return array
      */
-    public function addChainedParametersToParams($params, $map)
+    public function addChainedParametersToParams(array $params, array $map): array
     {
         $chainedParameters = $this->getChainedParameters();
         foreach ($map as $key => $className) {
@@ -91,7 +93,7 @@ trait ChainedParametersTrait
      *
      * @return array
      */
-    public function getLatestChainedParameter($excludes = [])
+    public function getLatestChainedParameter(array $excludes = []): array
     {
         $chainedParameters = $this->getChainedParameters();
 

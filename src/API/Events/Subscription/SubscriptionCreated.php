@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\API\Events\Subscription;
+declare(strict_types=1);
 
-use BusinessCentral\Models\Subscription;
+namespace Daalder\BusinessCentral\API\Events\Subscription;
+
+use Daalder\BusinessCentral\Models\Subscription;
 use Illuminate\Queue\SerializesModels;
 use Pionect\Backoffice\Events\Activity\ActivityEvent;
 use Pionect\Backoffice\Models\BaseModel;
@@ -11,14 +13,10 @@ class SubscriptionCreated extends ActivityEvent
 {
     use SerializesModels;
 
-    /**
-     * @var Subscription
-     */
-    public $subscription;
+    public Subscription $subscription;
 
     /**
      * SubscriptionCreated constructor.
-     * @param Subscription $subscription
      */
     public function __construct(Subscription $subscription)
     {
@@ -26,9 +24,6 @@ class SubscriptionCreated extends ActivityEvent
         $this->subscription = $subscription;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getModel(): BaseModel
     {
         return $this->subscription;

@@ -1,10 +1,11 @@
 <?php
 
-namespace BusinessCentral\Jobs\Customer;
+declare(strict_types=1);
 
+namespace Daalder\BusinessCentral\Jobs\Customer;
 
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\Repositories\ReferenceRepository;
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -22,30 +23,23 @@ class CreateCustomer implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    /**
-     * @var \Pionect\Backoffice\Models\Customer\Customer
-     */
-    protected $customer;
+    protected \Pionect\Backoffice\Models\Customer\Customer $customer;
 
-    /**
-     * @var \BusinessCentral\Repositories\ReferenceRepository
-     */
-    protected $referenceRepository;
+    protected \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
 
     /**
      * CreateCustomer constructor.
      *
-     * @param  \Pionect\Backoffice\Models\Customer\Customer  $customer
      * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
      */
     public function __construct(Customer $customer, ReferenceRepository $referenceRepository)
     {
-        $this->queue               = 'high';
-        $this->customer            = $customer;
+        $this->queue = 'high';
+        $this->customer = $customer;
         $this->referenceRepository = $referenceRepository;
     }
 
-    public function handle()
+    public function handle(): void
     {
         /**
          * @var HttpClient $client
@@ -58,7 +52,7 @@ class CreateCustomer implements ShouldQueue
     /**
      * @return array
      */
-    public function tags()
+    public function tags(): array
     {
         return ['business-central', 'create-customer', 'customer', 'customer-'.$this->customer->id];
     }

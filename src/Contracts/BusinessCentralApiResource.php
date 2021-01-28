@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\Contracts;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Contracts;
 
 interface BusinessCentralApiResource
 {
@@ -8,6 +10,7 @@ interface BusinessCentralApiResource
      * Update resource from Business Central.
      *
      * @param array $items
+     *
      * @return array
      */
     public function updateFromBusinessCentralApi(array $items = []): array;
@@ -16,6 +19,7 @@ interface BusinessCentralApiResource
      * Delete resource after Business Central.
      *
      * @param array $items
+     *
      * @return array
      */
     public function deleteAfterBusinessCentralApi(array $items = []): array;
@@ -24,6 +28,7 @@ interface BusinessCentralApiResource
      * Create resource from Business Central.
      *
      * @param array $items
+     *
      * @return array
      */
     public function createFromBusinessCentralApi(array $items = []): array;

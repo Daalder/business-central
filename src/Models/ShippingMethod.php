@@ -1,14 +1,16 @@
 <?php
 
-namespace BusinessCentral\Models;
+declare(strict_types=1);
 
-use Illuminate\Support\Carbon;
+namespace Daalder\BusinessCentral\Models;
+
 use Pionect\Backoffice\Models\BaseModel;
 
 /**
  * Class ShippingMethod
  *
  * @package BusinessCentral\Models
+ *
  * @property int id
  * @property int shipping_method_id
  * @property int business_central_id
@@ -29,7 +31,8 @@ class ShippingMethod extends BaseModel
         'displayName',
     ];
 
-    public function shipping_method() {
+    public function shipping_method(): void
+    {
         $this->belongsTo('shipping_methods', 'shipping_method_id', 'id');
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace BusinessCentral\Models;
+declare(strict_types=1);
 
+namespace Daalder\BusinessCentral\Models;
 
 use Pionect\Backoffice\Models\BaseModel;
 
@@ -9,6 +10,7 @@ use Pionect\Backoffice\Models\BaseModel;
  * Class ReferenceModel
  *
  * @package BusinessCentral\Models
+ *
  * @property string business_central_id
  */
 class ReferenceModel extends BaseModel

@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\API\Resources;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\API\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
@@ -8,29 +10,26 @@ use Illuminate\Http\Resources\Json\Resource;
  * Class SalesQuote
  *
  * @package BusinessCentral\API\Resources
+ *
  * @mixin \Pionect\Backoffice\Models\Order\Order
  */
 class SalesQuote extends Resource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray(\Illuminate\Http\Request $request): array
     {
         return [
             'externalDocumentNumber' => (string) $this->orderid,
-            'documentDate'           => $this->date ? $this->date->toDateString() : null,
-            'customerNumber'         => (string) $this->customer_id,
-            'paymentTermsId'         => (string) $this->getPaymentTerms(),
-            'discountAmount'         => $this->getDiscount()
+            'documentDate' => $this->date ? $this->date->toDateString() : null,
+            'customerNumber' => (string) $this->customer_id,
+            'paymentTermsId' => (string) $this->getPaymentTerms(),
+            'discountAmount' => $this->getDiscount(),
         ];
     }
 
-    /**
-     * @return string
-     */
-    private function getPaymentTerms()
+    private function getPaymentTerms(): string
     {
         if ($this->payment) {
             switch ($this->payment->method_id) {

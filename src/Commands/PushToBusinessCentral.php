@@ -1,10 +1,11 @@
 <?php
 
-namespace BusinessCentral\Commands;
+declare(strict_types=1);
 
-use BusinessCentral\API\HttpClient;
+namespace Daalder\BusinessCentral\Commands;
+
+use Daalder\BusinessCentral\API\HttpClient;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -12,25 +13,20 @@ class PushToBusinessCentral extends Command
 {
     /**
      * The name and signature of the console command.
-     *
-     * @var string
      */
-    protected $signature = 'bc:push {action} {type} {id?} {--all : Whether all items should be run} {--v}';
-
+    protected string $signature = 'bc:push {action} {type} {id?} {--all : Whether all items should be run} {--v}';
 
     protected $mapping = [
-        '\Pionect\Backoffice\Models\Product\Product'      => 'item',
-        '\Pionect\Backoffice\Models\Order\Order'          => 'salesOrder',
-        '\Pionect\Backoffice\Models\Customer\Customer'    => 'customer',
-        '\Pionect\Backoffice\Models\ProductAttribute\Set' => 'itemCategory'
+        '\Pionect\Backoffice\Models\Product\Product' => 'item',
+        '\Pionect\Backoffice\Models\Order\Order' => 'salesOrder',
+        '\Pionect\Backoffice\Models\Customer\Customer' => 'customer',
+        '\Pionect\Backoffice\Models\ProductAttribute\Set' => 'itemCategory',
     ];
 
     /**
      * The console command description.
-     *
-     * @var string
      */
-    protected $description = 'Push items to BusinessCentral';
+    protected string $description = 'Push items to BusinessCentral';
 
     /**
      * Create a new command instance.
@@ -61,16 +57,16 @@ class PushToBusinessCentral extends Command
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['action', InputArgument::REQUIRED, 'The action that should be performed.'],
             ['type', InputArgument::REQUIRED, 'The type: Order|Product.'],
-            ['id', InputArgument::REQUIRED, 'The id (of ids) of the type.']
+            ['id', InputArgument::REQUIRED, 'The id (of ids) of the type.'],
         ];
     }
 
-    private function publishItem($action, $type, $ids)
+    private function publishItem($action, $type, $ids): void
     {
         $ids = explode(',', $ids);
         $this->output->progressStart(count($ids));
@@ -81,7 +77,7 @@ class PushToBusinessCentral extends Command
                 'Type: '.$type.'; '.
                 'Id: '.$id.'; ');
 
-            /* @var $handler Model */
+            /** @var Model $handler */
             $handler = resolve($type);
 
             //$item = Product::find($id);
@@ -98,26 +94,19 @@ class PushToBusinessCentral extends Command
 
             //dd($item);
             $this->sendPayload($type, $action, $item);
-
         }
     }
 
-    /**
-     * @param $action
-     * @param $type
-     */
-    private function publishAllItems($action, $type)
+    private function publishAllItems($action, $type): void
     {
-        /* @var $handler Model */
+        /** @var Model $handler */
         $handler = resolve($type);
 
         try {
             $this->output->progressStart($handler->newQuery()->whereNull('deleted_at')->count());
-            $handler->newQuery()->whereNull('deleted_at')->chunk(1000, function ($items) use ($type, $action) {
-
+            $handler->newQuery()->whereNull('deleted_at')->chunk(1000, function ($items) use ($type, $action): void {
                 foreach ($items as $item) {
                     $this->sendPayload($type, $action, $item);
-
                 }
             });
             $this->output->progressFinish();
@@ -125,15 +114,9 @@ class PushToBusinessCentral extends Command
             $this->error('Could not retrieve '.$type);
             exit;
         }
-
     }
 
-    /**
-     * @param $type
-     * @param $action
-     * @param $item
-     */
-    private function sendPayload($type, $action, $item)
+    private function sendPayload($type, $action, $item): void
     {
         try {
             if ($item) {
@@ -144,7 +127,6 @@ class PushToBusinessCentral extends Command
             } else {
                 $this->error('No item found.');
             }
-
         } catch (\Exception $exception) {
             $this->error('Exception: '.$exception->getMessage().' in '.$exception->getFile().':'.$exception->getLine());
             $this->error($exception->getTraceAsString());

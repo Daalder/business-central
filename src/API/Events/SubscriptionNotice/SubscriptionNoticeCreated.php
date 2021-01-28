@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\API\Events\SubscriptionNotice;
+declare(strict_types=1);
 
-use BusinessCentral\Models\SubscriptionNotice;
+namespace Daalder\BusinessCentral\API\Events\SubscriptionNotice;
+
+use Daalder\BusinessCentral\Models\SubscriptionNotice;
 use Illuminate\Queue\SerializesModels;
 use Pionect\Backoffice\Events\Activity\ActivityEvent;
 use Pionect\Backoffice\Models\BaseModel;
@@ -11,14 +13,10 @@ class SubscriptionNoticeCreated extends ActivityEvent
 {
     use SerializesModels;
 
-    /**
-     * @var SubscriptionNotice
-     */
-    public $notice;
+    public SubscriptionNotice $notice;
 
     /**
      * SubscriptionNoticeCreated constructor.
-     * @param SubscriptionNotice $notice
      */
     public function __construct(SubscriptionNotice $notice)
     {
@@ -26,9 +24,6 @@ class SubscriptionNoticeCreated extends ActivityEvent
         $this->notice = $notice;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getModel(): BaseModel
     {
         return $this->notice;

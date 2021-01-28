@@ -17,15 +17,16 @@
         }
     ],
     "require": {
-        "pionect/backoffice": "^7.0",
+        "pionect/daalder": "^7.0",
         "league/oauth2-client": "^2.4",
         "spatie/valuestore": "^1.2",
         "zendesk/zendesk_api_client_php": "^2.2",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~7.0"
     },
     "require-dev": {
         "orchestra/testbench": "^5.0|^6.0",
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.3",
+        "nunomaduro/phpinsights": "dev-master"
     },
     "autoload": {
         "psr-4": {

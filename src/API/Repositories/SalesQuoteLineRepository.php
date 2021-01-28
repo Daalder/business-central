@@ -1,11 +1,12 @@
 <?php
 
-namespace BusinessCentral\API\Repositories;
+declare(strict_types=1);
 
+namespace Daalder\BusinessCentral\API\Repositories;
 
-use BusinessCentral\API\Resources\SalesQuoteLine;
-use BusinessCentral\Models\ProductBusinessCentral;
-use BusinessCentral\Models\SalesQuoteLineBusinessCentral;
+use Daalder\BusinessCentral\API\Resources\SalesQuoteLine;
+use Daalder\BusinessCentral\Models\ProductBusinessCentral;
+use Daalder\BusinessCentral\Models\SalesQuoteLineBusinessCentral;
 use Pionect\Backoffice\Models\Order\Orderrow;
 
 /**
@@ -18,23 +19,22 @@ class SalesQuoteLineRepository extends RepositoryAbstract
     public $objectName = 'salesQuoteLines';
 
     /**
-     * @param  \Pionect\Backoffice\Models\Order\Orderrow  $row
      * @param                                           $businessCentralOrderReference
-     * @return void
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function create(Orderrow $row, $businessCentralOrderReference)
+    public function create(Orderrow $row, $businessCentralOrderReference): void
     {
         /** @var ProductBusinessCentral $productBusinessCentral */
         $productBusinessCentral = ProductBusinessCentral::where('product_id', $row->product_id)->first();
 
-        $resource       = new SalesQuoteLine($row);
+        $resource = new SalesQuoteLine($row);
         $salesQuoteLine = $resource->resolve();
 
         // If product not found in reference table let's create it.
-        if (!$productBusinessCentral) {
-            $productResponse          = $this->client->item()->create($row->product()->withTrashed()->first());
+        if (! $productBusinessCentral) {
+            $productResponse = $this->client->item()->create($row->product()->withTrashed()->first());
             $salesQuoteLine['itemId'] = (string) $productResponse->id;
         } else {
             $salesQuoteLine['itemId'] = (string) $productBusinessCentral->business_central_id;
@@ -45,19 +45,19 @@ class SalesQuoteLineRepository extends RepositoryAbstract
         );
 
         $this->storeReference(new SalesQuoteLineBusinessCentral([
-            'order_row_id'        => $row->id,
-            'business_central_id' => $response->sequence
+            'order_row_id' => $row->id,
+            'business_central_id' => $response->sequence,
         ]));
     }
 
     /**
      * @param  array  $params
      * @param       $ref
-     * @return null|\stdClass
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function update(array $params, $ref)
+    public function update(array $params, $ref): ?\stdClass
     {
         return $this->client->patch(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/salesQuoteLines('.$ref.')', $params
@@ -66,7 +66,9 @@ class SalesQuoteLineRepository extends RepositoryAbstract
 
     /**
      * @param $ref
+     *
      * @return null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
@@ -76,5 +78,4 @@ class SalesQuoteLineRepository extends RepositoryAbstract
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/salesQuoteLines('.$ref.')'
         );
     }
-
 }

@@ -1,9 +1,10 @@
 <?php
 
-namespace BusinessCentral\Observers;
+declare(strict_types=1);
 
-use BusinessCentral\Jobs\Product\CreateProduct;
-use BusinessCentral\Jobs\Product\UpdateProduct;
+namespace Daalder\BusinessCentral\Observers;
+
+use Daalder\BusinessCentral\Jobs\Product\UpdateProduct;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Pionect\Backoffice\Models\Product\Product;
 
@@ -11,29 +12,24 @@ class ProductObserver
 {
     use DispatchesJobs;
 
-    public function updated(Product $product)
+    public function updated(Product $product): void
     {
         dispatch(new UpdateProduct($product));
     }
 
     /**
      * Listen to the Product created event.
-     *
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
      */
-    public function created(Product $product)
+    public function created(Product $product): void
     {
 //        dispatch(new CreateProduct($product));
     }
 
     /**
      * Listen to the Product deleted event.
-     *
-     * @param  \Pionect\Backoffice\Models\Product\Product  $product
      */
-    public function deleted(Product $product)
+    public function deleted(Product $product): void
     {
         // dispatch(new DeleteProduct($product));
     }
-
 }

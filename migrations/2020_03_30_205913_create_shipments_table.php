@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,12 +10,10 @@ class CreateShipmentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('shipments', function (Blueprint $table) {
+        Schema::create('shipments', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('reference')->nullable();
             $table->string('business_central_id')->nullable();
@@ -33,7 +33,7 @@ class CreateShipmentsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('shipments', function (Blueprint $table) {
+        Schema::table('shipments', static function (Blueprint $table): void {
             $table->foreign('provider_id')->references('id')->on('shipping_providers');
             $table->foreign('shipping_address_id')->references('id')->on('address');
             $table->foreign('order_id')->references('id')->on('order');
@@ -42,10 +42,8 @@ class CreateShipmentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('shipments');
     }

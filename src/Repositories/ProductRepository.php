@@ -1,17 +1,19 @@
 <?php
 
-namespace BusinessCentral\Repositories;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\Repositories;
 
 use App\Models\Products\Product;
-use BusinessCentral\API\Resources\Daalder\TranslationProduct as ProductResource;
-use BusinessCentral\Contracts\BusinessCentralApiResource;
-use BusinessCentral\Jobs\Product\CreateProduct;
-use BusinessCentral\Jobs\Product\UpdateProduct;
+use Daalder\BusinessCentral\API\Resources\Daalder\TranslationProduct as ProductResource;
+use Daalder\BusinessCentral\Contracts\BusinessCentralApiResource;
+use Daalder\BusinessCentral\Jobs\Product\CreateProduct;
+use Daalder\BusinessCentral\Jobs\Product\UpdateProduct;
 use Exception;
 use Pionect\Backoffice\Http\Api\Requests\Product\StoreProductRequest;
+use Pionect\Backoffice\Models\Product\Product as BackOfficeProduct;
 use Pionect\Backoffice\Models\Product\Repositories\ProductRepository as BackofficeProductRepository;
 use Pionect\Backoffice\Models\ProductAttribute\Repositories\GroupRepository;
-use Pionect\Backoffice\Models\Product\Product as BackOfficeProduct;
 
 /**
  * Class ProductRepository
@@ -24,7 +26,6 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
 {
     /**
      * ProductRepository constructor.
-     * @param Product $product
      */
     public function __construct(Product $product)
     {
@@ -32,8 +33,8 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
     }
 
     /**
-     * @param GroupRepository $groupRepository
      * @return mixed
+     *
      * @throws Exception
      */
     public function getNotSyncedProductsOverview(GroupRepository $groupRepository)
@@ -48,7 +49,7 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
 
         $productDetailSize = config('image_sizes.product.default');
 
-        /* @var $product Product */
+        /** @var Product $product */
         foreach ($products as $product) {
 
             // check properties
@@ -56,7 +57,7 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
             $product->imagesCorrect = true;
 
             foreach ($product->getPossibleProperties() as $property) {
-                if ($property->required == 1) {
+                if ($property->required === 1) {
                     if (is_null($property->pivot) || empty($property->pivot->value)) {
                         $product->propertiesComplete = false;
                         break;
@@ -65,7 +66,7 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
             }
 
             // check images
-            if (!$product->images || !count($product->images)) {
+            if (! $product->images || ! count($product->images)) {
                 $product->imagesCorrect = false;
             } else {
                 foreach ($product->images as $image) {
@@ -81,7 +82,7 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
             $variations = $product->productvariations;
             $product->variations = '';
             foreach ($variations as $k => $variation) {
-                if ($k == 0) {
+                if ($k === 0) {
                     $product->variations .= $variation->products()->count() . ' ';
                 }
                 if ($k > 0) {
@@ -98,6 +99,7 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
      * Delete resource after Business Central.
      *
      * @param array $items
+     *
      * @return array
      */
     public function deleteAfterBusinessCentralApi(array $items = []): array
@@ -107,7 +109,7 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
             $reference = $this->referenceRepository->getReference(new ProductBusinessCentral(['business_central_id' => $item['id']]));
             if ($reference) {
                 $result[$item['id']] = $this->smashToSmithereens([$reference->product->id]);
-           }
+            }
         }
 
         return $result;
@@ -117,7 +119,9 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
      * Create resource from Business Central.
      *
      * @param array $items
+     *
      * @return array
+     *
      * @throws Exception
      */
     public function createFromBusinessCentralApi(array $items = []): array
@@ -152,6 +156,7 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
 
     /**
      * @param array $items
+     *
      * @return array
      */
     public function updateFromBusinessCentralApi(array $items = []): array
@@ -164,7 +169,7 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
         foreach ($products as $product) {
             /** @var Product $product */
             $itemKey = array_search($product->businessCentral->business_central_id, array_column($items, 'id'));
-            $item = (array)$items[$itemKey];
+            $item = (array) $items[$itemKey];
 
             $resource = new ProductResource($item);
             $productData = $resource->resolve();
@@ -191,27 +196,20 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
 
     /**
      * @param array $businessCentralIds
+     *
      * @return mixed
      */
     public function getByBusinessCentralIds(array $businessCentralIds = [])
     {
-        $products = $this->model->whereHas('businessCentral', function ($query) use ($businessCentralIds) {
+        return $this->model->whereHas('businessCentral', static function ($query) use ($businessCentralIds): void {
             $query->whereIn('business_central_id', $businessCentralIds);
         })->with('businessCentral')->get();
-
-        return $products;
     }
 
-    /**
-     * @param $product
-     * @param $input
-     * @param bool $pushToBc
-     * @return BackOfficeProduct
-     */
-    public function edit($product, $input, $pushToBc = false)
+    public function edit($product, $input, bool $pushToBc = false): BackOfficeProduct
     {
         $product = parent::edit($product, $input);
-        if($pushToBc) {
+        if ($pushToBc) {
             UpdateProduct::dispatch($product);
         }
 
@@ -220,13 +218,11 @@ class ProductRepository extends BackofficeProductRepository implements BusinessC
 
     /**
      * @param array $input
-     * @param bool $pushToBc
-     * @return BackOfficeProduct
      */
-    public function store($input, $pushToBc = false)
+    public function store(array $input, bool $pushToBc = false): BackOfficeProduct
     {
         $product = parent::store($input);
-        if($pushToBc) {
+        if ($pushToBc) {
             CreateProduct::dispatch($product);
         }
 

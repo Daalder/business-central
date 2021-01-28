@@ -1,11 +1,12 @@
 <?php
 
-namespace BusinessCentral\API\Repositories;
+declare(strict_types=1);
 
+namespace Daalder\BusinessCentral\API\Repositories;
 
-use BusinessCentral\API\Resources\ItemCategory;
-use BusinessCentral\Commands\PullFromBusinessCentral;
-use BusinessCentral\Models\SetBusinessCentral;
+use Daalder\BusinessCentral\API\Resources\ItemCategory;
+use Daalder\BusinessCentral\Commands\PullFromBusinessCentral;
+use Daalder\BusinessCentral\Models\SetBusinessCentral;
 use Pionect\Backoffice\Models\ProductAttribute\Set;
 
 /**
@@ -18,12 +19,10 @@ class ItemCategoryRepository extends RepositoryAbstract
     public $objectName = 'itemCategories';
 
     /**
-     * @param  \Pionect\Backoffice\Models\ProductAttribute\Set  $set
-     * @return null|\stdClass
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function create(Set $set)
+    public function create(Set $set): ?\stdClass
     {
         $resource = new ItemCategory($set);
 
@@ -33,7 +32,7 @@ class ItemCategoryRepository extends RepositoryAbstract
 
         $this->storeReference(new SetBusinessCentral([
             'productattributeset_id' => $set->id,
-            'business_central_id'    => $response->id
+            'business_central_id' => $response->id,
         ]));
 
         return $response;
@@ -42,11 +41,11 @@ class ItemCategoryRepository extends RepositoryAbstract
     /**
      * @param  array  $params
      * @param       $ref
-     * @return null|\stdClass
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function update(array $params, $ref)
+    public function update(array $params, $ref): ?\stdClass
     {
         return $this->client->patch(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/itemCategories('.$ref.')', $params
@@ -55,7 +54,9 @@ class ItemCategoryRepository extends RepositoryAbstract
 
     /**
      * @param $ref
+     *
      * @return null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
@@ -66,18 +67,14 @@ class ItemCategoryRepository extends RepositoryAbstract
         );
     }
 
-
     /**
      * @param  \BusinessCentral\Commands\PullFromBusinessCentral  $command
-     * @param  int  $top
-     * @param  int  $skip
-     * @return \stdClass|null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function pullReferences(PullFromBusinessCentral $command, $top = 20000, $skip = 0)
+    public function pullReferences(PullFromBusinessCentral $command, int $top = 20000, int $skip = 0): ?\stdClass
     {
-
         $response = $this->client->get(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/itemCategories?$top='.$top.'&$skip='.$skip
         );
@@ -85,10 +82,10 @@ class ItemCategoryRepository extends RepositoryAbstract
         foreach ($response->value as $item) {
             $set = Set::where('id', $item->code)->withTrashed()->orderBy('id', 'desc')->first();
             if ($set) {
-                if (!$this->referenceRepository->getReference(new SetBusinessCentral(['productattributeset_id' => $set->id]))) {
+                if (! $this->referenceRepository->getReference(new SetBusinessCentral(['productattributeset_id' => $set->id]))) {
                     $this->storeReference(new SetBusinessCentral([
                         'productattributeset_id' => $set->id,
-                        'business_central_id'    => $item->id
+                        'business_central_id' => $item->id,
                     ]));
                 }
             } else {

@@ -1,9 +1,11 @@
 <?php
 
-namespace BusinessCentral\API\Jobs;
+declare(strict_types=1);
 
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\Models\Subscription;
+namespace Daalder\BusinessCentral\API\Jobs;
+
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\Models\Subscription;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,19 +15,12 @@ class SubscriptionKeep implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    /**
-     * @var Subscription
-     */
-    protected $subscription;
+    protected Subscription $subscription;
 
-    /**
-     * @var string
-     */
-    protected $queue = 'high';
+    protected string $queue = 'high';
 
     /**
      * SubscriptionKeep constructor.
-     * @param Subscription $subscription
      */
     public function __construct(Subscription $subscription)
     {
@@ -34,11 +29,10 @@ class SubscriptionKeep implements ShouldQueue
 
     /**
      * Job handler.
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
-        if (true !== (bool) $this->subscription->isRegistered && !$this->subscription->trashed()) {
+        if ((bool) $this->subscription->isRegistered !== true && ! $this->subscription->trashed()) {
             app()->make(HttpClient::class)->subscription()->apiRenew($this->subscription);
         }
     }
@@ -46,7 +40,7 @@ class SubscriptionKeep implements ShouldQueue
     /**
      * @return array
      */
-    public function tags()
+    public function tags(): array
     {
         return ['business-central', 'subscription-keep', 'subscription', 'subscription-'.$this->subscription->id];
     }

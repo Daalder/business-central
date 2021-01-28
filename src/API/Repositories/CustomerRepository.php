@@ -1,9 +1,11 @@
 <?php
 
-namespace BusinessCentral\API\Repositories;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\API\Repositories;
 
 use App\Console\Commands\BusinessCentral\PullFromBusinessCentral;
-use BusinessCentral\Models\CustomerBusinessCentral;
+use Daalder\BusinessCentral\Models\CustomerBusinessCentral;
 use Pionect\Backoffice\Models\Customer\Customer;
 
 /**
@@ -13,16 +15,13 @@ use Pionect\Backoffice\Models\Customer\Customer;
  */
 class CustomerRepository extends RepositoryAbstract
 {
-
     public $objectName = 'customers';
 
     /**
-     * @param  \Pionect\Backoffice\Models\Customer\Customer  $customer
-     * @return null|\stdClass
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function create(Customer $customer)
+    public function create(Customer $customer): ?\stdClass
     {
         $resource = new \BusinessCentral\API\Resources\Customer($customer);
 
@@ -36,20 +35,18 @@ class CustomerRepository extends RepositoryAbstract
         );
 
         $this->storeReference(new CustomerBusinessCentral([
-            'customer_id'         => $customer->id,
-            'business_central_id' => $response->id
+            'customer_id' => $customer->id,
+            'business_central_id' => $response->id,
         ]));
 
         return $response;
     }
 
     /**
-     * @param  \Pionect\Backoffice\Models\Customer\Customer  $customer
-     * @return null|\stdClass
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function update(Customer $customer)
+    public function update(Customer $customer): ?\stdClass
     {
         $resource = new \BusinessCentral\API\Resources\Customer($customer);
 
@@ -70,8 +67,8 @@ class CustomerRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \Pionect\Backoffice\Models\Customer\Customer  $customer
      * @return null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
@@ -86,34 +83,27 @@ class CustomerRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \App\Console\Commands\BusinessCentral\PullFromBusinessCentral  $command
-     * @param  int  $top
-     * @param  int  $skip
-     * @return null|\stdClass
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function pullReferences(PullFromBusinessCentral $command, $top = 20000, $skip = 0)
+    public function pullReferences(PullFromBusinessCentral $command, int $top = 20000, int $skip = 0): ?\stdClass
     {
-
         $response = $this->client->get(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/customers?$top='.$top.'&$skip='.$skip
         );
 
         foreach ($response->value as $item) {
-
             $customer = Customer::find($item->number);
             if ($customer) {
-                if (!$this->referenceRepository->getReference(new CustomerBusinessCentral(['customer_id' => $customer->id]))) {
+                if (! $this->referenceRepository->getReference(new CustomerBusinessCentral(['customer_id' => $customer->id]))) {
                     $this->storeReference(new CustomerBusinessCentral([
-                        'customer_id'         => $customer->id,
-                        'business_central_id' => $item->id
+                        'customer_id' => $customer->id,
+                        'business_central_id' => $item->id,
                     ]));
                 }
             } else {
                 $command->error('Customer not found: '.$item->number);
             }
-
         }
 
         return $response;
@@ -121,15 +111,14 @@ class CustomerRepository extends RepositoryAbstract
 
     /**
      * @param $guid
-     * @return null|\stdClass
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function get($guid)
+    public function get($guid): ?\stdClass
     {
         return $this->client->get(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/customers('.$guid.')'
         );
     }
-
 }

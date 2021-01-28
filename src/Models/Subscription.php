@@ -1,13 +1,16 @@
 <?php
 
-namespace BusinessCentral\Models;
+declare(strict_types=1);
 
-use BusinessCentral\Models\Traits\BootClientState;
-use BusinessCentral\Models\Traits\BootExpirationDateTime;
+namespace Daalder\BusinessCentral\Models;
+
+use Daalder\BusinessCentral\Models\Traits\BootClientState;
+use Daalder\BusinessCentral\Models\Traits\BootExpirationDateTime;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Pionect\Backoffice\Models\BaseModel;
 /**
  * Class Subscription
+ *
  * @package BusinessCentral\Models
  *
  * @property   string subscriptionId
@@ -18,42 +21,33 @@ use Pionect\Backoffice\Models\BaseModel;
  * @property   string expirationDateTime
  * @property   bool   isRegistered
  */
+
 class Subscription extends BaseModel
 {
     use BootClientState, BootExpirationDateTime;
 
-    /**
-     * @var string
-     */
-    public $table ='subscription_business_central';
+    public string $table = 'subscription_business_central';
 
     /**
      * @var array
      */
-    public $fillable = [
+    public array $fillable = [
         'subscriptionId',
         'notificationUrl',
         'resourceUrl',
         'clientState',
         'lastModifiedDateTime',
         'expirationDateTime',
-        'isRegistered'
+        'isRegistered',
     ];
 
-    /**
-     * @return HasMany
-     */
-    public function notices()
+    public function notices(): HasMany
     {
         return $this->hasMany(SubscriptionNotice::class);
     }
 
-    /**
-     * @return string
-     */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'subscriptionId';
     }
-
 }

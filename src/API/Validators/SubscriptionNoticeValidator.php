@@ -1,22 +1,25 @@
 <?php
 
-namespace BusinessCentral\API\Validators;
+declare(strict_types=1);
 
-use BusinessCentral\API\Services\NamespaceTranslations;
-use BusinessCentral\Models\Subscription;
+namespace Daalder\BusinessCentral\API\Validators;
+
 use Carbon\Carbon;
+use Daalder\BusinessCentral\API\Services\NamespaceTranslations;
+use Daalder\BusinessCentral\Models\Subscription;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class SubscriptionNoticeValidator {
-
+class SubscriptionNoticeValidator
+{
     /**
      * @var array
      */
-    protected $data;
+    protected array $data;
 
     /**
      * SubscriptionNoticeValidator constructor.
+     *
      * @param array $data
      */
     public function __construct(array $data)
@@ -26,9 +29,8 @@ class SubscriptionNoticeValidator {
 
     /**
      * @param array $data
-     * @return Validator
      */
-    public function validate()
+    public function validate(): Validator
     {
         return Validator::make($this->data, $this->rules());
     }
@@ -36,37 +38,37 @@ class SubscriptionNoticeValidator {
     /**
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'subscriptionId' => [
                 'required',
-                Rule::in($this->getSubscriptionIds())
+                Rule::in($this->getSubscriptionIds()),
             ],
             'clientState' => [
                 'required',
                 'string',
-                Rule::in([$this->getClientState()])
+                Rule::in([$this->getClientState()]),
             ],
             'expirationDateTime' => [
                 'required',
                 'string',
-                'date'
+                'date',
             ],
             'resource' => [
                 'required',
                 'string',
-                'regex:'.$this->getResourceRegex()
+                'regex:'.$this->getResourceRegex(),
             ],
             'changeType' => [
                 'required',
                 'string',
-                Rule::in($this->getChangeTypes())
+                Rule::in($this->getChangeTypes()),
             ],
             'lastModifiedDateTime' => [
                 'required',
                 'string',
-                'date'
+                'date',
             ],
         ];
     }
@@ -74,15 +76,12 @@ class SubscriptionNoticeValidator {
     /**
      * @return array
      */
-    protected function getSubscriptionIds()
+    protected function getSubscriptionIds(): array
     {
         return array_keys(NamespaceTranslations::$NAMESPACES);
     }
 
-    /**
-     * @return string
-     */
-    protected function getClientState()
+    protected function getClientState(): string
     {
         return Subscription::where('subscriptionId', $this->data['subscriptionId'])
             ->where('expirationDateTime', '>', Carbon::now())
@@ -90,25 +89,20 @@ class SubscriptionNoticeValidator {
             ->clientState;
     }
 
-    /**
-     * @return string
-     */
-    protected function getResourceRegex()
+    protected function getResourceRegex(): string
     {
-        $regex = '/\/([a-z\-]+)\(([a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12})\)/';
-        return $regex;
+        return '/\/([a-z\-]+)\(([a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12})\)/';
     }
 
     /**
      * @return array
      */
-    protected function getChangeTypes()
+    protected function getChangeTypes(): array
     {
         return [
             'updated',
             'created',
-            'deleted'
+            'deleted',
         ];
     }
-
 }

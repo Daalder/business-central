@@ -1,19 +1,21 @@
 <?php
 
-namespace BusinessCentral\API\Providers;
+declare(strict_types=1);
 
-use BusinessCentral\API\Observers\SubscriptionNoticeObserver;
-use BusinessCentral\API\Observers\SubscriptionObserver;
-use BusinessCentral\Models\Subscription;
-use BusinessCentral\Models\SubscriptionNotice;
+namespace Daalder\BusinessCentral\API\Providers;
+
+use Daalder\BusinessCentral\API\Observers\SubscriptionNoticeObserver;
+use Daalder\BusinessCentral\API\Observers\SubscriptionObserver;
+use Daalder\BusinessCentral\Models\Subscription;
+use Daalder\BusinessCentral\Models\SubscriptionNotice;
 use Illuminate\Support\ServiceProvider;
 
 class ModelServiceProvider extends ServiceProvider
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    public function boot()
+    public function boot(): void
     {
         Subscription::observe(SubscriptionObserver::class);
         SubscriptionNotice::observe(SubscriptionNoticeObserver::class);

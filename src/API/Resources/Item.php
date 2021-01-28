@@ -1,72 +1,63 @@
 <?php
 
-namespace BusinessCentral\API\Resources;
+declare(strict_types=1);
 
-use BusinessCentral\Models\SetBusinessCentral;
-use BusinessCentral\Models\UnitBusinessCentral;
-use BusinessCentral\Repositories\ReferenceRepository;
+namespace Daalder\BusinessCentral\API\Resources;
+
+use Daalder\BusinessCentral\Models\SetBusinessCentral;
+use Daalder\BusinessCentral\Models\UnitBusinessCentral;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Illuminate\Http\Resources\Json\Resource;
 
 /**
  * Class Product
  *
  * @package BusinessCentral\API\Resources
+ *
  * @mixin \Pionect\Backoffice\Models\Product\Product
  */
 class Item extends Resource
 {
+    private \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
 
-    /**
-     * @var \BusinessCentral\Repositories\ReferenceRepository
-     */
-    private $referenceRepository;
-
-    public function __construct($resource){
-            parent::__construct($resource);
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
 
         $this->referenceRepository = app(ReferenceRepository::class);
     }
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray(\Illuminate\Http\Request $request): array
     {
-        $data = [
+        return [
             'baseUnitOfMeasureId' => $this->when($this->setUnit(), $this->setUnit()),
-            'number'              => $this->sku,
-            'displayName'         => str_limit($this->name, 97),
-            'type'                => ($this->isShipping()) ? '2' : '0',
-            'blocked'             => false,
-            'gtin'                => $this->ean,
-            'unitPrice'           => ((float) $this->specialprice) ? (float) $this->specialprice : (float) $this->price,
-            'priceIncludesTax'    => true,
-            'itemCategoryId'      => $this->when($this->setItemCategory(), $this->setItemCategory())
+            'number' => $this->sku,
+            'displayName' => str_limit($this->name, 97),
+            'type' => $this->isShipping() ? '2' : '0',
+            'blocked' => false,
+            'gtin' => $this->ean,
+            'unitPrice' => (float) $this->specialprice ? (float) $this->specialprice : (float) $this->price,
+            'priceIncludesTax' => true,
+            'itemCategoryId' => $this->when($this->setItemCategory(), $this->setItemCategory()),
         ];
-
-        return $data;
     }
 
-    /**
-     * @return string|null
-     */
-    private function setItemCategory()
+    private function setItemCategory(): ?string
     {
         $reference = $this->referenceRepository->getReference(
             new SetBusinessCentral(['productattributeset_id' => optional($this->productattributeset)->id])
         );
 
-        return ($reference) ? $reference->business_central_id : null;
+        return $reference ? $reference->business_central_id : null;
     }
 
-    /**
-     * @return string|null
-     */
-    private function setUnit(){
-
-        if(!isset($this->saleUnit) || null === $this->saleUnit) {
+    private function setUnit(): ?string
+    {
+        if (! isset($this->saleUnit) || $this->saleUnit === null) {
             return null;
         }
 
@@ -74,6 +65,6 @@ class Item extends Resource
             new UnitBusinessCentral(['unit_id' => $this->saleUnit->id])
         );
 
-        return ($reference) ? $reference->business_central_id : null;
+        return $reference ? $reference->business_central_id : null;
     }
 }

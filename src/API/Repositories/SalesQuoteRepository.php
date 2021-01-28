@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\API\Repositories;
+declare(strict_types=1);
 
-use BusinessCentral\Models\SalesQuoteBusinessCentral;
+namespace Daalder\BusinessCentral\API\Repositories;
+
+use Daalder\BusinessCentral\Models\SalesQuoteBusinessCentral;
 use Pionect\Backoffice\Models\Order\Order;
 
 /**
@@ -12,10 +14,9 @@ use Pionect\Backoffice\Models\Order\Order;
  */
 class SalesQuoteRepository extends RepositoryAbstract
 {
-
     /**
-     * @param  \Pionect\Backoffice\Models\Order\Order  $order
      * @return bool|\stdClass|null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
@@ -40,8 +41,8 @@ class SalesQuoteRepository extends RepositoryAbstract
         );
 
         $this->storeReference(new SalesQuoteBusinessCentral([
-            'order_id'            => $order->id,
-            'business_central_id' => $response->id
+            'order_id' => $order->id,
+            'business_central_id' => $response->id,
         ]));
 
         foreach ($order->orderrows as $row) {
@@ -54,8 +55,8 @@ class SalesQuoteRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  Order  $order
      * @return bool|\stdClass|null
+     *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */

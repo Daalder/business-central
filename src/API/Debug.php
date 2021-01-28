@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\API;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\API;
 
 /**
  * Debug helper class
@@ -19,30 +21,22 @@ class Debug
      * @var mixed
      */
     public $lastResponseCode;
-    /**
-     * @var string
-     */
-    public $lastResponseHeaders;
+    public string $lastResponseHeaders;
     /**
      * @var mixed
      */
     public $lastResponseError;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $lastError = $this->lastResponseError;
-        if (!is_string($lastError)) {
+        if (! is_string($lastError)) {
             $lastError = json_encode($lastError);
         }
-        $output = 'LastResponseCode: '.$this->lastResponseCode
+        return 'LastResponseCode: '.$this->lastResponseCode
             .', LastResponseError: '.$lastError
             .', LastResponseHeaders: '.$this->lastResponseHeaders
             .', LastRequestHeaders: '.$this->lastRequestHeaders
             .', LastRequestBody: '.$this->lastRequestBody;
-
-        return $output;
     }
 }

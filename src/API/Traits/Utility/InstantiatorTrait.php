@@ -1,18 +1,18 @@
 <?php
 
-namespace BusinessCentral\API\Traits\Utility;
+declare(strict_types=1);
 
+namespace Daalder\BusinessCentral\API\Traits\Utility;
 
-use BusinessCentral\API\HttpClient;
-use BusinessCentral\API\Repositories\RepositoryAbstract;
-use BusinessCentral\Repositories\ReferenceRepository;
+use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\API\Repositories\RepositoryAbstract;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Illuminate\Support\Facades\App;
 
 /**
  * The Instantiator trait which has the magic methods for instantiating Resources
  *
  * @package Zendesk\API
- *
  */
 trait InstantiatorTrait
 {
@@ -24,29 +24,27 @@ trait InstantiatorTrait
      * @param $name
      * @param $arguments
      *
-     * @return ChainedParametersTrait
      * @throws \Exception
      */
-    public function __call($name, $arguments)
+    public function __call($name, $arguments): ChainedParametersTrait
     {
         if ((array_key_exists($name, $validSubResources = $this::getValidSubResources()))) {
             $reference = App::make(ReferenceRepository::class);
             $className = $validSubResources[$name];
             //dd($this->client);
-            $client = ($this instanceof HttpClient) ? $this : $this->client;
-            $class  = new $className($client, $reference);
+            $client = $this instanceof HttpClient ? $this : $this->client;
+            $class = new $className($client, $reference);
         } else {
-            throw new \Exception("No method called $name available in ".__CLASS__);
+            throw new \Exception("No method called ${name} available in ".self::class);
         }
 
-        $chainedParams = ($this instanceof RepositoryAbstract) ? $this->getChainedParameters() : [];
+        $chainedParams = $this instanceof RepositoryAbstract ? $this->getChainedParameters() : [];
 
-        if ((isset($arguments[0])) && ($arguments[0] != null)) {
+        if (isset($arguments[0]) && ($arguments[0] !== null)) {
             $chainedParams = array_merge($chainedParams, [get_class($class) => $arguments[0]]);
         }
 
-        $class = $class->setChainedParameters($chainedParams);
-
-        return $class;
+        return $class->setChainedParameters($chainedParams);
+    
     }
 }

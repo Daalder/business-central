@@ -1,6 +1,6 @@
 <?php
 
-use BusinessCentral\Models\Subscription;
+declare(strict_types=1);
 
 Route::get('not-in', 'BusinessCentralController@index');
 Route::get('sidebar/{product}', 'BusinessCentralController@sidebar');

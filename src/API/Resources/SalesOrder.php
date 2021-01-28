@@ -1,47 +1,46 @@
 <?php
 
-namespace BusinessCentral\API\Resources;
+declare(strict_types=1);
 
-use BusinessCentral\API\Repositories\ShippingMethodsRepository;
+namespace Daalder\BusinessCentral\API\Resources;
+
+use Daalder\BusinessCentral\API\Repositories\ShippingMethodsRepository;
 use Illuminate\Http\Resources\Json\Resource;
 
 /**
  * Class SalesOrder
  *
  * @package BusinessCentral\API\Resources
+ *
  * @mixin \Pionect\Backoffice\Models\Order\Order
  */
 class SalesOrder extends Resource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray(\Illuminate\Http\Request $request): array
     {
         $shippingMethodsRespository = resolve(ShippingMethodsRepository::class);
         $bcShippingMethod = $shippingMethodsRespository->getByShippingSku($this->getShippingSku());
 
         return [
             //'number' => (string)$this->orderid,
-            'externalDocumentNumber'    => (string) $this->id,
-            'orderDate'                 => $this->date->toDateString(),
-            'customerNumber'            => (string) $this->customer_id,
+            'externalDocumentNumber' => (string) $this->id,
+            'orderDate' => $this->date->toDateString(),
+            'customerNumber' => (string) $this->customer_id,
             //'currencyCode' => "EURO",
-            'paymentTermsId'            => (string) $this->getPaymentTerms(),
-            'discountAmount'            => $this->getDiscount(),
-            'shipToAddressLine1'        => str_limit($this->address.' '.$this->housenumber, 47),
-            'shipToCity'                => ucfirst($this->city),
-            'shipToCountry'             => $this->country_code ?: Customer::default_country, // Default to NL is needed for API template.
-            'shipToPostCode'            => $this->postalcode,
+            'paymentTermsId' => (string) $this->getPaymentTerms(),
+            'discountAmount' => $this->getDiscount(),
+            'shipToAddressLine1' => str_limit($this->address.' '.$this->housenumber, 47),
+            'shipToCity' => ucfirst($this->city),
+            'shipToCountry' => $this->country_code ?: Customer::default_country, // Default to NL is needed for API template.
+            'shipToPostCode' => $this->postalcode,
             //'shipmentMethodId'          => $bcShippingMethod->business_central_id,
         ];
     }
 
-    /**
-     * @return string
-     */
-    private function getPaymentTerms()
+    private function getPaymentTerms(): string
     {
         if ($this->payment) {
             switch ($this->payment->method_id) {
@@ -70,7 +69,6 @@ class SalesOrder extends Resource
         }
     }
 }
-
 
 //{
 //  "id": "id-value",

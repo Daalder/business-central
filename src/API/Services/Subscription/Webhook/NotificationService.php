@@ -1,44 +1,36 @@
 <?php
 
-namespace BusinessCentral\API\Services\Subscription\Webhook;
+declare(strict_types=1);
 
-use BusinessCentral\API\Repositories\SubscriptionNoticeRepository;
-use BusinessCentral\API\Services\Subscription\WebhookService;
-use BusinessCentral\API\Validators\SubscriptionNoticeValidator;
-use BusinessCentral\Models\Subscription;
-use BusinessCentral\Models\SubscriptionNotice;
+namespace Daalder\BusinessCentral\API\Services\Subscription\Webhook;
+
+use Daalder\BusinessCentral\API\Repositories\SubscriptionNoticeRepository;
+use Daalder\BusinessCentral\API\Services\Subscription\WebhookService;
+use Daalder\BusinessCentral\API\Validators\SubscriptionNoticeValidator;
+use Daalder\BusinessCentral\Models\Subscription;
+use Daalder\BusinessCentral\Models\SubscriptionNotice;
 use Exception;
 use Illuminate\Http\Request;
 
 class NotificationService extends WebhookService
 {
-    /**
-     * @var SubscriptionNoticeRepository
-     */
-    protected $repository;
+    protected SubscriptionNoticeRepository $repository;
 
     /**
      * NotificationService constructor.
-     * @param SubscriptionNoticeRepository $repository
      */
     public function __construct(SubscriptionNoticeRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * @param Subscription $subscription
-     * @param Request $request
-     * @return bool
-     */
-    public function readPayload(Subscription $subscription, Request $request)
+    public function readPayload(Subscription $subscription, Request $request): bool
     {
         $payload = $request->input('value');
 
-        foreach($payload as $notificationPayload) {
-
+        foreach ($payload as $notificationPayload) {
             $validator = (new SubscriptionNoticeValidator($notificationPayload))->validate();
-            if($validator->fails()) {
+            if ($validator->fails()) {
                 report(new Exception($validator->errors()));
                 continue;
             }
@@ -47,7 +39,7 @@ class NotificationService extends WebhookService
                 'subscription_id' => $subscription->id,
                 'resourceUrl' => $notificationPayload['resourceUrl'],
                 'changeType' => $notificationPayload['changeType'],
-                'lastModifiedDateTime' => $notificationPayload['lastModifiedDateTime']
+                'lastModifiedDateTime' => $notificationPayload['lastModifiedDateTime'],
             ]));
         }
 

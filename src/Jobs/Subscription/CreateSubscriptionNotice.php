@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\Jobs\Subscription;
+declare(strict_types=1);
 
-use BusinessCentral\Models\SubscriptionNotice;
+namespace Daalder\BusinessCentral\Jobs\Subscription;
+
+use Daalder\BusinessCentral\Models\SubscriptionNotice;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,30 +15,26 @@ class CreateSubscriptionNotice implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    /**
-     * @var SubscriptionNotice
-     */
-    protected $notice;
+    protected SubscriptionNotice $notice;
 
     /**
      * Create a new job instance.
-     * @param SubscriptionNotice $notice
      */
     public function __construct(SubscriptionNotice $notice)
     {
         // TODO It's up to you :)
-        $this->queue   = 'medium';
+        $this->queue = 'medium';
         $this->notice = $notice;
     }
 
-    public function handle()
+    public function handle(): void
     {
     }
 
     /**
      * @return array
      */
-    public function tags()
+    public function tags(): array
     {
         return ['business-central', 'create-subscription-notice', 'subscription-notice', 'subscription-notice-'.$this->notice->id];
     }

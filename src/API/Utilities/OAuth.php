@@ -1,6 +1,8 @@
 <?php
 
-namespace BusinessCentral\API\Utilities;
+declare(strict_types=1);
+
+namespace Daalder\BusinessCentral\API\Utilities;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -10,31 +12,31 @@ use Zendesk\API\Exceptions\ApiResponseException;
 class OAuth
 {
     /**
-     * @param  \GuzzleHttp\Client  $client
      * @param                    $subdomain
      * @param  array  $params
-     * @param  string  $domain
+     *
      * @return mixed
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      */
-    public static function getAccessToken(Client $client, $subdomain, array $params, $domain = 'zendesk.com')
+    public static function getAccessToken(Client $client, $subdomain, array $params, string $domain = 'zendesk.com')
     {
-        $authUrl = "https://$subdomain.$domain/oauth/tokens";
+        $authUrl = "https://${subdomain}.${domain}/oauth/tokens";
 
         // Fetch access_token
         $params = array_merge([
-            'code'          => null,
-            'client_id'     => null,
+            'code' => null,
+            'client_id' => null,
             'client_secret' => null,
-            'grant_type'    => 'authorization_code',
-            'scope'         => 'read write',
-            'redirect_uri'  => null,
+            'grant_type' => 'authorization_code',
+            'scope' => 'read write',
+            'redirect_uri' => null,
         ], $params);
 
         try {
-            $request  = new Request('POST', $authUrl, ['Content-Type' => 'application/json']);
-            $request  = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($params)));
+            $request = new Request('POST', $authUrl, ['Content-Type' => 'application/json']);
+            $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($params)));
             $response = $client->send($request);
         } catch (RequestException $e) {
             throw new ApiResponseException($e);
@@ -46,24 +48,21 @@ class OAuth
     /**
      * Generates an oAuth URL.
      *
-     * @param  string  $subdomain
      * @param  array  $options
-     * @param  string  $domain
-     * @return string
      */
-    public static function getAuthUrl($subdomain, array $options, $domain = 'zendesk.com')
+    public static function getAuthUrl(string $subdomain, array $options, string $domain = 'zendesk.com'): string
     {
         $queryParams = [
             'response_type' => 'code',
-            'client_id'     => null,
-            'state'         => null,
-            'redirect_uri'  => null,
-            'scope'         => 'read write',
+            'client_id' => null,
+            'state' => null,
+            'redirect_uri' => null,
+            'scope' => 'read write',
         ];
 
         $options = array_merge($queryParams, $options);
 
-        $oAuthUrl = "https://$subdomain.$domain/oauth/authorizations/new?";
+        $oAuthUrl = "https://${subdomain}.${domain}/oauth/authorizations/new?";
         // Build query and remove empty values
         $oAuthUrl .= http_build_query(array_filter($options));
 

@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\Validators;
+declare(strict_types=1);
 
-use BusinessCentral\Validators\Contracts\BusinessCentralValidatorContract;
+namespace Daalder\BusinessCentral\Validators;
+
+use Daalder\BusinessCentral\Validators\Contracts\BusinessCentralValidatorContract;
 use Illuminate\Support\Facades\Validator;
 
 class BusinessCentralValidator implements BusinessCentralValidatorContract
@@ -10,9 +12,8 @@ class BusinessCentralValidator implements BusinessCentralValidatorContract
     /**
      * @param array $payload
      * @param array $rules
-     * @return Validator
      */
-    public static function make(array $payload = [], array $rules = [])
+    public static function make(array $payload = [], array $rules = []): Validator
     {
         return (new static())->validate($payload, $rules);
     }
@@ -20,11 +21,10 @@ class BusinessCentralValidator implements BusinessCentralValidatorContract
     /**
      * @param array $payload
      * @param array $rules
-     * @return Validator
      */
-    public function validate(array $payload = [], array $rules = [])
+    public function validate(array $payload = [], array $rules = []): Validator
     {
-        if($rules === []) {
+        if ($rules === []) {
             $rules = $this->rules();
         }
 

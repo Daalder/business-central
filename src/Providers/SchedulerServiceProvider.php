@@ -1,19 +1,18 @@
 <?php
 
-namespace BusinessCentral\Providers;
+declare(strict_types=1);
 
-use BusinessCentral\Commands\BusinessCentralSubscription;
-use Illuminate\Support\ServiceProvider;
+namespace Daalder\BusinessCentral\Providers;
+
+use Daalder\BusinessCentral\Commands\BusinessCentralSubscription;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\ServiceProvider;
 
 class SchedulerServiceProvider extends ServiceProvider
 {
-    /**
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
-        $this->app->booted(function () {
+        $this->app->booted(function (): void {
             $scheduler = $this->app->make(Schedule::class);
             $scheduler->command(BusinessCentralSubscription::class, ['renew'])->daily();
         });

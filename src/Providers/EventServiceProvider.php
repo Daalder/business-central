@@ -1,8 +1,10 @@
 <?php
 
-namespace BusinessCentral\Providers;
+declare(strict_types=1);
 
-use BusinessCentral\Listeners\PushOrderToBusinessCentral;
+namespace Daalder\BusinessCentral\Providers;
+
+use Daalder\BusinessCentral\Listeners\PushOrderToBusinessCentral;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -12,7 +14,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
+    protected array $listen = [
 
     ];
 
@@ -21,15 +23,14 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $subscribe = [
-        PushOrderToBusinessCentral::class
+    protected array $subscribe = [
+        PushOrderToBusinessCentral::class,
     ];
 
     /**
      * Register any other events for your application.
-     *
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
     }
