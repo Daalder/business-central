@@ -19,10 +19,9 @@ class SalesQuoteLineRepository extends RepositoryAbstract
     public $objectName = 'salesQuoteLines';
 
     /**
-     * @param                                           $businessCentralOrderReference
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Orderrow $row
+     * @param $businessCentralOrderReference
+     * @throws \Exception
      */
     public function create(Orderrow $row, $businessCentralOrderReference): void
     {
@@ -51,11 +50,9 @@ class SalesQuoteLineRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  array  $params
-     * @param       $ref
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param array $params
+     * @param $ref
+     * @return \stdClass|null
      */
     public function update(array $params, $ref): ?\stdClass
     {
@@ -66,11 +63,7 @@ class SalesQuoteLineRepository extends RepositoryAbstract
 
     /**
      * @param $ref
-     *
      * @return null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function delete($ref)
     {

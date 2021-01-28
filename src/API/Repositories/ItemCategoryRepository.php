@@ -19,8 +19,8 @@ class ItemCategoryRepository extends RepositoryAbstract
     public $objectName = 'itemCategories';
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Set $set
+     * @return \stdClass|null
      */
     public function create(Set $set): ?\stdClass
     {

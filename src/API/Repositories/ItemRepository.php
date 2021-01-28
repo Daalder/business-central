@@ -21,8 +21,9 @@ class ItemRepository extends RepositoryAbstract
     public string $objectName = 'item';
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Product $product
+     * @return \stdClass|null
+     * @throws \Exception
      */
     public function create(Product $product): ?\stdClass
     {
@@ -79,8 +80,9 @@ class ItemRepository extends RepositoryAbstract
     }
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Product $product
+     * @return \stdClass|null
+     * @throws \Exception
      */
     public function update(Product $product): ?\stdClass
     {
@@ -102,11 +104,7 @@ class ItemRepository extends RepositoryAbstract
 
     /**
      * @param $ref
-     *
      * @return null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function delete($ref)
     {
@@ -116,8 +114,8 @@ class ItemRepository extends RepositoryAbstract
     }
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param int|null $skipToken
+     * @return \stdClass|null
      */
     public function get(?int $skipToken = null): ?\stdClass
     {
@@ -127,10 +125,10 @@ class ItemRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \BusinessCentral\Commands\PullFromBusinessCentral  $command
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param PullFromBusinessCentral $command
+     * @param int $top
+     * @param int $skip
+     * @return \stdClass|null
      */
     public function pullReferences(PullFromBusinessCentral $command, int $top = 20000, int $skip = 0): ?\stdClass
     {
@@ -156,8 +154,7 @@ class ItemRepository extends RepositoryAbstract
     }
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Product $product
      */
     public function pullReferenceWithSku(Product $product): void
     {

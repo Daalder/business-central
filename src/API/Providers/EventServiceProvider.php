@@ -10,6 +10,10 @@ use Daalder\BusinessCentral\API\Listeners\Subscription\BusinessCentralSubscripti
 use Daalder\BusinessCentral\API\Listeners\SubscriptionNotice\SubscriptionNoticeProcess;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
+/**
+ * Class EventServiceProvider
+ * @package Daalder\BusinessCentral\API\Providers
+ */
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -17,7 +21,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected array $listen = [
+    protected $listen = [
         SubscriptionCreated::class => [
             BusinessCentralSubscriptionRegister::class,
         ],

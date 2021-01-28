@@ -8,7 +8,7 @@ use Daalder\BusinessCentral\API\Services\NamespaceTranslations;
 
 class BusinessCentralSupport
 {
-    public static function getRepositoryFromSubscriptionId(string $subscriptionId): string
+    public static function getRepositoryFromSubscriptionId(string $subscriptionId): ?string
     {
         $regex = '/\/(.*)\/\([a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}\)$';
         preg_match($regex, $subscriptionId, $matches);
@@ -20,7 +20,7 @@ class BusinessCentralSupport
         return null;
     }
 
-    public static function getBusinessCentralIdFromResourceUrl(string $resourceUrl): string
+    public static function getBusinessCentralIdFromResourceUrl(string $resourceUrl): ?string
     {
         $regex = '/\([a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}\)$';
         preg_match($regex, $resourceUrl, $matches);

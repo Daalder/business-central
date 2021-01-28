@@ -18,10 +18,8 @@ class DimensionRepository extends RepositoryAbstract
     public $objectName = 'item';
 
     /**
-     * @param  \BusinessCentral\Models\DefaultDimension  $defaultDimension
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param DefaultDimensionModel $defaultDimension
+     * @return \stdClass|null
      */
     public function create(DefaultDimensionModel $defaultDimension): ?\stdClass
     {
@@ -34,10 +32,8 @@ class DimensionRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \BusinessCentral\Models\DefaultDimension  $defaultDimension
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param DefaultDimensionModel $defaultDimension
+     * @return \stdClass|null
      */
     public function update(DefaultDimensionModel $defaultDimension): ?\stdClass
     {

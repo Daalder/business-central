@@ -10,11 +10,13 @@ use Daalder\BusinessCentral\Models\Subscription;
 use Daalder\BusinessCentral\Models\SubscriptionNotice;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class ModelServiceProvider
+ * @package Daalder\BusinessCentral\API\Providers
+ */
 class ModelServiceProvider extends ServiceProvider
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function boot(): void
     {
         Subscription::observe(SubscriptionObserver::class);

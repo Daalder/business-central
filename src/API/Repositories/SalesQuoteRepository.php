@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Repositories;
 
+use Daalder\BusinessCentral\API\Resources\SalesQuote;
 use Daalder\BusinessCentral\Models\SalesQuoteBusinessCentral;
 use Pionect\Backoffice\Models\Order\Order;
 
 /**
  * Class SalesQuoteRepository
- *
- * @package BusinessCentral\API\Repositories
+ * @package Daalder\BusinessCentral\API\Repositories
  */
 class SalesQuoteRepository extends RepositoryAbstract
 {
     /**
+     * @param Order $order
      * @return bool|\stdClass|null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @throws \Exception
      */
     public function create(Order $order)
     {
@@ -30,7 +29,7 @@ class SalesQuoteRepository extends RepositoryAbstract
             return $this->update($order);
         }
 
-        $resource = new \BusinessCentral\API\Resources\SalesQuote($order);
+        $resource = new SalesQuote($order);
 
         // Unset discount because order lines first needs to be created
         $salesQuote = $resource->resolve();
@@ -55,17 +54,15 @@ class SalesQuoteRepository extends RepositoryAbstract
     }
 
     /**
-     * @return bool|\stdClass|null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Order $order
+     * @return false|\stdClass|null
      */
     public function update(Order $order)
     {
         $reference = $this->referenceRepository->getReference(new SalesQuoteBusinessCentral(['order_id' => $order->id]));
 
         if ($reference) {
-            $resource = new \BusinessCentral\API\Resources\SalesQuote($order);
+            $resource = new SalesQuote($order);
 
             return $this->client->patch(
                 config('business-central.endpoint').'companies('.config('business-central.companyId').')/salesQuotes('.$reference->business_central_id.')', $resource->resolve()

@@ -7,6 +7,7 @@ namespace Daalder\BusinessCentral\API\Jobs;
 use Daalder\BusinessCentral\API\HttpClient;
 use Daalder\BusinessCentral\Models\Subscription;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -17,10 +18,11 @@ class SubscriptionKeep implements ShouldQueue
 
     protected Subscription $subscription;
 
-    protected string $queue = 'high';
+    public $queue = 'high';
 
     /**
      * SubscriptionKeep constructor.
+     * @param Subscription $subscription
      */
     public function __construct(Subscription $subscription)
     {

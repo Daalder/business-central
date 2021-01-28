@@ -15,12 +15,12 @@ use Pionect\Backoffice\Models\Product\Group;
 class DimensionValueRepository extends RepositoryAbstract
 {
 
+    /** @TODO: move to config */
     const GROUP_DIMENSION = 'e6824ae1-3a1c-4ccd-95e2-632cb16789f9';
-    public $objectName = 'item';
+    public string $objectName = 'item';
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @return \stdClass|null
      */
     public function pullReferences(): ?\stdClass
     {

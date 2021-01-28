@@ -16,18 +16,18 @@ use Pionect\Backoffice\Models\Order\Orderrow;
  */
 class SalesOrderLineRepository extends RepositoryAbstract
 {
-    public $objectName = 'salesOrderLines';
+    public string $objectName = 'salesOrderLines';
 
     /**
-     * @param                                           $businessCentralOrderReference
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Orderrow $row
+     * @param $businessCentralOrderReference
+     * @param string|null $overwriteRowDescription
+     * @throws \Exception
      */
     public function create(Orderrow $row, $businessCentralOrderReference, ?string $overwriteRowDescription = null): void
     {
         /** @var ProductBusinessCentral $productBusinessCentral */
-        $productBusinessCentral = ProductBusinessCentral::where('product_id', $row->product_id)->first();
+        $productBusinessCentral = ProductBusinessCentral::query()->where('product_id', $row->product_id)->first();
 
         $resource = new SalesOrderLine($row, $overwriteRowDescription);
         $salesOrderLine = $resource->resolve();
@@ -54,11 +54,9 @@ class SalesOrderLineRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  array  $params
-     * @param       $ref
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param array $params
+     * @param $ref
+     * @return \stdClass|null
      */
     public function update(array $params, $ref): ?\stdClass
     {
@@ -69,11 +67,7 @@ class SalesOrderLineRepository extends RepositoryAbstract
 
     /**
      * @param $ref
-     *
      * @return null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function delete($ref)
     {

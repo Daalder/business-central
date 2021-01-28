@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\API\Repositories;
 
 use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\API\Traits\Utility\ChainedParametersTrait;
 use Daalder\BusinessCentral\Models\ReferenceModel;
 use Daalder\BusinessCentral\Repositories\ReferenceRepository;
-use Zendesk\API\Traits\Utility\ChainedParametersTrait;
 
 /**
  * Class ResourceAbstract
@@ -18,14 +18,13 @@ abstract class RepositoryAbstract
 {
     use ChainedParametersTrait;
 
-    protected \BusinessCentral\API\HttpClient $client;
-    protected \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
+    protected HttpClient $client;
+    protected ReferenceRepository $referenceRepository;
 
     /**
-     * ResourceAbstract constructor.
-     *
-     * @param  \BusinessCentral\API\HttpClient  $client
-     * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
+     * RepositoryAbstract constructor.
+     * @param HttpClient $client
+     * @param ReferenceRepository $referenceRepository
      */
     public function __construct(HttpClient $client, ReferenceRepository $referenceRepository)
     {
@@ -34,7 +33,7 @@ abstract class RepositoryAbstract
     }
 
     /**
-     * @param  \BusinessCentral\Models\ReferenceModel  $model
+     * @param ReferenceModel $model
      */
     public function storeReference(ReferenceModel $model): void
     {

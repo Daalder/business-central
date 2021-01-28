@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
+
 
 /**
  * Class Product
@@ -13,14 +14,14 @@ use Illuminate\Http\Resources\Json\Resource;
  *
  * @mixin \Pionect\Backoffice\Models\ProductAttribute\Set
  */
-class ItemCategory extends Resource
+class ItemCategory extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @return array
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray($request): array
     {
         return [
             'code' => (string) str_limit($this->id, 20),

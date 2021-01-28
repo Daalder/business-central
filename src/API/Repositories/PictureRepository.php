@@ -9,19 +9,17 @@ use Illuminate\Support\Facades\Storage;
 use Pionect\Backoffice\Models\Product\Product;
 
 /**
- * Class Product
- *
- * @package App\BusinessCentral\API\Resources
+ * Class PictureRepository
+ * @package Daalder\BusinessCentral\API\Repositories
  */
 class PictureRepository extends RepositoryAbstract
 {
     public $objectName = 'picture';
 
     /**
-     * @return \stdClass|bool|null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Product $product
+     * @return false|\stdClass|null
+     * @throws \Exception
      */
     public function create(Product $product)
     {
@@ -52,10 +50,9 @@ class PictureRepository extends RepositoryAbstract
     }
 
     /**
-     * @return \stdClass|bool|null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Product $product
+     * @return false|\stdClass|null
+     * @throws \Exception
      */
     public function update(Product $product)
     {
@@ -87,11 +84,7 @@ class PictureRepository extends RepositoryAbstract
 
     /**
      * @param $ref
-     *
      * @return null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function delete($ref)
     {

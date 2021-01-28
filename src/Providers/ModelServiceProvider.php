@@ -10,8 +10,7 @@ use Pionect\Backoffice\Models\Product\Product;
 
 /**
  * Class ModelServiceProvider
- *
- * @package App\Providers
+ * @package Daalder\BusinessCentral\Providers
  */
 class ModelServiceProvider extends ServiceProvider
 {

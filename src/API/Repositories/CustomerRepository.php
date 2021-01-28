@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Repositories;
 
-use App\Console\Commands\BusinessCentral\PullFromBusinessCentral;
+use Daalder\BusinessCentral\Commands\PullFromBusinessCentral;
 use Daalder\BusinessCentral\Models\CustomerBusinessCentral;
 use Pionect\Backoffice\Models\Customer\Customer;
 
@@ -18,12 +18,12 @@ class CustomerRepository extends RepositoryAbstract
     public $objectName = 'customers';
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Customer $customer
+     * @return \stdClass|null
      */
     public function create(Customer $customer): ?\stdClass
     {
-        $resource = new \BusinessCentral\API\Resources\Customer($customer);
+        $resource = new \Daalder\BusinessCentral\API\Resources\Customer($customer);
 
         // If we have a reference then try to update.
         if ($this->referenceRepository->getReference(new CustomerBusinessCentral(['customer_id' => $customer->id]))) {
@@ -43,12 +43,12 @@ class CustomerRepository extends RepositoryAbstract
     }
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Customer $customer
+     * @return \stdClass|null
      */
     public function update(Customer $customer): ?\stdClass
     {
-        $resource = new \BusinessCentral\API\Resources\Customer($customer);
+        $resource = new \Daalder\BusinessCentral\API\Resources\Customer($customer);
 
         // Unset displayName because we don't have 2 way sync yet and BC changes are leading.
         $customerResource = $resource->resolve();
@@ -67,10 +67,8 @@ class CustomerRepository extends RepositoryAbstract
     }
 
     /**
+     * @param Customer $customer
      * @return null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function delete(Customer $customer)
     {
@@ -83,8 +81,10 @@ class CustomerRepository extends RepositoryAbstract
     }
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param PullFromBusinessCentral $command
+     * @param int $top
+     * @param int $skip
+     * @return \stdClass|null
      */
     public function pullReferences(PullFromBusinessCentral $command, int $top = 20000, int $skip = 0): ?\stdClass
     {
@@ -111,9 +111,7 @@ class CustomerRepository extends RepositoryAbstract
 
     /**
      * @param $guid
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @return \stdClass|null
      */
     public function get($guid): ?\stdClass
     {

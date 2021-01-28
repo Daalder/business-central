@@ -13,11 +13,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
- * // TODO (MK) Unify methods as needed.
- *
  * Class SubscriptionRepository
- *
- * @package BusinessCentral\API\Repositories
+ * @package Daalder\BusinessCentral\API\Repositories
  */
 class SubscriptionRepository extends RepositoryAbstract
 {
@@ -35,8 +32,7 @@ class SubscriptionRepository extends RepositoryAbstract
                 $subscription->expirationDateTime = $response->expirationDateTime;
                 $subscription->save();
             } catch (Exception $exception) {
-                print_r($subscriptionResource->resolve());
-                dd($exception->getMessage());
+                logger()->warning($exception->getMessage());
             }
         }
     }
@@ -56,9 +52,7 @@ class SubscriptionRepository extends RepositoryAbstract
             $subscription->isRegistered = Carbon::parse($response['expirationDateTime'])->greaterThan(Carbon::now());
             $subscription->save();
         } catch (Exception $exception) {
-            print_r($subscriptionResource->resolve());
-            dd($exception->getMessage());
-            return false;
+            logger()->warning($exception->getMessage());
         }
 
         return $subscription->isRegistered;
@@ -66,6 +60,7 @@ class SubscriptionRepository extends RepositoryAbstract
 
     /**
      * Register Subscription with BusinessCentral 365 API.
+     * @param Subscription $subscription
      */
     public function apiRegister(Subscription $subscription): void
     {
@@ -74,6 +69,7 @@ class SubscriptionRepository extends RepositoryAbstract
 
     /**
      * Renew Subscription with BusinessCentral 365 API.
+     * @param Subscription $subscription
      */
     public function apiRenew(Subscription $subscription): void
     {
@@ -89,7 +85,7 @@ class SubscriptionRepository extends RepositoryAbstract
             $types = array_keys(NamespaceTranslations::$NAMESPACES);
         }
 
-        return Subscription::where('isRegistered', true)
+        return Subscription::query()->where('isRegistered', true)
             ->where('expirationDateTime', '>', Carbon::now())
             ->whereIn('subscriptionId', $types)
             ->get();
@@ -100,13 +96,13 @@ class SubscriptionRepository extends RepositoryAbstract
      *
      * @throws Exception
      */
-    public function firstOrCreate(array $data = []): Subscription
+    public function firstOrCreate(array $data = []): object
     {
         if (! isset($data['subscriptionId'])) {
             throw new Exception('No subscription ID provided');
         }
 
-        $subscription = Subscription::where('subscriptionId', $data['subscriptionId'])->first();
+        $subscription = Subscription::query()->where('subscriptionId', $data['subscriptionId'])->first();
 
         if ($subscription === null) {
             return new Subscription($data);
@@ -148,8 +144,7 @@ class SubscriptionRepository extends RepositoryAbstract
                 config('business-central.endpoint') . 'subscriptions', $resource->resolve()
             );
         } catch (Exception $exception) {
-            print_r($resource->resolve());
-            dd($exception->getMessage());
+            logger()->warning($exception->getMessage());
         }
     }
 }

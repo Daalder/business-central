@@ -20,7 +20,6 @@
         "pionect/daalder": "^7.0",
         "league/oauth2-client": "^2.4",
         "spatie/valuestore": "^1.2",
-        "zendesk/zendesk_api_client_php": "^2.2",
         "guzzlehttp/guzzle": "~7.0"
     },
     "require-dev": {

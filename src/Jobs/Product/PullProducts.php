@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Jobs\Product;
 
-use App\Models\Products\Product;
 use Daalder\BusinessCentral\API\HttpClient;
 use Daalder\BusinessCentral\Repositories\ProductRepository;
 use Illuminate\Bus\Queueable;
@@ -15,6 +14,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Pionect\Backoffice\Models\Product\Product;
 
 /**
  * Class PullProducts
@@ -60,7 +60,7 @@ class PullProducts implements ShouldQueue
 
                 // Store business central id
                 DB::table('product_business_central')->insert([
-                    'product_id' => Product::where('sku', $productSku)->first()->id,
+                    'product_id' => Product::query()->where('sku', $productSku)->first()->id,
                     'business_central_id' => $items[0]->id,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),

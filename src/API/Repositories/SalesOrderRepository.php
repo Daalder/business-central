@@ -18,11 +18,11 @@ use Pionect\Backoffice\Models\Product\ProductOption;
  */
 class SalesOrderRepository extends RepositoryAbstract
 {
-    public $objectName = 'salesOrders';
+    public string $objectName = 'salesOrders';
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Order $order
+     * @return \stdClass|null
      */
     public function create(Order $order): ?\stdClass
     {
@@ -99,7 +99,7 @@ class SalesOrderRepository extends RepositoryAbstract
         return $response;
     }
 
-    public function findByNumber(string $orderNumber)
+    public function findByNumber(string $orderNumber): ?\stdClass
     {
         return $this->client->get(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/salesOrders?$filter=number eq \''.$orderNumber.'\''
@@ -107,8 +107,8 @@ class SalesOrderRepository extends RepositoryAbstract
     }
 
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param Order $order
+     * @return \stdClass|null
      */
     public function update(Order $order): ?\stdClass
     {
@@ -128,10 +128,8 @@ class SalesOrderRepository extends RepositoryAbstract
     }
 
     /**
+     * @param Order $order
      * @return null
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
      */
     public function delete(Order $order)
     {

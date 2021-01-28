@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\API\Repositories;
 
 use Daalder\BusinessCentral\Models\ShippingMethod as BusinessCentralShippingMethod;
+use Illuminate\Support\Collection;
 use Pionect\Backoffice\Models\Shipping\ShippingMethod as DaalderShippingMethod;
 
 /**
@@ -15,10 +16,9 @@ use Pionect\Backoffice\Models\Shipping\ShippingMethod as DaalderShippingMethod;
 class ShippingMethodsRepository extends RepositoryAbstract
 {
     /**
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @return Collection
      */
-    public function get(): \Illuminate\Support\Collection
+    public function get(): Collection
     {
         $response = $this->client->get(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/shipmentMethods()'
@@ -35,11 +35,15 @@ class ShippingMethodsRepository extends RepositoryAbstract
         return $shippingMethods;
     }
 
+    /**
+     * @param $sku
+     * @return null
+     */
     public function getByShippingSku($sku)
     {
-        $daalderShippingMethod = DaalderShippingMethod::where('sku', '=', $sku)->first();
+        $daalderShippingMethod = DaalderShippingMethod::query()->where('sku', '=', $sku)->first();
         if ($daalderShippingMethod) {
-            return BusinessCentralShippingMethod::where('shipping_method_id', '=', $daalderShippingMethod->id)->first();
+            return BusinessCentralShippingMethod::query()->where('shipping_method_id', '=', $daalderShippingMethod->id)->first();
         }
 
         return null;
