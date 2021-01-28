@@ -1,0 +1,44 @@
+{
+    "name": "daalder/business-central",
+    "description": "BusinessCentral integration",
+    "type": "library",
+    "license": "closed source",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.packagist.com/pionect/"
+        },
+        {
+            "packagist.org": false
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Pionect/captainhook"
+        }
+    ],
+    "require": {
+        "pionect/backoffice": "^7.0",
+        "league/oauth2-client": "^2.4",
+        "spatie/valuestore": "^1.2",
+        "zendesk/zendesk_api_client_php": "^2.2",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^5.0|^6.0",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "BusinessCentral\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BusinessCentral\\BusinessCentralServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
