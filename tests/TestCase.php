@@ -1,6 +1,6 @@
 <?php
 
-namespace Pionect\BusinessCentral\Tests;
+namespace Daalder\BusinessCentral\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
 

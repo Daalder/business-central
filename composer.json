@@ -29,7 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "BusinessCentral\\": "src/"
+            "Daalder\\BusinessCentral\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Daalder\\BusinessCentral\\Tests\\": "tests"
         }
     },
     "extra": {
