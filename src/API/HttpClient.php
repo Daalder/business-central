@@ -17,6 +17,8 @@ use Daalder\BusinessCentral\API\Repositories\SubscriptionRepository;
 use Daalder\BusinessCentral\API\Repositories\WarehouseShipmentRepository;
 use Daalder\BusinessCentral\API\Traits\Utility\InstantiatorTrait;
 use Daalder\BusinessCentral\API\Utilities\Auth;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use Zendesk\API\Middleware\RetryHandler;
@@ -39,15 +41,15 @@ class HttpClient
 {
     use InstantiatorTrait;
 
-    public $guzzle;
-    protected $apiUrl;
-    protected $hostname;
-    protected $scheme;
-    protected $debug;
-    protected $port;
-    protected $subdomain;
-    protected $auth;
-    protected $apiBasePath;
+    public Client $guzzle;
+    protected string $apiUrl;
+    protected string $hostname;
+    protected string $scheme;
+    protected Debug $debug;
+    protected int $port;
+    protected string $subdomain;
+    protected Auth $auth;
+    protected string $apiBasePath;
     /**
      * @var array $headers
      */
@@ -57,7 +59,11 @@ class HttpClient
      * HttpClient constructor.
      *
      * @param        $subdomain
-     * @param  null  $guzzle
+     * @param string $username
+     * @param string $scheme
+     * @param string $hostname
+     * @param int $port
+     * @param null $guzzle
      */
     public function __construct(
         $subdomain,
@@ -95,11 +101,9 @@ class HttpClient
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return array
+     * @return string[]
      */
-    public static function getValidSubResources()
+    public static function getValidSubResources(): array
     {
         return [
             'item' => ItemRepository::class,
@@ -121,10 +125,8 @@ class HttpClient
     }
 
     /**
-     * @param       $strategy
-     * @param  array  $options
-     *
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param $strategy
+     * @param array $options
      */
     public function setAuth($strategy, array $options): void
     {
@@ -195,15 +197,16 @@ class HttpClient
     /**
      * Set debug information as an object
      *
-     * @param  mixed  $lastRequestHeaders
-     * @param  mixed  $lastRequestBody
-     * @param  mixed  $lastResponseCode
-     * @param  mixed  $lastResponseError
+     * @param mixed $lastRequestHeaders
+     * @param mixed $lastRequestBody
+     * @param mixed $lastResponseCode
+     * @param string $lastResponseHeaders
+     * @param mixed $lastResponseError
      */
     public function setDebug(
-        $lastRequestHeaders,
-        $lastRequestBody,
-        $lastResponseCode,
+        mixed $lastRequestHeaders,
+        mixed $lastRequestBody,
+        mixed $lastResponseCode,
         string $lastResponseHeaders,
         $lastResponseError
     ): void {
@@ -223,15 +226,12 @@ class HttpClient
     }
 
     /**
-     * This is a helper method to do a post request.
-     *
-     * @param       $endpoint
-     * @param  array  $postData
-     *
-     * @param  array  $options
-     *
-     * @throws \Zendesk\API\Exceptions\AuthException
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @param $endpoint
+     * @param array $postData
+     * @param array $options
+     * @return \stdClass|null
+     * @throws Exceptions\ApiResponseException
+     * @throws GuzzleException
      */
     public function post($endpoint, array $postData = [], array $options = []): ?\stdClass
     {
@@ -248,15 +248,12 @@ class HttpClient
     }
 
     /**
-     * This is a helper method to do a post request.
-     *
-     * @param       $endpoint
-     * @param  array  $postData
-     *
-     * @param  array  $options
-     *
-     * @throws \Zendesk\API\Exceptions\AuthException
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @param $endpoint
+     * @param array $postData
+     * @param array $options
+     * @return \stdClass|null
+     * @throws Exceptions\ApiResponseException
+     * @throws GuzzleException
      */
     public function patch($endpoint, array $postData = [], array $options = []): ?\stdClass
     {
@@ -275,13 +272,11 @@ class HttpClient
     }
 
     /**
-     * This is a helper method to do a put request.
-     *
-     * @param       $endpoint
-     * @param  array  $putData
-     *
-     * @throws \Zendesk\API\Exceptions\AuthException
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @param $endpoint
+     * @param array $putData
+     * @return \stdClass|null
+     * @throws Exceptions\ApiResponseException
+     * @throws GuzzleException
      */
     public function put($endpoint, array $putData = []): ?\stdClass
     {
@@ -293,14 +288,10 @@ class HttpClient
     }
 
     /**
-     * This is a helper method to do a delete request.
-     *
      * @param $endpoint
-     *
-     * @return null
-     *
-     * @throws \Zendesk\API\Exceptions\AuthException
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @return \stdClass|null
+     * @throws Exceptions\ApiResponseException
+     * @throws GuzzleException
      */
     public function delete($endpoint)
     {
@@ -312,13 +303,11 @@ class HttpClient
     }
 
     /**
-     * This is a helper method to do a get request.
-     *
-     * @param       $endpoint
-     * @param  array  $queryParams
-     *
-     * @throws \Zendesk\API\Exceptions\AuthException
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @param $endpoint
+     * @param array $queryParams
+     * @return \stdClass|null
+     * @throws Exceptions\ApiResponseException
+     * @throws GuzzleException
      */
     public function get($endpoint, array $queryParams = []): ?\stdClass
     {

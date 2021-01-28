@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Validators;
 
 use Exception;
-use Pionect\Backoffice\Http\Api\Requests\Product\StoreProductRequest;
+use Pionect\Backoffice\Http\Requests\Product\CreateProductRequest;
+
 
 class ProductBusinessCentralValidator extends BusinessCentralValidator
 {
@@ -16,6 +17,6 @@ class ProductBusinessCentralValidator extends BusinessCentralValidator
      */
     public function rules(): array
     {
-        return (new StoreProductRequest())->rules();
+        return (new CreateProductRequest())->rules();
     }
 }

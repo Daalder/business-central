@@ -7,7 +7,7 @@ namespace Daalder\BusinessCentral\API\Validators;
 use Carbon\Carbon;
 use Daalder\BusinessCentral\API\Services\NamespaceTranslations;
 use Daalder\BusinessCentral\Models\Subscription;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule;
 
 class SubscriptionNoticeValidator

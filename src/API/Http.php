@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API;
 
+use Daalder\BusinessCentral\API\Exceptions\ApiResponseException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\StreamInterface;
-use Zendesk\API\Exceptions\ApiResponseException;
-use Zendesk\API\Exceptions\AuthException;
 
 /**
  * HTTP functions via curl
@@ -23,8 +23,9 @@ class Http
     /**
      * Use the send method to call every endpoint except for oauth/tokens
      *
-     * @param  string  $endPoint  E.g. "/tickets.json"
-     * @param  array  $options
+     * @param HttpClient $client
+     * @param string $endPoint E.g. "/tickets.json"
+     * @param array $options
      *                             Available options are listed below:
      *                             array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
      *                             array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
@@ -34,7 +35,7 @@ class Http
      * @return \stdClass | null The response body, parsed from JSON into an object. Also returns null if something went wrong
      *
      * @throws ApiResponseException
-     * @throws AuthException
+     * @throws GuzzleException
      */
     public static function send(
         HttpClient $client,
@@ -103,14 +104,13 @@ class Http
                 $request->getHeaders(),
                 $request->getBody(),
                 isset($response) ? $response->getStatusCode() : null,
-                isset($response) ? $response->getHeaders() : null,
+                (string)isset($response),
                 $e ?? null
             );
 
             $request->getBody()->rewind();
         }
 
-        //$client->setSideload(null);
 
         return json_decode($response->getBody());
     }

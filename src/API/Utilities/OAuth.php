@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\API\Utilities;
 
+use Daalder\BusinessCentral\API\Exceptions\ApiResponseException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
-use Zendesk\API\Exceptions\ApiResponseException;
+
 
 class OAuth
 {
     /**
-     * @param                    $subdomain
-     * @param  array  $params
-     *
+     * @param Client $client
+     * @param $subdomain
+     * @param array $params
+     * @param string $domain
      * @return mixed
-     *
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @throws ApiResponseException
      */
     public static function getAccessToken(Client $client, $subdomain, array $params, string $domain = 'zendesk.com')
     {
@@ -46,9 +47,10 @@ class OAuth
     }
 
     /**
-     * Generates an oAuth URL.
-     *
-     * @param  array  $options
+     * @param string $subdomain
+     * @param array $options
+     * @param string $domain
+     * @return string
      */
     public static function getAuthUrl(string $subdomain, array $options, string $domain = 'zendesk.com'): string
     {
