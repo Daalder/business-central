@@ -26,12 +26,12 @@ class SubscriptionNotice extends ReferenceModel
     /**
      * @var array
      */
-    public $fillable = ['subscription_id', 'expirationDateTime', 'resource', 'changeType', 'lastModifiedDateTime', 'isProcessed'];
+    public array $fillable = ['subscription_id', 'expirationDateTime', 'resource', 'changeType', 'lastModifiedDateTime', 'isProcessed'];
 
     /**
      * @var array
      */
-    public $dates = [
+    public array $dates = [
         'expirationDateTime',
         'lastModifiedDateTime',
     ];
@@ -39,7 +39,7 @@ class SubscriptionNotice extends ReferenceModel
     /**
      * @var array
      */
-    public $casts = [
+    public array $casts = [
         'isProcessed' => 'boolean',
     ];
 

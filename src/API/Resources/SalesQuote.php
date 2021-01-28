@@ -12,15 +12,15 @@ use Pionect\Backoffice\Models\Order\Order;
  * Class SalesQuote
  *
  * @package BusinessCentral\API\Resources
+ *
  * @mixin Order
  */
 class SalesQuote extends JsonResource
 {
     /**
-     * @param Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         return [
             'externalDocumentNumber' => (string) $this->orderid,

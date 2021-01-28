@@ -19,10 +19,9 @@ class Customer extends JsonResource
     const default_country = 'NL';
 
     /**
-     * @param Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         return [
             'number' => (string) $this->id,
@@ -43,4 +42,3 @@ class Customer extends JsonResource
         return $this->getContactTypeAttribute() === 'company' ? 'Company' : 'Person';
     }
 }
-

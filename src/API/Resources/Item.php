@@ -29,10 +29,9 @@ class Item extends JsonResource
     }
 
     /**
-     * @param Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         return [
             'baseUnitOfMeasureId' => $this->when($this->setUnit(), $this->setUnit()),
@@ -47,9 +46,6 @@ class Item extends JsonResource
         ];
     }
 
-    /**
-     * @return string|null
-     */
     private function setItemCategory(): ?string
     {
         $reference = $this->referenceRepository->getReference(
@@ -59,9 +55,6 @@ class Item extends JsonResource
         return $reference ? $reference->business_central_id : null;
     }
 
-    /**
-     * @return string|null
-     */
     private function setUnit(): ?string
     {
         if (! isset($this->saleUnit) || $this->saleUnit === null) {

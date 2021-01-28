@@ -17,10 +17,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class SalesQuoteLine extends JsonResource
 {
     /**
-     * @param Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         return [
             'lineType' => 'Item',

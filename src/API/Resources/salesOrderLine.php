@@ -31,11 +31,9 @@ class salesOrderLine extends JsonResource
     }
 
     /**
-     * @param Request $request
-     * @param string|null $rowDescription
      * @return array
      */
-    public function toArray($request, ?string $rowDescription = null): array
+    public function toArray(Request $request, ?string $rowDescription = null): array
     {
         $array = [
             'lineType' => 'Item',

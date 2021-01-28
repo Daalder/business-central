@@ -17,10 +17,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class DefaultDimension extends JsonResource
 {
     /**
-     * @param Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         return [
             'parentId' => (string) str_limit($this->id, 20),

@@ -9,6 +9,7 @@ use Pionect\Backoffice\Models\Unit\Unit;
 
 /**
  * Class UnitBusinessCentral
+ *
  * @package Daalder\BusinessCentral\Models
  */
 class UnitBusinessCentral extends ReferenceModel
