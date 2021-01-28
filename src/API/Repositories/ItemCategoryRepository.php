@@ -18,10 +18,6 @@ class ItemCategoryRepository extends RepositoryAbstract
 {
     public $objectName = 'itemCategories';
 
-    /**
-     * @param Set $set
-     * @return \stdClass|null
-     */
     public function create(Set $set): ?\stdClass
     {
         $resource = new ItemCategory($set);

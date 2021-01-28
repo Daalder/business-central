@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Class SubscriptionRepository
+ *
  * @package Daalder\BusinessCentral\API\Repositories
  */
 class SubscriptionRepository extends RepositoryAbstract
@@ -60,7 +61,6 @@ class SubscriptionRepository extends RepositoryAbstract
 
     /**
      * Register Subscription with BusinessCentral 365 API.
-     * @param Subscription $subscription
      */
     public function apiRegister(Subscription $subscription): void
     {
@@ -69,7 +69,6 @@ class SubscriptionRepository extends RepositoryAbstract
 
     /**
      * Renew Subscription with BusinessCentral 365 API.
-     * @param Subscription $subscription
      */
     public function apiRenew(Subscription $subscription): void
     {
@@ -108,8 +107,6 @@ class SubscriptionRepository extends RepositoryAbstract
             return new Subscription($data);
         }
         return $subscription;
-
-    
     }
 
     public function delete(Subscription $subscription, bool $updateBusinessCentral = true): bool

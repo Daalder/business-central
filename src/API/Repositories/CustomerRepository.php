@@ -17,10 +17,6 @@ class CustomerRepository extends RepositoryAbstract
 {
     public $objectName = 'customers';
 
-    /**
-     * @param Customer $customer
-     * @return \stdClass|null
-     */
     public function create(Customer $customer): ?\stdClass
     {
         $resource = new \Daalder\BusinessCentral\API\Resources\Customer($customer);
@@ -42,10 +38,6 @@ class CustomerRepository extends RepositoryAbstract
         return $response;
     }
 
-    /**
-     * @param Customer $customer
-     * @return \stdClass|null
-     */
     public function update(Customer $customer): ?\stdClass
     {
         $resource = new \Daalder\BusinessCentral\API\Resources\Customer($customer);
@@ -67,7 +59,6 @@ class CustomerRepository extends RepositoryAbstract
     }
 
     /**
-     * @param Customer $customer
      * @return null
      */
     public function delete(Customer $customer)
@@ -80,12 +71,6 @@ class CustomerRepository extends RepositoryAbstract
         );
     }
 
-    /**
-     * @param PullFromBusinessCentral $command
-     * @param int $top
-     * @param int $skip
-     * @return \stdClass|null
-     */
     public function pullReferences(PullFromBusinessCentral $command, int $top = 20000, int $skip = 0): ?\stdClass
     {
         $response = $this->client->get(
@@ -109,10 +94,6 @@ class CustomerRepository extends RepositoryAbstract
         return $response;
     }
 
-    /**
-     * @param $guid
-     * @return \stdClass|null
-     */
     public function get($guid): ?\stdClass
     {
         return $this->client->get(

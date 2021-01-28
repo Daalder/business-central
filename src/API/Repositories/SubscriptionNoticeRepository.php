@@ -6,6 +6,7 @@ namespace Daalder\BusinessCentral\API\Repositories;
 
 /**
  * Class SubscriptionNoticeRepository
+ *
  * @package Daalder\BusinessCentral\API\Repositories
  */
 class SubscriptionNoticeRepository extends RepositoryAbstract

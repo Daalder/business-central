@@ -35,7 +35,6 @@ class AddEmailFieldsToShipments extends Migration
     public function down(): void
     {
         Schema::table('shipments', static function (Blueprint $table): void {
-            
         });
     }
 }

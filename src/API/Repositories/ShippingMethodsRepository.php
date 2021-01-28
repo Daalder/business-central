@@ -15,9 +15,6 @@ use Pionect\Backoffice\Models\Shipping\ShippingMethod as DaalderShippingMethod;
  */
 class ShippingMethodsRepository extends RepositoryAbstract
 {
-    /**
-     * @return Collection
-     */
     public function get(): Collection
     {
         $response = $this->client->get(
@@ -37,6 +34,7 @@ class ShippingMethodsRepository extends RepositoryAbstract
 
     /**
      * @param $sku
+     *
      * @return null
      */
     public function getByShippingSku($sku)

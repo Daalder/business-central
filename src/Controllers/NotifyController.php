@@ -102,10 +102,8 @@ class NotifyController extends BaseController
 
             return response()->json($repository->edit($reference->product, $product)->toJson());
         }
-            // No reference then try to create
+        // No reference then try to create
         return $this->createItem($request, $repository, $referenceRepository);
-
-    
     }
 
     /**
@@ -187,10 +185,8 @@ class NotifyController extends BaseController
 
             return response()->json($repository->edit($reference->customer, $customer)->toJson());
         }
-            // No reference then try to create
+        // No reference then try to create
         return $this->createCustomer($request, $repository, $customerBusinessCentralRepository);
-
-    
     }
 
     public function createSalesOrder(Request $request): \Illuminate\Http\JsonResponse

@@ -45,6 +45,5 @@ trait InstantiatorTrait
         }
 
         return $class->setChainedParameters($chainedParams);
-    
     }
 }

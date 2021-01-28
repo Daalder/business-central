@@ -21,8 +21,6 @@ class ItemRepository extends RepositoryAbstract
     public string $objectName = 'item';
 
     /**
-     * @param Product $product
-     * @return \stdClass|null
      * @throws \Exception
      */
     public function create(Product $product): ?\stdClass
@@ -80,8 +78,6 @@ class ItemRepository extends RepositoryAbstract
     }
 
     /**
-     * @param Product $product
-     * @return \stdClass|null
      * @throws \Exception
      */
     public function update(Product $product): ?\stdClass
@@ -96,7 +92,7 @@ class ItemRepository extends RepositoryAbstract
                 config('business-central.endpoint').'companies('.config('business-central.companyId').')/items('.$reference->business_central_id.')', $item->resolve()
             );
         }
-            // No reference then try to create.
+        // No reference then try to create.
         $this->create($product);
 
         return null;
@@ -104,6 +100,7 @@ class ItemRepository extends RepositoryAbstract
 
     /**
      * @param $ref
+     *
      * @return null
      */
     public function delete($ref)
@@ -113,10 +110,6 @@ class ItemRepository extends RepositoryAbstract
         );
     }
 
-    /**
-     * @param int|null $skipToken
-     * @return \stdClass|null
-     */
     public function get(?int $skipToken = null): ?\stdClass
     {
         return $this->client->get(
@@ -124,12 +117,6 @@ class ItemRepository extends RepositoryAbstract
         );
     }
 
-    /**
-     * @param PullFromBusinessCentral $command
-     * @param int $top
-     * @param int $skip
-     * @return \stdClass|null
-     */
     public function pullReferences(PullFromBusinessCentral $command, int $top = 20000, int $skip = 0): ?\stdClass
     {
         $response = $this->client->get(
@@ -153,9 +140,6 @@ class ItemRepository extends RepositoryAbstract
         return $response;
     }
 
-    /**
-     * @param Product $product
-     */
     public function pullReferenceWithSku(Product $product): void
     {
         $response = $this->client->get(config('business-central.endpoint').'companies('.config('business-central.companyId').')/items?$filter=number eq \''.$product->sku.'\'');

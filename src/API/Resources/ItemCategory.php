@@ -6,7 +6,6 @@ namespace Daalder\BusinessCentral\API\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-
 /**
  * Class Product
  *

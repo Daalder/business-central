@@ -15,10 +15,6 @@ use Illuminate\Support\Collection;
  */
 class WarehouseShipmentLinesRepository extends RepositoryAbstract
 {
-    /**
-     * @param Shipment $shipment
-     * @return Collection
-     */
     public function get(Shipment $shipment): Collection
     {
         $response = $this->client->get(

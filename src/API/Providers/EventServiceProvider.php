@@ -12,6 +12,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 /**
  * Class EventServiceProvider
+ *
  * @package Daalder\BusinessCentral\API\Providers
  */
 class EventServiceProvider extends ServiceProvider
@@ -21,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
+    protected array $listen = [
         SubscriptionCreated::class => [
             BusinessCentralSubscriptionRegister::class,
         ],

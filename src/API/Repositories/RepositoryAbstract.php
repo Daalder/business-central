@@ -23,8 +23,6 @@ abstract class RepositoryAbstract
 
     /**
      * RepositoryAbstract constructor.
-     * @param HttpClient $client
-     * @param ReferenceRepository $referenceRepository
      */
     public function __construct(HttpClient $client, ReferenceRepository $referenceRepository)
     {
@@ -32,9 +30,6 @@ abstract class RepositoryAbstract
         $this->referenceRepository = $referenceRepository;
     }
 
-    /**
-     * @param ReferenceModel $model
-     */
     public function storeReference(ReferenceModel $model): void
     {
         $this->referenceRepository->storeReference($model);

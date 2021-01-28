@@ -20,10 +20,6 @@ class SalesOrderRepository extends RepositoryAbstract
 {
     public string $objectName = 'salesOrders';
 
-    /**
-     * @param Order $order
-     * @return \stdClass|null
-     */
     public function create(Order $order): ?\stdClass
     {
         // First create customer
@@ -106,10 +102,6 @@ class SalesOrderRepository extends RepositoryAbstract
         );
     }
 
-    /**
-     * @param Order $order
-     * @return \stdClass|null
-     */
     public function update(Order $order): ?\stdClass
     {
         /** @var ProductBusinessCentral $reference */
@@ -128,7 +120,6 @@ class SalesOrderRepository extends RepositoryAbstract
     }
 
     /**
-     * @param Order $order
      * @return null
      */
     public function delete(Order $order)

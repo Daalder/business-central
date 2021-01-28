@@ -10,13 +10,14 @@ use Pionect\Backoffice\Models\Order\Order;
 
 /**
  * Class SalesQuoteRepository
+ *
  * @package Daalder\BusinessCentral\API\Repositories
  */
 class SalesQuoteRepository extends RepositoryAbstract
 {
     /**
-     * @param Order $order
      * @return bool|\stdClass|null
+     *
      * @throws \Exception
      */
     public function create(Order $order)
@@ -54,7 +55,6 @@ class SalesQuoteRepository extends RepositoryAbstract
     }
 
     /**
-     * @param Order $order
      * @return false|\stdClass|null
      */
     public function update(Order $order)

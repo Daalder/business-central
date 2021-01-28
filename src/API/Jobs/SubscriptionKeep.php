@@ -16,13 +16,12 @@ class SubscriptionKeep implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    protected Subscription $subscription;
-
     public $queue = 'high';
+
+    protected Subscription $subscription;
 
     /**
      * SubscriptionKeep constructor.
-     * @param Subscription $subscription
      */
     public function __construct(Subscription $subscription)
     {

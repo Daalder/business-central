@@ -46,8 +46,6 @@ class ProductTranslator extends Translator
             return new ReferenceRepository($model);
         }
         return resolve(ReferenceRepository::class);
-
-    
     }
 
     /**

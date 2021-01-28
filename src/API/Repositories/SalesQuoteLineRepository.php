@@ -19,8 +19,8 @@ class SalesQuoteLineRepository extends RepositoryAbstract
     public $objectName = 'salesQuoteLines';
 
     /**
-     * @param Orderrow $row
      * @param $businessCentralOrderReference
+     *
      * @throws \Exception
      */
     public function create(Orderrow $row, $businessCentralOrderReference): void
@@ -52,7 +52,6 @@ class SalesQuoteLineRepository extends RepositoryAbstract
     /**
      * @param array $params
      * @param $ref
-     * @return \stdClass|null
      */
     public function update(array $params, $ref): ?\stdClass
     {
@@ -63,6 +62,7 @@ class SalesQuoteLineRepository extends RepositoryAbstract
 
     /**
      * @param $ref
+     *
      * @return null
      */
     public function delete($ref)

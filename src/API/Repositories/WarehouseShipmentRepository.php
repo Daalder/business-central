@@ -14,9 +14,6 @@ use Illuminate\Support\Collection;
  */
 class WarehouseShipmentRepository extends RepositoryAbstract
 {
-    /**
-     * @return Collection
-     */
     public function get(): Collection
     {
         $response = $this->client->get(
@@ -34,20 +31,12 @@ class WarehouseShipmentRepository extends RepositoryAbstract
         return $warehouseShipments;
     }
 
-    /**
-     * @return Collection
-     */
     public function getGroupedByList(): Collection
     {
         $shipments = $this->get();
         return $shipments->groupBy('tripnumber');
     }
 
-    /**
-     * @param $business_central_id
-     * @param $payload
-     * @return \stdClass|null
-     */
     public function update($business_central_id, $payload): ?\stdClass
     {
         return $this->client->patch(

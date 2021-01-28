@@ -19,9 +19,8 @@ class SalesOrderLineRepository extends RepositoryAbstract
     public string $objectName = 'salesOrderLines';
 
     /**
-     * @param Orderrow $row
      * @param $businessCentralOrderReference
-     * @param string|null $overwriteRowDescription
+     *
      * @throws \Exception
      */
     public function create(Orderrow $row, $businessCentralOrderReference, ?string $overwriteRowDescription = null): void
@@ -56,7 +55,6 @@ class SalesOrderLineRepository extends RepositoryAbstract
     /**
      * @param array $params
      * @param $ref
-     * @return \stdClass|null
      */
     public function update(array $params, $ref): ?\stdClass
     {
@@ -67,6 +65,7 @@ class SalesOrderLineRepository extends RepositoryAbstract
 
     /**
      * @param $ref
+     *
      * @return null
      */
     public function delete($ref)

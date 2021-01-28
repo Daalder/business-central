@@ -10,6 +10,7 @@ use Pionect\Backoffice\Models\Product\Product;
 
 /**
  * Class PictureRepository
+ *
  * @package Daalder\BusinessCentral\API\Repositories
  */
 class PictureRepository extends RepositoryAbstract
@@ -17,8 +18,8 @@ class PictureRepository extends RepositoryAbstract
     public $objectName = 'picture';
 
     /**
-     * @param Product $product
      * @return false|\stdClass|null
+     *
      * @throws \Exception
      */
     public function create(Product $product)
@@ -50,8 +51,8 @@ class PictureRepository extends RepositoryAbstract
     }
 
     /**
-     * @param Product $product
      * @return false|\stdClass|null
+     *
      * @throws \Exception
      */
     public function update(Product $product)
@@ -84,6 +85,7 @@ class PictureRepository extends RepositoryAbstract
 
     /**
      * @param $ref
+     *
      * @return null
      */
     public function delete($ref)
