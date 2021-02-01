@@ -13,7 +13,7 @@ jobs:
                     MYSQL_ALLOW_EMPTY_PASSWORD: yes
                     MYSQL_DATABASE: unit_tests
                 ports:
-                    - 3306
+                    - 33306:3306
                 options: >-
                     --health-cmd="mysqladmin ping"
                     --health-interval=10s
