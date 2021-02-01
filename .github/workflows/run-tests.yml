@@ -10,7 +10,7 @@ jobs:
             mysql:
                 image: mysql:5.7
                 env:
-                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
+                    MYSQL_ROOT_PASSWORD: daalder
                     MYSQL_DATABASE: unit_tests
                 ports:
                     - 33306:3306
@@ -65,4 +65,8 @@ jobs:
             -   name: Execute tests
                 run: vendor/bin/phpunit
                 env:
-                    DB_PORT: ${{ job.services.mysql.ports[3306] }}
+                    DB_CONNECTION: testing
+                    DB_DATABASE: unit_tests
+                    DB_PORT: 33306
+                    DB_USER: root
+                    DB_PASSWORD: daalder
