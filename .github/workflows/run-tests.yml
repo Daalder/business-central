@@ -36,7 +36,7 @@ jobs:
                     sudo apt-get update
                     sudo debconf-set-selections <<< 'mysql-server-5.6 mysql-server/root_password password daalder'
                     sudo debconf-set-selections <<< 'mysql-server-5.6 mysql-server/root_password_again password daalder'
-                    sudo apt-get -y install mysql-server-5.6
+                    sudo apt-get -y install mysql-server-5.7
 
                     mysql -u root -p daalder -e "CREATE DATABASE unit_tests"
                     mysql -u root -p daalder -e "GRANT ALL PRIVILEGES ON unit_tests.* TO unit_tests@localhost IDENTIFIED BY 'daalder'"
