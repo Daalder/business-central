@@ -16,9 +16,19 @@ jobs:
                 include:
                     -   laravel: 7.*
                         testbench: 5.*
+        services:
+            mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
+                    MYSQL_USER: root
+                    MYSQL_PASSWORD: daalder
+                    MYSQL_DATABASE: unit_tests
+                ports:
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
         name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
-
         steps:
             -   name: Start Mysql
                 run: sudo /etc/init.d/mysql start
@@ -30,16 +40,6 @@ jobs:
 #                run: |
 #                    sudo apt-get update
 #                    sudo apt-get install sqlite3
-
-            -   name: Set up MySQL
-                run: |
-                    sudo apt-get update
-                    sudo debconf-set-selections <<< 'mysql-server-5.6 mysql-server/root_password password daalder'
-                    sudo debconf-set-selections <<< 'mysql-server-5.6 mysql-server/root_password_again password daalder'
-                    sudo apt-get -y install mysql-server
-                    sudo service mysql start
-                    mysql -u root --password=daalder -e "CREATE DATABASE unit_tests"
-                    mysql -u root --password=daalder -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;"
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
