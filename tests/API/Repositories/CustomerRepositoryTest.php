@@ -3,14 +3,13 @@
 namespace Daalder\BusinessCentral\Tests\API\Repositories;
 
 use Daalder\BusinessCentral\API\Repositories\CustomerRepository;
-use PHPUnit\Framework\TestCase;
+use Daalder\BusinessCentral\Tests\TestCase as DaalderTestCase;
 
-class CustomerRepositoryTest extends TestCase
+class CustomerRepositoryTest extends DaalderTestCase
 {
-
     public function testGet()
     {
-
+        
     }
 
     public function testDelete()
