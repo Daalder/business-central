@@ -43,5 +43,7 @@ jobs:
                 run: |
                     echo "::add-matcher::${{ runner.tool_cache }}/php.json"
                     echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+            -   name: Copy phpunit.xml
+                run: cp phpunit.xml.dist phpunit.xml
             -   name: Execute tests
                 run: vendor/bin/phpunit
