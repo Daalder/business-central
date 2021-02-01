@@ -32,10 +32,14 @@ jobs:
 #                    sudo apt-get install sqlite3
 
             -   name: Set up MySQL
-                uses: cweinberger/github-actions-mysql@1.0.0
-                with:
-                    version: 5.7
-                    database: unit_tests
+                run: |
+                    sudo apt-get update
+                    sudo debconf-set-selections <<< 'mysql-server-5.6 mysql-server/root_password password daalder'
+                    sudo debconf-set-selections <<< 'mysql-server-5.6 mysql-server/root_password_again password daalder'
+                    sudo apt-get -y install mysql-server-5.6
+
+                    mysql -u root -p daalder -e "CREATE DATABASE unit_tests"
+                    mysql -u root -p daalder -e "GRANT ALL PRIVILEGES ON unit_tests.* TO unit_tests@localhost IDENTIFIED BY 'daalder'"
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -60,8 +64,3 @@ jobs:
 
             -   name: Execute tests
                 run: vendor/bin/phpunit
-                env:
-                    DB_CONNECTION: testing
-                    DB_DATABASE: unit_tests
-                    DB_PORT: 3306
-                    DB_USER: root
