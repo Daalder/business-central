@@ -13,14 +13,19 @@ class AddOptionsproductEntry extends Migration
      */
     public function up(): void
     {
-        $optionProduct = Product::query()->where('sku', '001')->first()->replicate();
-        $optionProduct->sku = '0001';
-        $optionProduct->price = 0;
-        $optionProduct->name = $optionProduct->description = 'Product Option';
+        $optionProduct = Product::query()->where('sku', '001')->first();
 
-        $optionProduct->save();
-        $optionProduct->searchable();
-        PullProducts::dispatch($optionProduct->sku);
+        if($optionProduct) {
+            $optionProduct = $optionProduct->replicate();
+
+            $optionProduct->sku = '0001';
+            $optionProduct->price = 0;
+            $optionProduct->name = $optionProduct->description = 'Product Option';
+
+            $optionProduct->save();
+            $optionProduct->searchable();
+            PullProducts::dispatch($optionProduct->sku);
+        }
     }
 
     /**
