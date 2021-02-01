@@ -15,7 +15,7 @@ use Pionect\Backoffice\Models\Customer\Customer;
  */
 class CustomerRepository extends RepositoryAbstract
 {
-    public $objectName = 'customers';
+    protected $objectName = 'customers';
 
     public function create(Customer $customer): ?\stdClass
     {

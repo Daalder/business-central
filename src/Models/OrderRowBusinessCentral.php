@@ -13,7 +13,7 @@ use Pionect\Backoffice\Models\Order\Orderrow;
  */
 class OrderRowBusinessCentral extends ReferenceModel
 {
-    public $key = 'order_row_id';
+    protected $key = 'order_row_id';
     protected $table = 'order_row_business_central';
     protected $fillable = ['order_row_id', 'business_central_id'];
     protected $dates = ['created_at', 'updated_at'];

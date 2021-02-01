@@ -13,7 +13,7 @@ use Pionect\Backoffice\Models\Product\Group;
  */
 class GroupBusinessCentral extends ReferenceModel
 {
-    public $key = 'group_id';
+    protected $key = 'group_id';
     protected $table = 'group_business_central';
     protected $fillable = ['group_id', 'business_central_id'];
     protected $dates = ['created_at', 'updated_at'];

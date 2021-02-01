@@ -16,8 +16,8 @@ use Pionect\Backoffice\Models\Order\Order;
  */
 class SalesQuoteBusinessCentral extends ReferenceModel
 {
-    public $primaryKey = 'order_id';
-    public $key = 'order_id';
+    protected $primaryKey = 'order_id';
+    protected $key = 'order_id';
     protected $table = 'sales_quote_business_central';
     protected $fillable = ['order_id', 'business_central_id'];
     protected $dates = ['created_at', 'updated_at'];

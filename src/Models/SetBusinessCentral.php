@@ -13,8 +13,8 @@ use Pionect\Backoffice\Models\ProductAttribute\Set;
  */
 class SetBusinessCentral extends ReferenceModel
 {
-    public $primaryKey = 'productattributeset_id';
-    public $key = 'productattributeset_id';
+    protected $primaryKey = 'productattributeset_id';
+    protected $key = 'productattributeset_id';
     protected $table = 'productattributeset_business_central';
     protected $fillable = ['productattributeset_id', 'business_central_id'];
     protected $dates = ['created_at', 'updated_at'];

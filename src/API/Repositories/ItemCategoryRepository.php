@@ -16,7 +16,7 @@ use Pionect\Backoffice\Models\ProductAttribute\Set;
  */
 class ItemCategoryRepository extends RepositoryAbstract
 {
-    public $objectName = 'itemCategories';
+    protected $objectName = 'itemCategories';
 
     public function create(Set $set): ?\stdClass
     {

@@ -10,9 +10,8 @@ use Daalder\BusinessCentral\Models\ReferenceModel;
 use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 
 /**
- * Class ResourceAbstract
- *
- * @package BusinessCentral\API\Resources
+ * Class RepositoryAbstract
+ * @package Daalder\BusinessCentral\API\Repositories
  */
 abstract class RepositoryAbstract
 {
@@ -23,6 +22,8 @@ abstract class RepositoryAbstract
 
     /**
      * RepositoryAbstract constructor.
+     * @param HttpClient $client
+     * @param ReferenceRepository $referenceRepository
      */
     public function __construct(HttpClient $client, ReferenceRepository $referenceRepository)
     {
@@ -30,6 +31,9 @@ abstract class RepositoryAbstract
         $this->referenceRepository = $referenceRepository;
     }
 
+    /**
+     * @param ReferenceModel $model
+     */
     public function storeReference(ReferenceModel $model): void
     {
         $this->referenceRepository->storeReference($model);

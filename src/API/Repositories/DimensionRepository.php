@@ -14,7 +14,7 @@ use Daalder\BusinessCentral\Models\DefaultDimension as DefaultDimensionModel;
 class DimensionRepository extends RepositoryAbstract
 {
     const GROUP_DIMENSION = 'e6824ae1-3a1c-4ccd-95e2-632cb16789f9';
-    public $objectName = 'item';
+    protected $objectName = 'item';
 
     public function create(DefaultDimensionModel $defaultDimension): ?\stdClass
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Models;
 
+use Carbon\Carbon;
 use Pionect\Backoffice\Models\BaseModel;
 
 /**
@@ -20,7 +21,7 @@ use Pionect\Backoffice\Models\BaseModel;
 
 class ShippingMethod extends BaseModel
 {
-    public $incrementing = false;
+    protected $incrementing = false;
     protected $table = 'shipping_methods_business_central';
 
     protected $fillable = [

@@ -15,7 +15,7 @@ use Pionect\Backoffice\Models\Product\Product;
  */
 class PictureRepository extends RepositoryAbstract
 {
-    public $objectName = 'picture';
+    protected $objectName = 'picture';
 
     /**
      * @return false|\stdClass|null

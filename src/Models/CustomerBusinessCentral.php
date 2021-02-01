@@ -15,9 +15,9 @@ use Pionect\Backoffice\Models\Customer\Customer;
  */
 class CustomerBusinessCentral extends ReferenceModel
 {
-    public $fillable = ['customer_id', 'business_central_id'];
-    public $primaryKey = 'customer_id';
-    public $key = 'customer_id';
+    protected $fillable = ['customer_id', 'business_central_id'];
+    protected $primaryKey = 'customer_id';
+    protected $key = 'customer_id';
     protected $table = 'customer_business_central';
     protected $dates = ['created_at', 'updated_at'];
 

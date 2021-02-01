@@ -14,8 +14,8 @@ use Pionect\Backoffice\Models\Unit\Unit;
  */
 class UnitBusinessCentral extends ReferenceModel
 {
-    public $primaryKey = 'unit_id';
-    public $key = 'unit_id';
+    protected $primaryKey = 'unit_id';
+    protected $key = 'unit_id';
     protected $table = 'unit_business_central';
     protected $fillable = ['unit_id', 'business_central_id'];
     protected $dates = ['created_at', 'updated_at'];

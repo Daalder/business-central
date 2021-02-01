@@ -28,9 +28,9 @@ class AddOptionsproductEntry extends Migration
      */
     public function down(): void
     {
-        $optionProduct = Product::query()->where('sku', '0001')->first();
-        if ($optionProduct) {
-            $optionProduct->forceDelete();
-        }
+//        $optionProduct = Product::query()->where('sku', '0001')->first();
+//        if ($optionProduct) {
+//            $optionProduct->forceDelete();
+//        }
     }
 }

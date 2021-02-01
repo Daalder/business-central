@@ -17,7 +17,7 @@ use Pionect\Backoffice\Models\Product\Product;
  */
 class ProductBusinessCentral extends ReferenceModel
 {
-    public $key = 'product_id';
+    protected $key = 'product_id';
     protected $table = 'product_business_central';
     protected $fillable = ['product_id', 'business_central_id'];
     protected $dates = ['created_at', 'updated_at'];

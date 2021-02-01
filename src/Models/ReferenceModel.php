@@ -15,7 +15,7 @@ use Pionect\Backoffice\Models\BaseModel;
  */
 class ReferenceModel extends BaseModel
 {
-    public $key;
+    protected $key;
 
     public function getKey()
     {

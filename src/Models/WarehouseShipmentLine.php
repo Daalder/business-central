@@ -22,7 +22,7 @@ use Pionect\Backoffice\Models\BaseModel;
 
 class WarehouseShipmentLine extends BaseModel
 {
-    public $incrementing = false;
+    protected $incrementing = false;
 
     protected $fillable = [
         'warehouseShipmentNo',
