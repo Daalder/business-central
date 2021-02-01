@@ -7,10 +7,10 @@ jobs:
     tests:
         runs-on: ${{ matrix.os }}
         services:
-            mysql-service:
+            mysql:
                 image: mysql:5.7
                 env:
-                    MYSQL_ROOT_PASSWORD: daalder
+                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
                     MYSQL_DATABASE: unit_tests
                 ports:
                     - 3306
@@ -40,12 +40,6 @@ jobs:
 #                run: |
 #                    sudo apt-get update
 #                    sudo apt-get install sqlite3
-
-#            -   name: Set up MySQL
-#                uses: mirromutth/mysql-action@v1.1
-#                with:
-#                    mysql version: '5.7'
-#                    mysql database: 'unit_tests'
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
