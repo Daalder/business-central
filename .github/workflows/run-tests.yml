@@ -22,7 +22,7 @@ jobs:
                 env:
                     MYSQL_ALLOW_EMPTY_PASSWORD: yes
                     MYSQL_USER: root
-                    MYSQL_PASSWORD: daalder
+                    MYSQL_ROOT_PASSWORD: daalder
                     MYSQL_DATABASE: unit_tests
                 ports:
                     - 3306:3306
