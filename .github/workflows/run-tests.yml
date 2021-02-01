@@ -6,19 +6,6 @@ env:
 jobs:
     tests:
         runs-on: ${{ matrix.os }}
-        services:
-            mysql:
-                image: mysql:5.7
-                env:
-                    MYSQL_ROOT_PASSWORD: daalder
-                    MYSQL_DATABASE: unit_tests
-                ports:
-                    - 33306:3306
-                options: >-
-                    --health-cmd="mysqladmin ping"
-                    --health-interval=10s
-                    --health-timeout=5s
-                    --health-retries=3
         strategy:
             fail-fast: true
             matrix:
@@ -43,6 +30,12 @@ jobs:
 #                run: |
 #                    sudo apt-get update
 #                    sudo apt-get install sqlite3
+
+            -   name: Set up MySQL
+                uses: cweinberger/github-actions-mysql@1.0.0
+                with:
+                    version: 5.7
+                    database: unit_tests
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -70,6 +63,5 @@ jobs:
                 env:
                     DB_CONNECTION: testing
                     DB_DATABASE: unit_tests
-                    DB_PORT: 33306
+                    DB_PORT: 3306
                     DB_USER: root
-                    DB_PASSWORD: daalder
