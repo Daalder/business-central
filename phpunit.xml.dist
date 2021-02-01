@@ -19,8 +19,12 @@
         <server name="SCOUT_DRIVER" value="array"/>
         <server name="CACHE_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
-        <server name="DB_CONNECTION" value="sqlite"/>
-        <server name="DB_DATABASE" value=":memory:"/>
+        <server name="DB_CONNECTION" value="testing"/>
+        <server name="DB_HOST" value="localhost"/>
+        <server name="DB_PORT" value="3306"/>
+        <server name="DB_DATABASE" value="unit_tests"/>
+        <server name="DB_USERNAME" value="root"/>
+        <server name="DB_PASSWORD" value=""/>
         <server name="ELASTICSEARCH_HOST" value="es01:9200"/>
         <server name="SCOUT_ELASTIC_HOST" value="es01:9200"/>
         <server name="FRONTEND" value="http://daalder.io/"/>

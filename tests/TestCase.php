@@ -70,12 +70,12 @@ class TestCase extends DaalderTestCase
         copy(__DIR__ . '/../vendor/pionect/daalder/tests/storage/oauth-public.key', $orchestra . '/storage/oauth-public.key');
 
         // Setup default database to use sqlite :memory:
-        $app['config']->set('database.default', 'sqlite');
-        $app['config']->set('database.connections.sqlite', [
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-            'prefix'   => ''
-        ]);
+//        $app['config']->set('database.default', 'sqlite');
+//        $app['config']->set('database.connections.sqlite', [
+//            'driver'   => 'sqlite',
+//            'database' => ':memory:',
+//            'prefix'   => ''
+//        ]);
     }
 
     protected function getPackageProviders($app): array
