@@ -14,12 +14,12 @@ use Pionect\Backoffice\Models\BaseRepository;
  */
 class ReferenceRepository extends BaseRepository
 {
-    protected ReferenceModel $model;
+    protected $model;
 
     /**
      * ReferenceRepository constructor.
      *
-     * @param  \BusinessCentral\Models\ReferenceModel  $referenceModel
+     * @param ReferenceModel $referenceModel
      */
     public function __construct(ReferenceModel $referenceModel)
     {

@@ -51,7 +51,7 @@ class TestCase extends DaalderTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        foreach (File::files('vendor/pionect/daalder/config') as $config) {
+        foreach (File::files(__DIR__ . '/../vendor/pionect/daalder/config') as $config) {
             if ($config->getExtension() == 'php') {
                 $key = str_replace('.php', '', $config->getFilename());
                 $default = config()->get($key, []);
