@@ -46,7 +46,7 @@ class CustomerRepositoryTest extends DaalderTestCase
 
             $customerRepository = app(CustomerRepository::class);
 
-            dd($customerRepository->delete($customer));
+            $customerRepository->delete($customer);
         });
     }
 
