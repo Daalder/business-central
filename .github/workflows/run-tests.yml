@@ -17,32 +17,21 @@ jobs:
                 include:
                     -   laravel: 7.*
                         testbench: 5.*
-        services:
-            mysql:
-                image: mysql:5.7
-                env:
-                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
-                    MYSQL_USER: root
-                    MYSQL_ROOT_PASSWORD: daalder
-                    MYSQL_PASSWORD: daalder
-                    MYSQL_DATABASE: unit_tests
-                ports:
-                    - 3306:3306
-                options: >-
-                    --health-cmd="mysqladmin ping"
-                    --health-interval=10s
-                    --health-timeout=5s
-                    --health-retries=3
 
         name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+        env:
+            DB_DATABASE: unit_tests
+            DB_USER: root
+            DB_PASSWORD: root
+
         steps:
+            - name: Set up MySQL
+              run: |
+                sudo /etc/init.d/mysql start
+                mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
             -   name: Checkout code
                 uses: actions/checkout@v2
-
-#            -   name: Install SQLite 3
-#                run: |
-#                    sudo apt-get update
-#                    sudo apt-get install sqlite3
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2

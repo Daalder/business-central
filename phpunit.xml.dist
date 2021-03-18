@@ -24,7 +24,7 @@
         <server name="DB_PORT" value="3306"/>
         <server name="DB_DATABASE" value="unit_tests"/>
         <server name="DB_USERNAME" value="root"/>
-        <server name="DB_PASSWORD" value="daalder"/>
+        <server name="DB_PASSWORD" value="root"/>
         <server name="ELASTICSEARCH_HOST" value="es01:9200"/>
         <server name="SCOUT_ELASTIC_HOST" value="es01:9200"/>
         <server name="FRONTEND" value="http://daalder.io/"/>
