@@ -3,6 +3,7 @@ name: run-tests
 on: [push, pull_request]
 env:
     COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    DB_DATABASE: unit_tests
 jobs:
     tests:
         runs-on: ${{ matrix.os }}
@@ -19,13 +20,11 @@ jobs:
                         testbench: 5.*
 
         name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
-        env:
-            DB_DATABASE: unit_tests
         steps:
             - name: Set up MySQL
               run: |
                 sudo /etc/init.d/mysql start
-                mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u=root -p=root
+                mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -uroot -proot
 
             -   name: Checkout code
                 uses: actions/checkout@v2
