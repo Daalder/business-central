@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Models;
 
-use Pionect\Backoffice\Models\Order\Order;
+use Pionect\Daalder\Models\Order\Order;
 
 /**
  * Class ProductBusinessCentral

@@ -9,7 +9,7 @@ use Daalder\BusinessCentral\Commands\PullFromBusinessCentral;
 use Daalder\BusinessCentral\Models\DefaultDimension;
 use Daalder\BusinessCentral\Models\GroupBusinessCentral;
 use Daalder\BusinessCentral\Models\ProductBusinessCentral;
-use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Daalder\Models\Product\Product;
 
 /**
  * Class ItemRepository. Responsible for translating Daalder product into Business Central item (product).

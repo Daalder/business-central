@@ -14,7 +14,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Daalder\Models\Product\Product;
 
 /**
  * Class PullProducts

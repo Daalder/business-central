@@ -6,7 +6,7 @@ namespace Daalder\BusinessCentral\Repositories;
 
 use Daalder\BusinessCentral\Models\ShippingMethod as BusinessCentralShippingMethod;
 use Illuminate\Support\Collection;
-use Pionect\Backoffice\Models\Shipping\ShippingMethod as DaalderShippingMethod;
+use Pionect\Daalder\Models\Shipping\ShippingMethod as DaalderShippingMethod;
 
 /**
  * Class ShippingMethodsRepository

@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Daalder\Models\Product\Product;
 
 /**
  * Class CreateProduct
@@ -21,7 +21,7 @@ class CreateProduct implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    protected \Pionect\Backoffice\Models\Product\Product $product;
+    protected \Pionect\Daalder\Models\Product\Product $product;
 
     protected \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
 

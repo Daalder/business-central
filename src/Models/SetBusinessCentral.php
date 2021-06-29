@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Models;
 
-use Pionect\Backoffice\Models\ProductAttribute\Set;
+use Pionect\Daalder\Models\ProductAttribute\Set;
 
 /**
  * Class ProductBusinessCentral

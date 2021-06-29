@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\App;
-use Pionect\Backoffice\Models\ProductAttribute\Set;
+use Pionect\Daalder\Models\ProductAttribute\Set;
 
 /**
  * Class CreateSet

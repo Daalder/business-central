@@ -16,7 +16,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pionect\Backoffice\Models\Address\Repositories\AddressRepository;
+use Pionect\Daalder\Models\Address\Repositories\AddressRepository;
 
 class GetWarehouseShipments
 {

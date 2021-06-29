@@ -6,7 +6,7 @@ namespace Daalder\BusinessCentral\Repositories;
 
 use Daalder\BusinessCentral\Models\ProductBusinessCentral;
 use Illuminate\Support\Facades\Storage;
-use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Daalder\Models\Product\Product;
 
 /**
  * Class PictureRepository

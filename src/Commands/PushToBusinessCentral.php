@@ -17,10 +17,10 @@ class PushToBusinessCentral extends Command
     protected string $signature = 'bc:push {action} {type} {id?} {--all : Whether all items should be run} {--v}';
 
     protected $mapping = [
-        '\Pionect\Backoffice\Models\Product\Product' => 'item',
-        '\Pionect\Backoffice\Models\Order\Order' => 'salesOrder',
-        '\Pionect\Backoffice\Models\Customer\Customer' => 'customer',
-        '\Pionect\Backoffice\Models\ProductAttribute\Set' => 'itemCategory',
+        '\Pionect\Daalder\Models\Product\Product' => 'item',
+        '\Pionect\Daalder\Models\Order\Order' => 'salesOrder',
+        '\Pionect\Daalder\Models\Customer\Customer' => 'customer',
+        '\Pionect\Daalder\Models\ProductAttribute\Set' => 'itemCategory',
     ];
 
     /**

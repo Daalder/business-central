@@ -6,10 +6,10 @@ namespace Daalder\BusinessCentral\Repositories;
 
 use Daalder\BusinessCentral\Models\OrderBusinessCentral;
 use Daalder\BusinessCentral\Models\ProductBusinessCentral;
-use Pionect\Backoffice\Models\Order\Order;
-use Pionect\Backoffice\Models\Order\Orderrow;
-use Pionect\Backoffice\Models\Product\Product;
-use Pionect\Backoffice\Models\Product\ProductOption;
+use Pionect\Daalder\Models\Order\Order;
+use Pionect\Daalder\Models\Order\Orderrow;
+use Pionect\Daalder\Models\Product\Product;
+use Pionect\Daalder\Models\Product\ProductOption;
 
 /**
  * Class Product

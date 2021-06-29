@@ -6,7 +6,7 @@ namespace Daalder\BusinessCentral\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Pionect\Backoffice\Models\Order\Order;
+use Pionect\Daalder\Models\Order\Order;
 
 /**
  * Class SalesQuote

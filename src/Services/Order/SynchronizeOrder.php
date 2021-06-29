@@ -8,8 +8,8 @@ use Daalder\BusinessCentral\Jobs\Customer\CreateCustomer;
 use Daalder\BusinessCentral\Jobs\Order\CreateOrder;
 use Daalder\BusinessCentral\Jobs\Order\CreateSalesQuote;
 use Daalder\BusinessCentral\Repositories\ReferenceRepository;
-use Pionect\Backoffice\Models\Order\Order;
-use Pionect\Backoffice\Models\Order\State;
+use Pionect\Daalder\Models\Order\Order;
+use Pionect\Daalder\Models\Order\State;
 
 class SynchronizeOrder
 {

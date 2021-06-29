@@ -7,7 +7,7 @@ namespace Daalder\BusinessCentral\Repositories;
 use Daalder\BusinessCentral\API\Resources\salesOrderLine;
 use Daalder\BusinessCentral\Models\OrderRowBusinessCentral;
 use Daalder\BusinessCentral\Models\ProductBusinessCentral;
-use Pionect\Backoffice\Models\Order\Orderrow;
+use Pionect\Daalder\Models\Order\Orderrow;
 
 /**
  * Class Product

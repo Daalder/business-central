@@ -10,7 +10,10 @@ Daalder package for Microsoft Dynamics 365 Business Central
 ## Migrations
 ## Daalder events
 ### Products
+In [EventServiceProvider](/src/Providers/EventServiceProvider.php) there is and [ProductObserver](/src/Observers/ProductObserver.php) registered to the Daalder product model.
+This observer handles create, update and delete.
 ### Orders
+
 ## Jobs
 ## Error reporting
 ## Commands

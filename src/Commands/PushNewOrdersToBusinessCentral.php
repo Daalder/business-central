@@ -6,8 +6,8 @@ namespace Daalder\BusinessCentral\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Pionect\Backoffice\Models\Order\Order;
-use Pionect\Backoffice\Models\Payment\Payment;
+use Pionect\Daalder\Models\Order\Order;
+use Pionect\Daalder\Models\Payment\Payment;
 
 /**
  * Class PushNewOrdersToBusinessCentral

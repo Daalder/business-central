@@ -10,10 +10,10 @@ use Daalder\BusinessCentral\Contracts\BusinessCentralApiResource;
 use Daalder\BusinessCentral\Jobs\Product\CreateProduct;
 use Daalder\BusinessCentral\Jobs\Product\UpdateProduct;
 use Exception;
-use Pionect\Backoffice\Http\Api\Requests\Product\StoreProductRequest;
-use Pionect\Backoffice\Models\Product\Product as BackOfficeProduct;
-use Pionect\Backoffice\Models\Product\Repositories\ProductRepository as BackofficeProductRepository;
-use Pionect\Backoffice\Models\ProductAttribute\Repositories\GroupRepository;
+use Pionect\Daalder\Http\Api\Requests\Product\StoreProductRequest;
+use Pionect\Daalder\Models\Product\Product as BackOfficeProduct;
+use Pionect\Daalder\Models\Product\Repositories\ProductRepository as BackofficeProductRepository;
+use Pionect\Daalder\Models\ProductAttribute\Repositories\GroupRepository;
 
 /**
  * Class ProductRepository

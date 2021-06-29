@@ -13,12 +13,12 @@ use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Daalder\BusinessCentral\Validators\ProductBusinessCentralValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Pionect\Backoffice\Http\Api\Requests\Customer\RegisterCustomerRequest;
-use Pionect\Backoffice\Http\Api\Requests\Product\StoreProductRequest;
-use Pionect\Backoffice\Http\Controllers\BaseController;
-use Pionect\Backoffice\Http\Requests\Customer\UpdateCustomer;
-use Pionect\Backoffice\Models\Customer\Repositories\CustomerRepository;
-use Pionect\Backoffice\Models\Product\Repositories\ProductRepository;
+use Pionect\Daalder\Http\Api\Requests\Customer\RegisterCustomerRequest;
+use Pionect\Daalder\Http\Api\Requests\Product\StoreProductRequest;
+use Pionect\Daalder\Http\Controllers\BaseController;
+use Pionect\Daalder\Http\Requests\Customer\UpdateCustomer;
+use Pionect\Daalder\Models\Customer\Repositories\CustomerRepository;
+use Pionect\Daalder\Models\Product\Repositories\ProductRepository;
 
 /**
  * Class NotifyController
@@ -30,7 +30,7 @@ class NotifyController extends BaseController
     /**
      * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
      *
-     * @return \Illuminate\Http\JsonResponse|\Pionect\Backoffice\Models\Product\Product
+     * @return \Illuminate\Http\JsonResponse|\Pionect\Daalder\Models\Product\Product
      *
      * @throws \Exception
      */
@@ -68,7 +68,7 @@ class NotifyController extends BaseController
     /**
      * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
      *
-     * @return \Illuminate\Http\JsonResponse|\Pionect\Backoffice\Models\Product\Product
+     * @return \Illuminate\Http\JsonResponse|\Pionect\Daalder\Models\Product\Product
      *
      * @throws \Exception
      */
@@ -109,7 +109,7 @@ class NotifyController extends BaseController
     /**
      * @param  \BusinessCentral\Repositories\ReferenceRepository  $referenceRepository
      *
-     * @return \Illuminate\Http\JsonResponse|\Pionect\Backoffice\Models\Product\Product
+     * @return \Illuminate\Http\JsonResponse|\Pionect\Daalder\Models\Product\Product
      */
     public function deleteItem(Request $request, ProductRepository $repository, ReferenceRepository $referenceRepository)
     {
@@ -128,7 +128,7 @@ class NotifyController extends BaseController
     /**
      * @param  \BusinessCentral\API\Repositories\CustomerRepository  $customerBusinessCentralRepository
      *
-     * @return \Illuminate\Http\JsonResponse|\Pionect\Backoffice\Models\Customer\Customer
+     * @return \Illuminate\Http\JsonResponse|\Pionect\Daalder\Models\Customer\Customer
      *
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException

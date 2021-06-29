@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * @package BusinessCentral\Resources
  *
- * @mixin \Pionect\Backoffice\Models\Order\Orderrow
+ * @mixin \Pionect\Daalder\Models\Order\Orderrow
  */
 class salesOrderLine extends JsonResource
 {

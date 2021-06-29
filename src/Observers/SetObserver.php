@@ -8,7 +8,7 @@ use Daalder\BusinessCentral\Jobs\ProductAttribute\CreateSet;
 use Daalder\BusinessCentral\Jobs\ProductAttribute\DeleteSet;
 use Daalder\BusinessCentral\Jobs\ProductAttribute\UpdateSet;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Pionect\Backoffice\Models\ProductAttribute\Set;
+use Pionect\Daalder\Models\ProductAttribute\Set;
 
 class SetObserver
 {

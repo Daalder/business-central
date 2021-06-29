@@ -6,7 +6,7 @@ namespace Daalder\BusinessCentral\Observers;
 
 use Daalder\BusinessCentral\Jobs\Product\UpdateProduct;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Daalder\Models\Product\Product;
 
 class ProductObserver
 {

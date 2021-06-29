@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Resources\Daalder;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Pionect\Backoffice\Models\Order\State;
+use Pionect\Daalder\Models\Order\State;
 
 /**
  * Class Order

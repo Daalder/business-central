@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Pionect\Backoffice\Models\Unit\Unit;
+use Pionect\Daalder\Models\Unit\Unit;
 
 /**
  * Class UnitBusinessCentral

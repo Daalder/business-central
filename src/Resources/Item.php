@@ -15,7 +15,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * @package Daalder\BusinessCentral\Resources
  *
- * @mixin \Pionect\Backoffice\Models\Product\Product
+ * @mixin \Pionect\Daalder\Models\Product\Product
  */
 class Item extends JsonResource
 {

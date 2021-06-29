@@ -7,7 +7,7 @@ namespace Daalder\BusinessCentral\Repositories;
 use Daalder\BusinessCentral\API\Resources\ItemCategory;
 use Daalder\BusinessCentral\Commands\PullFromBusinessCentral;
 use Daalder\BusinessCentral\Models\SetBusinessCentral;
-use Pionect\Backoffice\Models\ProductAttribute\Set;
+use Pionect\Daalder\Models\ProductAttribute\Set;
 
 /**
  * Class Product

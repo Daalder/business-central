@@ -6,9 +6,9 @@ namespace Daalder\BusinessCentral\Models;
 
 use App\Models\Shipping\ShippingProvider;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Pionect\Backoffice\Models\Address\Address;
-use Pionect\Backoffice\Models\BaseModel;
-use Pionect\Backoffice\Models\Order\Order;
+use Pionect\Daalder\Models\Address\Address;
+use Pionect\Daalder\Models\BaseModel;
+use Pionect\Daalder\Models\Order\Order;
 
 /**
  * Class Shipment

@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pionect\Backoffice\Models\Order\Order;
+use Pionect\Daalder\Models\Order\Order;
 
 /**
  * Class CreateOrder
@@ -22,9 +22,9 @@ class CreateOrder implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    protected \Pionect\Backoffice\Models\Order\Order $order;
+    protected Order $order;
 
-    protected Daalder\BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
+    protected ReferenceRepository $referenceRepository;
 
     public function __construct(Order $order, ReferenceRepository $referenceRepository)
     {

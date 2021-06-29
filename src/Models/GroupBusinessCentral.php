@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Models;
 
-use Pionect\Backoffice\Models\Product\Group;
+use Pionect\Daalder\Models\Product\Group;
 
 /**
  * Class ProductBusinessCentral

@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\App;
-use Pionect\Backoffice\Models\Customer\Customer;
+use Pionect\Daalder\Models\Customer\Customer;
 
 /**
  * Class CreateCustomer
@@ -23,7 +23,7 @@ class CreateCustomer implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    protected \Pionect\Backoffice\Models\Customer\Customer $customer;
+    protected \Pionect\Daalder\Models\Customer\Customer $customer;
 
     protected \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
 

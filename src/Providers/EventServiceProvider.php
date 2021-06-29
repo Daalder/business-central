@@ -7,7 +7,8 @@ namespace Daalder\BusinessCentral\Providers;
 use Daalder\BusinessCentral\Listeners\PushOrderToBusinessCentral;
 use Daalder\BusinessCentral\Observers\ProductObserver;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Daalder\Events\Order\OrderPaymentConfirmed;
+use Pionect\Daalder\Models\Product\Product;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,7 +18,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected array $listen = [
-
+        OrderPaymentConfirmed::class => [
+            PushOrderToBusinessCentral::class,
+        ],
     ];
 
     /**
@@ -36,5 +39,15 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
         Product::observe(ProductObserver::class);
+    }
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return true;
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Models;
 
 use Carbon\Carbon;
-use Pionect\Backoffice\Models\BaseModel;
+use Pionect\Daalder\Models\BaseModel;
 
 /**
  * Class ShippingMethod

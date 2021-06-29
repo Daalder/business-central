@@ -6,7 +6,7 @@ namespace Daalder\BusinessCentral\Repositories;
 
 use App\Models\Orders\Order;
 use Daalder\BusinessCentral\Contracts\BusinessCentralApiResource;
-use Pionect\Backoffice\Models\Order\Repositories\OrderRepository as BackOfficeOrderRepository;
+use Pionect\Daalder\Models\Order\Repositories\OrderRepository as BackOfficeOrderRepository;
 
 class OrderRepository extends BackOfficeOrderRepository implements BusinessCentralApiResource
 {

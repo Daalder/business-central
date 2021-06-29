@@ -7,11 +7,12 @@ namespace Daalder\BusinessCentral\Listeners;
 use Daalder\BusinessCentral\API\HttpClient;
 use Daalder\BusinessCentral\Jobs\Order\CreateOrder;
 use Daalder\BusinessCentral\Repositories\ReferenceRepository;
-use Pionect\Backoffice\Events\Order\OrderCreated;
-use Pionect\Backoffice\Events\Order\OrderPaymentConfirmed;
-use Pionect\Backoffice\Events\Payment\PaymentUpdated;
-use Pionect\Backoffice\Models\Payment\Payment;
+use Pionect\Daalder\Events\Order\OrderPaymentConfirmed;
 
+/**
+ * Class PushOrderToBusinessCentral
+ * @package Daalder\BusinessCentral\Listeners
+ */
 class PushOrderToBusinessCentral
 {
     public string $queue = 'high';

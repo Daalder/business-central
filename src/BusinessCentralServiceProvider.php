@@ -23,9 +23,9 @@ use Illuminate\Support\Collection;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
-use Pionect\Backoffice\Hooks\Facades\Hook;
-use Pionect\Backoffice\Menus\Item;
-use Pionect\Backoffice\Models\ProductAttribute\Set;
+use Pionect\Daalder\Hooks\Facades\Hook;
+use Pionect\Daalder\Menus\Item;
+use Pionect\Daalder\Models\ProductAttribute\Set;
 use Spatie\Valuestore\Valuestore;
 
 /**

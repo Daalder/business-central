@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * @package BusinessCentral\Resources
  *
- * @mixin \Pionect\Backoffice\Models\Product\Group
+ * @mixin \Pionect\Daalder\Models\Product\Group
  */
 class DefaultDimension extends JsonResource
 {

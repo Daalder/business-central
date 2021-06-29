@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Resources\Daalder;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Pionect\Backoffice\Models\Product\Type;
-use Pionect\Backoffice\Models\ProductAttribute\Set;
+use Pionect\Daalder\Models\Product\Type;
+use Pionect\Daalder\Models\ProductAttribute\Set;
 
 /**
  * Class Product

@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * @package BusinessCentral\Resources
  *
- * @mixin \Pionect\Backoffice\Models\ProductAttribute\Set
+ * @mixin \Pionect\Daalder\Models\ProductAttribute\Set
  */
 class ItemCategory extends JsonResource
 {
