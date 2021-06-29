@@ -35,8 +35,8 @@ class CreateShipmentsTable extends Migration
 
         Schema::table('shipments', static function (Blueprint $table): void {
             $table->foreign('provider_id')->references('id')->on('shipping_providers');
-            $table->foreign('shipping_address_id')->references('id')->on('address');
-            $table->foreign('order_id')->references('id')->on('order');
+            $table->foreign('shipping_address_id')->references('id')->on('addresses');
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

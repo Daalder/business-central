@@ -5,23 +5,25 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Jobs\Product;
 
 use Daalder\BusinessCentral\API\HttpClient;
+use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Daalder\Models\Product\Product;
 
 class UpdateProduct implements ShouldQueue
 {
     use Dispatchable, SerializesModels, Queueable, InteractsWithQueue;
 
-    protected \Pionect\Backoffice\Models\Product\Product $product;
+    protected Product $product;
 
-    private \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
+    private ReferenceRepository $referenceRepository;
 
     /**
      * Create a new job instance.
+     * @param Product $product
      */
     public function __construct(Product $product)
     {

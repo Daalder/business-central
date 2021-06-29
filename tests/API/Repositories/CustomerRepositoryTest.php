@@ -3,12 +3,12 @@
 namespace Daalder\BusinessCentral\Tests\API\Repositories;
 
 use Daalder\BusinessCentral\API\HttpClient;
-use Daalder\BusinessCentral\API\Repositories\CustomerRepository;
+use Daalder\BusinessCentral\Repositories\CustomerRepository;
 use Daalder\BusinessCentral\Models\CustomerBusinessCentral;
 use Daalder\BusinessCentral\Models\ReferenceModel;
 use Daalder\BusinessCentral\Repositories\ReferenceRepository;
 use Daalder\BusinessCentral\Tests\TestCase as DaalderTestCase;
-use Pionect\Backoffice\Models\Customer\Customer;
+use Pionect\Daalder\Models\Customer\Customer;
 
 class CustomerRepositoryTest extends DaalderTestCase
 {
@@ -20,9 +20,12 @@ class CustomerRepositoryTest extends DaalderTestCase
 
     }
 
+    /**
+     * @test
+     */
     public function testGet()
     {
-        
+        $this->markTestIncomplete();
     }
 
     /** @test */
@@ -34,14 +37,14 @@ class CustomerRepositoryTest extends DaalderTestCase
 
         Customer::withoutSyncingToSearch(function () {
             /** @var Customer $customer */
-            $customer = factory(Customer::class)->create();
+            $customer = Customer::factory()->create();
 
             $reference = CustomerBusinessCentral::create([
                 'customer_id'=> $customer->id,
                 'business_central_id' => '12345'
             ]);
 
-            $this->assertDatabaseHas('customer', ['id'=>$customer->id, 'firstname'=>$customer->firstname]);
+            $this->assertDatabaseHas('customers', ['id'=>$customer->id, 'firstname'=>$customer->firstname]);
             $this->assertDatabaseHas('customer_business_central', ['customer_id'=>$customer->id, 'business_central_id'=>'12345']);
 
             $customerRepository = app(CustomerRepository::class);
@@ -52,11 +55,11 @@ class CustomerRepositoryTest extends DaalderTestCase
 
     public function testCreate()
     {
-
+        $this->markTestIncomplete();
     }
 
     public function testUpdate()
     {
-
+        $this->markTestIncomplete();
     }
 }

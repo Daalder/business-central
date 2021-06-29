@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Daalder\BusinessCentral\Jobs\Product\PullProducts;
 use Illuminate\Database\Migrations\Migration;
-use Pionect\Backoffice\Models\Product\Product;
+use Pionect\Daalder\Models\Product\Product;
 
 class AddOptionsproductEntry extends Migration
 {

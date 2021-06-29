@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Support;
 
-use Daalder\BusinessCentral\API\Services\NamespaceTranslations;
+use Daalder\BusinessCentral\Services\NamespaceTranslations;
 
 class BusinessCentralSupport
 {

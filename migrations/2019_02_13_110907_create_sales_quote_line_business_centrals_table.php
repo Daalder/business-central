@@ -20,7 +20,7 @@ class CreateSalesQuoteLineBusinessCentralsTable extends Migration
 
             $table->foreign('order_row_id', 'sql_order_row_id_business_central')
                 ->references('id')
-                ->on('orderrow')
+                ->on('order_rows')
                 ->onDelete('cascade');
 
             $table->primary(['order_row_id', 'business_central_id'], 'sql_or_id_bc_id');

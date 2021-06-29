@@ -20,7 +20,7 @@ class CreateCustomerBusinessCentralTable extends Migration
 
             $table->foreign('customer_id', 'customer_id_business_central')
                 ->references('id')
-                ->on('customer')
+                ->on('customers')
                 ->onDelete('cascade');
 
             $table->primary(['customer_id', 'business_central_id'], 'c_id_bc');

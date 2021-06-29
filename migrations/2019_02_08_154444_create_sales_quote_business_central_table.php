@@ -20,7 +20,7 @@ class CreateSalesQuoteBusinessCentralTable extends Migration
 
             $table->foreign('order_id')
                 ->references('id')
-                ->on('order')
+                ->on('orders')
                 ->onDelete('cascade');
 
             $table->primary(['order_id', 'business_central_id'], 'sqbc_order_id_business_central_id_primary');

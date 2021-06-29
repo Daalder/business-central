@@ -9,9 +9,9 @@ use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Facades\File;
 use Laravel\Passport\PassportServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
-use Pionect\Backoffice\DaalderServiceProvider;
-use Pionect\Backoffice\ServiceProviders\ElasticScoutConfigServiceProvider;
-use Pionect\Backoffice\Tests\TestCase as DaalderTestCase;
+use Pionect\Daalder\DaalderServiceProvider;
+use Pionect\Daalder\ServiceProviders\ElasticScoutConfigServiceProvider;
+use Pionect\Daalder\Tests\TestCase as DaalderTestCase;
 use Spatie\Permission\PermissionServiceProvider;
 
 class TestCase extends DaalderTestCase

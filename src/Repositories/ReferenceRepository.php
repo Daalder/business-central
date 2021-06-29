@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Repositories;
 
 use Daalder\BusinessCentral\Models\ReferenceModel;
-use Pionect\Backoffice\Models\BaseRepository;
+use Pionect\Daalder\Models\BaseRepository;
 
 /**
  * Class ReferenceRepository

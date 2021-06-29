@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "pionect/daalder": "^7.0",
+        "pionect/daalder": "^8.0",
         "league/oauth2-client": "^2.4",
         "spatie/valuestore": "^1.2",
         "guzzlehttp/guzzle": "~7.0"

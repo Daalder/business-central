@@ -24,7 +24,7 @@ class CreateOrder implements ShouldQueue
 
     protected \Pionect\Backoffice\Models\Order\Order $order;
 
-    protected \BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
+    protected Daalder\BusinessCentral\Repositories\ReferenceRepository $referenceRepository;
 
     public function __construct(Order $order, ReferenceRepository $referenceRepository)
     {

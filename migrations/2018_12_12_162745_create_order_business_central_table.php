@@ -6,24 +6,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderRowBusinessCentralTable extends Migration
+class CreateOrderBusinessCentralTable extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('order_row_business_central', static function (Blueprint $table): void {
-            $table->integer('order_row_id')->unsigned();
+        Schema::create('order_business_central', static function (Blueprint $table): void {
+            $table->integer('order_id')->unsigned();
             $table->string('business_central_id');
             $table->timestamps();
 
-            $table->foreign('order_row_id', 'order_row_id_business_central')
+            $table->foreign('order_id')
                 ->references('id')
-                ->on('order_rows')
+                ->on('orders')
                 ->onDelete('cascade');
 
-            $table->primary(['order_row_id', 'business_central_id'], 'or_id_bc_id');
+            $table->primary(['order_id', 'business_central_id']);
         });
     }
 
@@ -32,6 +32,6 @@ class CreateOrderRowBusinessCentralTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_row_business_central');
+        Schema::dropIfExists('order_business_central');
     }
 }
