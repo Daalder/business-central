@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" backupGlobals="false" backupStaticAttributes="false" colors="true" verbose="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage>
-    <include>
-      <directory suffix=".php">src/</directory>
-    </include>
-  </coverage>
-  <testsuites>
-    <testsuite name="Daalder Test Suite">
-      <directory>./tests</directory>
-    </testsuite>
-  </testsuites>
-  <php>
-    <env name="APP_NAME" value="mysite"/>
-    <server name="APP_ENV" value="testing"/>
-    <server name="APP_DEBUG" value="true"/>
-    <server name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
-    <ini name="memory_limit" value="-1"/>
-    <server name="SCOUT_DRIVER" value="array"/>
-    <server name="CACHE_DRIVER" value="array"/>
-    <server name="QUEUE_CONNECTION" value="sync"/>
-    <server name="DB_CONNECTION" value="testing"/>
-    <server name="DB_HOST" value="127.0.0.1"/>
-    <server name="DB_PORT" value="3306"/>
-    <server name="DB_DATABASE" value="unit_tests"/>
-    <server name="DB_USERNAME" value="root"/>
-    <server name="DB_PASSWORD" value=""/>
-    <server name="ELASTICSEARCH_HOST" value="es01:9200"/>
-    <server name="SCOUT_ELASTIC_HOST" value="es01:9200"/>
-    <server name="FRONTEND" value="http://daalder.io/"/>
-    <server name="MAIL_FROM_ADDRESS" value="daalder@daalder.io"/>
-    <server name="MAIL_FROM_NAME" value="Daalder.io"/>
-    <server name="BCRYPT_ROUNDS" value="4"/>
-  </php>
+    <coverage>
+        <include>
+            <directory suffix=".php">src/</directory>
+        </include>
+    </coverage>
+    <testsuites>
+        <testsuite name="Daalder Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_NAME" value="mysite"/>
+        <server name="APP_ENV" value="testing"/>
+        <server name="APP_DEBUG" value="true"/>
+        <server name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
+        <ini name="memory_limit" value="-1"/>
+        <server name="SCOUT_DRIVER" value="array"/>
+        <server name="CACHE_DRIVER" value="array"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="DB_CONNECTION" value="testing"/>
+        <server name="DB_HOST" value="127.0.0.1"/>
+        <server name="DB_PORT" value="3306"/>
+        <server name="DB_DATABASE" value="unit_tests"/>
+        <server name="DB_USERNAME" value="root"/>
+        <server name="DB_PASSWORD" value="root"/>
+        <server name="ELASTICSEARCH_HOST" value="es01:9200"/>
+        <server name="SCOUT_ELASTIC_HOST" value="es01:9200"/>
+        <server name="FRONTEND" value="http://daalder.io/"/>
+        <server name="MAIL_FROM_ADDRESS" value="daalder@daalder.io"/>
+        <server name="MAIL_FROM_NAME" value="Daalder.io"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+    </php>
 </phpunit>
