@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Repositories;
 
 use App\Models\Products\Product;
-use Daalder\BusinessCentral\API\Resources\Daalder\TranslationProduct as ProductResource;
+use Daalder\BusinessCentral\Resources\Daalder\TranslationProduct as ProductResource;
 use Daalder\BusinessCentral\Contracts\BusinessCentralApiResource;
 use Daalder\BusinessCentral\Jobs\Product\CreateProduct;
 use Daalder\BusinessCentral\Jobs\Product\UpdateProduct;

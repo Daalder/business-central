@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Daalder\BusinessCentral\Controllers;
 
 use Daalder\BusinessCentral\API\Repositories\CustomerRepository as CustomerBusinessCentralRepository;
-use Daalder\BusinessCentral\API\Resources\Daalder\Customer;
-use Daalder\BusinessCentral\API\Resources\Daalder\TranslationProduct;
+use Daalder\BusinessCentral\Resources\Daalder\Customer;
+use Daalder\BusinessCentral\Resources\Daalder\TranslationProduct;
 use Daalder\BusinessCentral\Models\CustomerBusinessCentral;
 use Daalder\BusinessCentral\Models\ProductBusinessCentral;
 use Daalder\BusinessCentral\Repositories\ReferenceRepository;

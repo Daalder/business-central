@@ -17,6 +17,12 @@ class CustomerRepository extends RepositoryAbstract
 {
     protected $objectName = 'customers';
 
+    /**
+     * @param Customer $customer
+     * @return \stdClass|null
+     * @throws \Daalder\BusinessCentral\API\Exceptions\ApiResponseException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function create(Customer $customer): ?\stdClass
     {
         $resource = new \Daalder\BusinessCentral\Resources\Customer($customer);

@@ -38,7 +38,7 @@ class DeleteSet implements ShouldQueue
         /** @var HttpClient $client */
         $client = App::make(HttpClient::class);
 
-        $resource = new \BusinessCentral\API\Resources\ItemCategory($this->set);
+        $resource = new \BusinessCentral\Resources\ItemCategory($this->set);
         $client->itemCategory()->delete($resource->resolve());
 
         // Remove reference

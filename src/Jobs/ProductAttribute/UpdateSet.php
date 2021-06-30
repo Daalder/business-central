@@ -38,7 +38,7 @@ class UpdateSet implements ShouldQueue
     {
         $this->client = App::make(HttpClient::class);
 
-        $resource = new \BusinessCentral\API\Resources\ItemCategory($this->set);
+        $resource = new \BusinessCentral\Resources\ItemCategory($this->set);
         $reference = SetBusinessCentral::where('productattributeset_id', $this->set->id)->first();
 
         if ($reference) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Repositories;
 
-use Daalder\BusinessCentral\API\Resources\ItemCategory;
+use Daalder\BusinessCentral\Resources\ItemCategory;
 use Daalder\BusinessCentral\Commands\PullFromBusinessCentral;
 use Daalder\BusinessCentral\Models\SetBusinessCentral;
 use Pionect\Daalder\Models\ProductAttribute\Set;

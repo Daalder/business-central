@@ -19,9 +19,10 @@ class Customer extends JsonResource
     const default_country = 'NL';
 
     /**
+     * @param $request
      * @return array
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'number' => (string) $this->id,

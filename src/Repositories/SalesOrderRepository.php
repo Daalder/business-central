@@ -6,6 +6,7 @@ namespace Daalder\BusinessCentral\Repositories;
 
 use Daalder\BusinessCentral\Models\OrderBusinessCentral;
 use Daalder\BusinessCentral\Models\ProductBusinessCentral;
+use Daalder\BusinessCentral\Resources\SalesOrder;
 use Pionect\Daalder\Models\Order\Order;
 use Pionect\Daalder\Models\Order\Orderrow;
 use Pionect\Daalder\Models\Product\Product;
@@ -30,7 +31,7 @@ class SalesOrderRepository extends RepositoryAbstract
             return $this->update($order);
         }
 
-        $resource = new \BusinessCentral\API\Resources\SalesOrder($order);
+        $resource = new SalesOrder($order);
 
         // Unset discount because order lines first needs to be created
         $salesOrder = $resource->resolve();
@@ -108,7 +109,7 @@ class SalesOrderRepository extends RepositoryAbstract
         $reference = $this->referenceRepository->getReference(new OrderBusinessCentral(['order_id' => $order->id]));
 
         if ($reference) {
-            $resource = new \BusinessCentral\API\Resources\SalesOrder($order);
+            $resource = new SalesOrder($order);
 
             return $this->client->patch(
                 config('business-central.endpoint').'companies('.config('business-central.companyId').')/salesOrders('.$reference->business_central_id.')',

@@ -29,9 +29,10 @@ class Item extends JsonResource
     }
 
     /**
+     * @param $request
      * @return array
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'baseUnitOfMeasureId' => $this->when($this->setUnit(), $this->setUnit()),

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Daalder\BusinessCentral\Repositories;
 
-use Daalder\BusinessCentral\API\Resources\salesOrderLine;
+use Daalder\BusinessCentral\Resources\salesOrderLine;
 use Daalder\BusinessCentral\Models\OrderRowBusinessCentral;
 use Daalder\BusinessCentral\Models\ProductBusinessCentral;
 use Pionect\Daalder\Models\Order\Orderrow;
