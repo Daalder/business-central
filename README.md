@@ -3,7 +3,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/Daalder/business-central.svg?style=flat-square)](https://scrutinizer-ci.com/g/Daalder/business-central)
 
 # business-central
-Daalder package for Microsoft Dynamics 365 Business Central
+[Daalder](https://daalder.io) package for Microsoft Dynamics 365 Business Central
 
 
 ## Current state
