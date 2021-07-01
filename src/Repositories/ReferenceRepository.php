@@ -49,7 +49,7 @@ class ReferenceRepository extends BaseRepository
     }
 
     /**
-     * @param  \BusinessCentral\Models\ReferenceModel  $model
+     * @param  ReferenceModel  $model
      */
     public function storeReference(ReferenceModel $model): \Illuminate\Database\Eloquent\Model
     {
@@ -62,7 +62,7 @@ class ReferenceRepository extends BaseRepository
     }
 
     /**
-     * @param  \BusinessCentral\Models\ReferenceModel  $model
+     * @param  ReferenceModel  $model
      *
      * @return mixed
      */

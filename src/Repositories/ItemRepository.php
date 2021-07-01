@@ -21,7 +21,10 @@ class ItemRepository extends RepositoryAbstract
     public string $objectName = 'item';
 
     /**
-     * @throws \Exception
+     * @param Product $product
+     * @return \stdClass|null
+     * @throws \Daalder\BusinessCentral\API\Exceptions\ApiResponseException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(Product $product): ?\stdClass
     {
@@ -58,23 +61,38 @@ class ItemRepository extends RepositoryAbstract
                 'business_central_id' => $response->id,
             ]));
 
-            if ($product->group_id) {
-                // Let's store group as defaultDimension
-                $dimensionRepository = new DimensionRepository($this->client, $this->referenceRepository);
-                $dimensionRepository->create(new DefaultDimension([
-                    'parentId' => $response->id,
-                    'dimensionId' => DimensionRepository::GROUP_DIMENSION,
-                    'dimensionValueId' => $this->referenceRepository->getReference(new GroupBusinessCentral(['group_id' => $product->group_id]))->business_central_id,
-                    'postingValidation' => $product->group->code,
-                ]));
-            }
-            //$pictureRepository = new PictureRepository($this->client, $this->referenceRepository);
-            //$pictureRepository->create($product);
+            $this->storeDefaultDimension($product, $response);
+
         } else {
-            logger('BC: Failed to create product: '.$product->id);
+            logger()->error('Business Central: Failed to create product: '.$product->id);
         }
 
         return $response;
+    }
+
+    /**
+     * @param $product
+     * @param $response
+     * @throws \Daalder\BusinessCentral\API\Exceptions\ApiResponseException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    private function storeDefaultDimension($product, $response)
+    {
+        if ($product->group_id) {
+
+            // Let's store group as defaultDimension
+            $this->client->post(
+                config('business-central.endpoint').'companies('.
+                config('business-central.companyId').')/items('.
+                $response->id.')/defaultDimensions',
+                [
+                    'parentId' => $response->id,
+                    'dimensionId' => 'e6824ae1-3a1c-4ccd-95e2-632cb16789f9',
+                    'dimensionValueId' => $this->referenceRepository->getReference(new GroupBusinessCentral(['group_id' => $product->group_id]))->business_central_id,
+                    'postingValidation' => $product->group->code,
+                ]
+            );
+        }
     }
 
     /**

@@ -18,9 +18,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class SalesOrder extends JsonResource
 {
     /**
+     * @param $request
      * @return array
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         $shippingMethodsRespository = resolve(ShippingMethodsRepository::class);
         $bcShippingMethod = $shippingMethodsRespository->getByShippingSku($this->getShippingSku());

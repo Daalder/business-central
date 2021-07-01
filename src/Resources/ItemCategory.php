@@ -19,7 +19,7 @@ class ItemCategory extends JsonResource
     /**
      * @return array
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'code' => (string) str_limit($this->id, 20),

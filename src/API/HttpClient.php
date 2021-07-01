@@ -8,12 +8,8 @@ use Daalder\BusinessCentral\Repositories\CustomerRepository;
 use Daalder\BusinessCentral\Repositories\DimensionValueRepository;
 use Daalder\BusinessCentral\Repositories\ItemCategoryRepository;
 use Daalder\BusinessCentral\Repositories\ItemRepository;
-use Daalder\BusinessCentral\Repositories\PictureRepository;
 use Daalder\BusinessCentral\Repositories\SalesOrderLineRepository;
 use Daalder\BusinessCentral\Repositories\SalesOrderRepository;
-use Daalder\BusinessCentral\Repositories\SalesQuoteLineRepository;
-use Daalder\BusinessCentral\Repositories\SalesQuoteRepository;
-use Daalder\BusinessCentral\Repositories\SubscriptionRepository;
 use Daalder\BusinessCentral\Repositories\WarehouseShipmentRepository;
 use Daalder\BusinessCentral\Traits\InstantiatorTrait;
 use Daalder\BusinessCentral\API\Auth;
@@ -21,7 +17,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
-use Zendesk\API\Middleware\RetryHandler;
+
 
 /**
  * Class HttpClient
@@ -32,10 +28,8 @@ use Zendesk\API\Middleware\RetryHandler;
  * @method ItemCategoryRepository itemCategory()
  * @method SalesOrderRepository salesOrder()
  * @method SalesOrderLineRepository salesOrderLine()
- * @method SalesQuoteLineRepository salesQuoteLine()
  * @method CustomerRepository customer()
  * @method DimensionValueRepository dimensionValue()
- * @method SalesQuoteRepository salesQuote()
  */
 class HttpClient
 {
@@ -111,11 +105,7 @@ class HttpClient
             'salesOrder' => SalesOrderRepository::class,
             'customer' => CustomerRepository::class,
             'salesOrderLine' => SalesOrderLineRepository::class,
-            'salesQuote' => SalesQuoteRepository::class,
-            'salesQuoteLine' => SalesQuoteLineRepository::class,
             'warehouseShipment' => WarehouseShipmentRepository::class,
-            'picture' => PictureRepository::class,
-            'subscription' => SubscriptionRepository::class,
         ];
     }
 

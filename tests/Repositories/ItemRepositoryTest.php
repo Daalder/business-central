@@ -41,17 +41,20 @@ class ItemRepositoryTest extends DaalderTestCase
 //            $mock->shouldReceive('create')->once();
 //        });
 
-        Model::withoutEvents(function(){
+
+        Model::withoutEvents(function() {
+
             /** @var Group $product */
             $group = Group::factory()->create();
 
-            $reference = GroupBusinessCentral::create([
+            $product = Product::withoutSyncingToSearch(function() use ($group){
+                return Product::factory()->create(['group_id' => $group->id]);
+            });
+
+            GroupBusinessCentral::create([
                 'group_id'=> $group->id,
                 'business_central_id' => '12345'
             ]);
-
-            /** @var Product $product */
-            $product = Product::factory()->create(['group_id' => $group->id]);
 
             $this->assertDatabaseHas('product', ['id' => $product->id, 'sku' => $product->sku]);
 
@@ -80,10 +83,68 @@ class ItemRepositoryTest extends DaalderTestCase
             /** @var Product $product */
             $product = Product::factory()->create();
 
+            ProductBusinessCentral::create([
+                'product_id'=> $product->id,
+                'business_central_id' => '12345'
+            ]);
+
+            $this->assertDatabaseHas('product', ['id' => $product->id, 'sku' => $product->sku]);
+
+            $itemRepository = app(ItemRepository::class);
+            $itemRepository->update($product);
+        });
+    }
+
+    /**
+     * @test
+     * @covers ItemRepository::delete()
+     */
+    public function testDelete()
+    {
+        $this->mock(HttpClient::class, function ($mock) {
+            $mock->shouldReceive('delete')->once();
+        });
+
+        Model::withoutEvents(function(){
+            /** @var Product $product */
+            $product = Product::factory()->create();
+
             $reference = ProductBusinessCentral::create([
                 'product_id'=> $product->id,
                 'business_central_id' => '12345'
             ]);
+
+            $this->assertDatabaseHas('product', ['id' => $product->id, 'sku' => $product->sku]);
+
+            $itemRepository = app(ItemRepository::class);
+            $itemRepository->delete($reference->business_central_id);
+        });
+    }
+
+
+    /**
+     * @test
+     */
+    public function testUpdateThenCreate()
+    {
+        $this->mock(HttpClient::class, function ($mock) {
+            $response = new \stdClass();
+            $response->id = 1;
+
+            $mock->shouldReceive('post')->andReturn($response);
+        });
+
+        Model::withoutEvents(function(){
+            /** @var Group $product */
+            $group = Group::factory()->create();
+
+            GroupBusinessCentral::create([
+                'group_id'=> $group->id,
+                'business_central_id' => '12345'
+            ]);
+
+            /** @var Product $product */
+            $product = Product::factory()->create(['group_id' => $group->id]);
 
             $this->assertDatabaseHas('product', ['id' => $product->id, 'sku' => $product->sku]);
 

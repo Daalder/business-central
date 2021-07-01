@@ -24,7 +24,7 @@ class SalesOrderRepository extends RepositoryAbstract
     public function create(Order $order): ?\stdClass
     {
         // First create customer
-        $this->client->customer()->create($order->customer);
+        app(CustomerRepository::class)->create($order->customer);
 
         $reference = $this->referenceRepository->getReference(new OrderBusinessCentral(['order_id' => $order->id]));
         if ($reference) {
@@ -131,5 +131,6 @@ class SalesOrderRepository extends RepositoryAbstract
         return $this->client->delete(
             config('business-central.endpoint').'companies('.config('business-central.companyId').')/salesOrders('.$reference->business_central_id.')'
         );
+        // TODO:: remove reference if successfully deleted.
     }
 }

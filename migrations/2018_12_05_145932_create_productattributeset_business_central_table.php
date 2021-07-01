@@ -20,7 +20,7 @@ class CreateProductattributesetBusinessCentralTable extends Migration
 
             $table->foreign('productattributeset_id', 'pattributeset_id_business_central')
                 ->references('id')
-                ->on('productattributeset')
+                ->on('product_attribute_sets')
                 ->onDelete('cascade');
 
             $table->primary(['productattributeset_id', 'business_central_id'], 'set_id_bc_id');

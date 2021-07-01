@@ -14,7 +14,7 @@ class PullFromBusinessCentral extends Command
     /**
      * The name and signature of the console command.
      */
-    protected string $signature = 'bc:pull {type} {top=20000} {skip=0}';
+    protected $signature = 'bc:pull {type} {top=20000} {skip=0}';
 
     protected $mapping = [
         '\Pionect\Daalder\Models\Product\Product' => 'item',
@@ -26,7 +26,7 @@ class PullFromBusinessCentral extends Command
     /**
      * The console command description.
      */
-    protected string $description = 'Pull from BusinessCentral';
+    protected $description = 'Pull from BusinessCentral';
 
     /**
      * Create a new command instance.

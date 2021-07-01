@@ -20,7 +20,7 @@ class CreateUnitBusinessCentralTable extends Migration
 
             $table->foreign('unit_id')
                 ->references('id')
-                ->on('unit')
+                ->on('units')
                 ->onDelete('cascade');
 
             $table->primary(['unit_id', 'business_central_id']);

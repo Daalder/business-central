@@ -6,18 +6,20 @@
 Daalder package for Microsoft Dynamics 365 Business Central
 
 
-## File structuur opzet
+## File structure
+
 ## Migrations
 ## Daalder events
 ### Products
 In [EventServiceProvider](/src/Providers/EventServiceProvider.php) there is and [ProductObserver](/src/Observers/ProductObserver.php) registered to the Daalder product model.
 This observer handles create, update and delete.
 ### Orders
-
+In Daalder the event ```OrderPaymentConfirmed``` is fired when an order is confirmed. In [EventServiceProvider](/src/Providers/EventServiceProvider.php) we register the listener [PushOrderToBusinessCentral](/src/Listeners/PushOrderToBusinessCentral.php).
+When the event is triggered this listener is put on the queue specified.
 ## Jobs
 ## Error reporting
 ## Commands
-## Customization
+## Customization and extending
 
 - Events waarop ingehaakt moet worden Daalder.
     - Product

@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\App;
 /**
  * The Instantiator trait which has the magic methods for instantiating Resources
  *
- * @package Zendesk\API
+ * @package Daalder\BusinessCentral
  */
 trait InstantiatorTrait
 {
     /**
      * Generic method to object getter. Since all objects are protected, this method
      * exposes a getter function with the same name as the protected variable, for example
-     * $client->tickets can be referenced by $client->tickets()
+     * $client->items can be referenced by $client->items()
      *
      * @param $name
      * @param $arguments

@@ -64,10 +64,12 @@ class ItemCategoryRepository extends RepositoryAbstract
     }
 
     /**
-     * @param  \BusinessCentral\Commands\PullFromBusinessCentral  $command
-     *
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\AuthException
+     * @param PullFromBusinessCentral $command
+     * @param int $top
+     * @param int $skip
+     * @return \stdClass|null
+     * @throws \Daalder\BusinessCentral\API\Exceptions\ApiResponseException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function pullReferences(PullFromBusinessCentral $command, int $top = 20000, int $skip = 0): ?\stdClass
     {
