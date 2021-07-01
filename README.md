@@ -2,9 +2,9 @@
 ![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/daalder/business-central/run-tests?label=tests)
 [![Quality Score](https://img.shields.io/scrutinizer/g/Daalder/business-central.svg?style=flat-square)](https://scrutinizer-ci.com/g/Daalder/business-central)
 
-# business-central
-[Daalder](https://daalder.io) package for Microsoft Dynamics 365 Business Central
-
+# Microsoft Dynamics 365 Business Central + Daalder
+[Daalder](https://daalder.io) package for Microsoft Dynamics 365 Business Central.<br/>
+For questions about this package or Daalder contact: [info@pionect.nl](mailto:info@pionect.nl)
 
 ## Current state
 | Endpoints        | Status           | Remarks  |
