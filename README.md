@@ -6,9 +6,26 @@
 Daalder package for Microsoft Dynamics 365 Business Central
 
 
-## File structure
+## Current state
+| Endpoints        | Status           | Remarks  |
+| ------------- |:-------------| :-----|
+| Customer      | Implemented | Customers in Daalder |
+| Dimension      | *Partial*      | One parent dimension is configurable |
+| DimensionValue | Implemented      | Revenue groups in Daalder |
+| Item | Implemented      | [Products](https://daalder.io/docs/) in Daalder |
+| Item category | Implemented      | [Product attribute set](https://daalder.io/docs/) in Daalder |
+| Sales order | Implemented | [Orders](https://daalder.io/docs/) in Daalder |
+| Sales order line | Implemented | [Order rows](https://daalder.io/docs/) in Daalder |
+
+For a complete list of endpoints visit the [Microsoft reference](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/api-reference/v2.0/)
 
 ## Migrations
+Tables are generated to store references to Business Central records for the various resources mentioned above.
+## Configuration
+In the `.env` file of Daalder `BC_ENDPOINT` needs to be set.<br/>
+For example https://api.businesscentral.dynamics.com/v2.0/production/api/v2.0/
+
+[Here](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/api-reference/v2.0/endpoints-apis-for-dynamics) you can find more information on the various endpoints.
 ## Daalder events
 ### Products
 In [EventServiceProvider](/src/Providers/EventServiceProvider.php) there is and [ProductObserver](/src/Observers/ProductObserver.php) registered to the Daalder product model.
@@ -20,15 +37,4 @@ When the event is triggered this listener is put on the queue specified.
 ## Error reporting
 ## Commands
 ## Customization and extending
-
-- Events waarop ingehaakt moet worden Daalder.
-    - Product
-        - Updated model event product
-    - Order
-        - Created model event
-        - Updated model event
-        - Order status change los event
-- Job afhandeling
-- Error reporting
-- Commands die beschikbaar zijn
-- Custom inhaak opties.
+## Future updates
