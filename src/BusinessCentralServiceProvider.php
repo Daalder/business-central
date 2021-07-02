@@ -9,23 +9,15 @@ use Daalder\BusinessCentral\API\HttpClient as BusinessCentralAPI;
 use Daalder\BusinessCentral\Commands\BusinessCentralSubscription;
 use Daalder\BusinessCentral\Commands\PullFromBusinessCentral;
 use Daalder\BusinessCentral\Commands\PullInventory;
-use Daalder\BusinessCentral\Commands\PullWarehouseShipment;
-use Daalder\BusinessCentral\Commands\PushNewOrdersToBusinessCentral;
 use Daalder\BusinessCentral\Commands\PushToBusinessCentral;
-use Daalder\BusinessCentral\Observers\SetObserver;
 use Daalder\BusinessCentral\Providers\EventServiceProvider;
-use Daalder\BusinessCentral\Providers\ModelServiceProvider;
 use Daalder\BusinessCentral\Providers\RouteServiceProvider;
 use Daalder\BusinessCentral\Providers\SchedulerServiceProvider;
 use Exception;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Support\Collection;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
-use Pionect\Daalder\Hooks\Facades\Hook;
-use Pionect\Daalder\Menus\Item;
-use Pionect\Daalder\Models\ProductAttribute\Set;
 use Spatie\Valuestore\Valuestore;
 
 /**
@@ -55,21 +47,9 @@ class BusinessCentralServiceProvider extends ServiceProvider
                 BusinessCentralSubscription::class,
                 PullFromBusinessCentral::class,
                 PullInventory::class,
-                PullWarehouseShipment::class,
                 PushToBusinessCentral::class,
-                PushNewOrdersToBusinessCentral::class,
             ]);
         }
-
-        Set::observe(SetObserver::class);
-
-        Hook::listen('main_menu.menu_item.create', static function (Collection $items) {
-            return $items->push(new Item('/business-central', 'Business Central', [], 'business'));
-        });
-
-        Hook::listen('main_menu.business-central.submenu_item.create', static function (Collection $items) {
-            return $items->push(new Item('/business-central/not-in', 'Niet gekoppelde producten', [], 'settings'));
-        });
     }
 
     /**
@@ -86,7 +66,6 @@ class BusinessCentralServiceProvider extends ServiceProvider
 
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
-        $this->app->register(ModelServiceProvider::class);
         $this->app->register(SchedulerServiceProvider::class);
 
         $this->registerBusinessCentralApi();

@@ -6,9 +6,11 @@ namespace Daalder\BusinessCentral\Providers;
 
 use Daalder\BusinessCentral\Listeners\PushOrderToBusinessCentral;
 use Daalder\BusinessCentral\Observers\ProductObserver;
+use Daalder\BusinessCentral\Observers\SetObserver;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Pionect\Daalder\Events\Order\OrderPaymentConfirmed;
 use Pionect\Daalder\Models\Product\Product;
+use Pionect\Daalder\Models\ProductAttribute\Set;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -39,6 +41,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
         Product::observe(ProductObserver::class);
+        Set::observe(SetObserver::class);
     }
 
     /**

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Daalder\BusinessCentral\Models;
 
 use Pionect\Daalder\Models\Customer\Customer;

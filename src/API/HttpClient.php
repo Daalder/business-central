@@ -105,7 +105,6 @@ class HttpClient
             'salesOrder' => SalesOrderRepository::class,
             'customer' => CustomerRepository::class,
             'salesOrderLine' => SalesOrderLineRepository::class,
-            'warehouseShipment' => WarehouseShipmentRepository::class,
         ];
     }
 
